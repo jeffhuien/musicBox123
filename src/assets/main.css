@@ -1,0 +1,15 @@
+/* @import 'https://at.alicdn.com/t/c/font_4244591_7w45uu9x6ff.css'; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply transition ease-in-out duration-500  h-screen w-screen flex  xl:justify-center items-center box-content select-none;
+}
+
+#app {
+  @apply max-xl:h-screen max-xl:w-screen;
+  @apply xl:h-[90vh] xl:w-[80vw];
+  @apply shadow-lg shadow-pink-200 border xl:rounded-md overflow-hidden;
+  @apply flex flex-col justify-center items-center transition ease-in-out;
+}
