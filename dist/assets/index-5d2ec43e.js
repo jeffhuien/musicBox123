@@ -1,1 +1,0 @@
-import{_ as t}from"./_plugin-vue_export-helper-c27b6911.js";import{o as r,c as s,g as n,a}from"./index-08c219b8.js";const c={},l=a("p",null,"↓",-1);function f(o,e){return r(),s("div",{class:"h-full w-full",onClick:e[0]||(e[0]=d=>o.$router.push("/"))},[l,n(" plaY ")])}const u=t(c,[["render",f]]);export{u as default};
