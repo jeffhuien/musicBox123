@@ -44,10 +44,10 @@ function lostFocus() {
 
 <template>
   <div class="w-full relative flex max-md:ml-0">
-    <i class="fa-solid fa-magnifying-glass absolute top-[20%] left-2 opacity-50"></i>
+    <i class="fa-solid fa-magnifying-glass absolute top-[25%] left-2 opacity-50"></i>
     <input
       type="text"
-      class="transition-all duration-700 w-52 focus:w-64 rounded-3xl border caret-pink-500 pl-8 py-1 text-xs text-gray-600 focus:outline-sky-200 hover:border-lime-300 outline-none"
+      class="transition-all duration-700 w-52 focus:w-64 rounded-3xl border caret-pink-500 pl-8 py-2 max-sm:py-1 text-xs text-gray-600 focus:outline-sky-200 hover:border-lime-300 outline-none"
       v-model="keyword"
       @input="search(keyword)"
       @keyup.stop=""
@@ -56,7 +56,7 @@ function lostFocus() {
       @keyup.enter="enterSearch(keyword)" />
     <div
       v-show="show"
-      class="suggest min-h-[13rem] flex overflow-hidden absolute top-[120%] text-sm w-72 bg-white rounded-md shadow-lg">
+      class="max-sm:scale-90 suggest min-h-[13rem] flex overflow-hidden absolute top-[120%] max-sm:top-2 max-sm:-left-2 z-20 text-sm w-72 bg-white rounded-md shadow-lg">
       <!-- <div class="w-full h-full flex justify-center items-center" v-if="loading().searchBoxLoading">
         <Loading class="">loading...</Loading>
       </div> -->

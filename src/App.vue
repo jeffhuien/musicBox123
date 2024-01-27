@@ -43,5 +43,6 @@ watch(searchKeyWords, async (newVal, v) => {
 
 onMounted(() => {
   console.log('加载缓存...')
+  router.push({ name: 'recommend' })
 })
 </script>

@@ -26,13 +26,13 @@
         :src="songImg"
         :style="[isPlay == false ? 'animation-play-state: paused' : '']" />
     </div>
-    <div class="shrink-0 flex items-center justify-between lg:w-[30vw]">
+    <div class="md:ml-2 shrink-0 flex items-center justify-between lg:w-[30vw]">
       <div class="flex shrink-0 flex-1 bars ml-1 flex-col justify-center items-start max-sm:w-[30vw] relative !w-full">
         <div class="" v-if="ISMobile().isMobile">
           <songNameMobile :musicName="musicName" :singerName="singerName"></songNameMobile>
         </div>
         <div class="" v-else>
-          <RunHouse class="text-sm" :data="musicName"></RunHouse>
+          <RunHouse class="text-sm" :data="[musicName, singerName].join(' - ')"></RunHouse>
           <Bars class="text-sm mt-[.5rem] w-full max-sm:!hidden" :data="leftBars"></Bars>
         </div>
       </div>
@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts" setup>
-import { bars } from '#/types'
+import { bars } from '#/index'
 import { SongApi } from '@/Api/song'
 import { toast } from '@/plugins/toast'
 import router from '@/router'

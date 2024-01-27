@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { bars } from '#/types'
+import { bars } from '#/index'
 
 let data = defineProps<{
   data: bars[]
