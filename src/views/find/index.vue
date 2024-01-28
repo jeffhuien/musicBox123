@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="flex-1 !overflow-hidden bg-sky-700" v-if="listsSongs">
-      <list class="h-full" :lists-songs="listsSongs?.songs"></list>
+      <list class="h-full" :lists-songs="(listsSongs?.songs as unknown  as Song[])"></list>
     </div>
   </div>
 </template>
@@ -37,6 +37,7 @@ import { ListSongs } from '#/List/ListSongs'
 import { UserList } from '#/List/userList'
 import { ListApi } from '@/Api/List'
 import { queryUserList } from '@/stores'
+import { Song } from '#/song/songInfo'
 
 let uid = ref()
 let userLists = ref<UserList>()
@@ -44,8 +45,10 @@ let listsSongs = ref<ListSongs>()
 provide('songs', listsSongs)
 
 async function get(id: string) {
-  userLists.value = await ListApi.getList(id)
-  if (id !== 'null') queryUserList().add(id)
+  if (id) {
+    userLists.value = await ListApi.getList(id)
+    queryUserList().add(id)
+  }
 }
 
 async function getListSongs(id: number) {

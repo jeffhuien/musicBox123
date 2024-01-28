@@ -2,8 +2,8 @@
   <div class="w-full h-full flex flex-col">
     <div class="flex w-full h-full gap-3 relative">
       <div
-        class="w-1/6 md:min-w-[12rem] h-full bg-white z-20 shrink-0 shadow-lg menu"
-        :class="[ISMobile().isMobile ? 'animate__animated animate__slideInLeft' : '']">
+        class="w-1/6 md:min-w-[12rem] h-full bg-white z-20 shrink-0 shadow-lg menu max-sm:hidden"
+        :class="[main().isMobile ? 'animate__animated animate__slideOutLeft' : '']">
         <left-menu />
       </div>
       <div class="flex-grow h-full max-sm:px-2">
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ISMobile } from '@/stores'
+import { main } from '@/stores'
 </script>
 
 <style scoped lang="scss">

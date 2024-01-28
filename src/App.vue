@@ -1,6 +1,6 @@
 <template>
   <suspense>
-    <div class="flex flex-col w-full h-full">
+    <div class="flex flex-col w-full h-full relative">
       <div class="h-20 max-sm:h-14 flex justify-center items-center">
         <i class="fa-solid fa-square-caret-left box" @click.stop="a(false)"></i>
         <top />
@@ -14,7 +14,7 @@
           <!-- </transition> -->
         </router-view>
       </div>
-      <div class="">
+      <div class="relative">
         <play-bar />
       </div>
     </div>
@@ -32,11 +32,12 @@
 import { SearchSongs } from '#/search/searchSongs'
 import { SearchApi } from '@/Api/search'
 import router from '@/router'
+import { main } from '@/stores'
 
 let searchData = ref<SearchSongs>()
 let currentRoute = useRouter().currentRoute.value
 let searchKeyWords = ref<string>(currentRoute.query.keywords as string)
-
+let { menuClose } = toRefs(main())
 provide('searchKeyWords', searchKeyWords)
 provide('searchData', searchData)
 
@@ -49,23 +50,26 @@ onMounted(() => {
   console.log('加载缓存...')
 })
 
-let close = ref(false)
-
 function a(q: boolean = false) {
   const menu = document.querySelector('.menu') as HTMLElement
   const box = document.querySelector('.box') as HTMLElement
+  menu.classList.remove('max-sm:hidden')
+  if (menu == undefined) {
+    return
+  }
   if (q) {
-    if (close.value == true) return
+    if (menuClose.value === true) return
+
     menu.classList.add('animate__slideOutLeft')
     box.classList.toggle('fa-square-caret-left')
     box.classList.toggle('fa-square-caret-right')
-    close.value = true
+    menuClose.value = true
   } else {
     menu.classList.toggle('animate__slideInLeft')
     menu.classList.toggle('animate__slideOutLeft')
     box.classList.toggle('fa-square-caret-right')
     box.classList.toggle('fa-square-caret-left')
-    close.value = !close.value
+    menuClose.value = !menuClose.value
   }
 }
 </script>

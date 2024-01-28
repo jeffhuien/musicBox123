@@ -1,5 +1,5 @@
 <template>
-  <div class="playBar">
+  <div class="playBar z-50">
     <!-- 进度条 -->
     <div
       class="playBar-progress group w-full h-[0.2rem] hover:cursor-pointer absolute -top-[0.07rem] left-0"
@@ -18,35 +18,37 @@
         id="idot"></span>
     </div>
 
-    <div class="play_bg w-full h-full" @click="go">
-      <i class="fa-solid fa-angles-up left-0"></i>
-      <!-- <!== 歌曲封面 ==> -->
-      <img
-        class="absolute max-sm:animate-spin-slow top-0 w-full h-full object-cover rounded-md max-sm:rounded-full"
-        :src="songImg"
-        :style="[isPlay == false ? 'animation-play-state: paused' : '']" />
-    </div>
-    <div class="md:ml-2 shrink-0 flex items-center justify-between lg:w-[30vw]">
-      <div class="flex shrink-0 flex-1 bars ml-1 flex-col justify-center items-start max-sm:w-[30vw] relative !w-full">
-        <div class="" v-if="ISMobile().isMobile">
-          <songNameMobile :musicName="musicName" :singerName="singerName"></songNameMobile>
-        </div>
-        <div class="" v-else>
-          <RunHouse class="text-sm" :data="[musicName, singerName].join(' - ')"></RunHouse>
-          <Bars class="text-sm mt-[.5rem] w-full max-sm:!hidden" :data="leftBars"></Bars>
+    <div class="flex overflow-hidden">
+      <div class="play_bg w-full h-full" @click="go">
+        <i class="fa-solid fa-angles-up left-0"></i>
+        <!-- <!== 歌曲封面 ==> -->
+        <img
+          class="absolute max-sm:animate-spin-slow top-0 w-full h-full object-cover rounded-md max-sm:rounded-full"
+          :src="songImg"
+          :style="[isPlay == false ? 'animation-play-state: paused' : '']" />
+      </div>
+      <div class="md:ml-2 flex items-center justify-between w-32 lg:w-[30vw] overflow-hidden">
+        <div
+          class="flex shrink-0 flex-1 bars ml-1 flex-col justify-center items-start max-sm:w-[30vw] relative !w-full">
+          <div class="" v-if="main().isMobile">
+            <songNameMobile :musicName="musicName" :singerName="singerName"></songNameMobile>
+          </div>
+          <div class="" v-else>
+            <RunHouse class="text-sm" :data="[musicName, singerName].join(' - ')"></RunHouse>
+            <Bars class="text-sm mt-[.5rem] w-full max-sm:!hidden" :data="leftBars"></Bars>
+          </div>
         </div>
       </div>
     </div>
-
     <!-- <!== 控制条 ==> -->
     <div class="flex justify-center flex-1 relative lg:w-[30vw] max-sm:!justify-end max-sm:pr-12">
       <div class="flex justify-center items-center gap-8 text-xl">
-        <i class="fa-solid fa-backward-step text-pink-300 max-md:hidden"></i>
+        <i class="fa-solid fa-backward-step text-pink-300 max-md:hidden" @click="playPrev"></i>
         <i
           class="fa-solid text-pink-300 shrink-0 text-4xl w-5 max-sm:text-2xl"
           :class="[isPlay ? 'fa-pause' : 'fa-play ']"
           @click="play"></i>
-        <i class="fa-solid fa-forward-step text-pink-300 max-md:hidden"></i>
+        <i class="fa-solid fa-forward-step text-pink-300 max-md:hidden" @click="playNext"></i>
       </div>
     </div>
 
@@ -57,6 +59,22 @@
       <Bars class="text-sm mr-6 max-md:hidden" :data="rightBars"></Bars>
       <Bars class="text-sm mr-6 hidden max-md:block" :data="[rightBars[rightBars.length - 1]]"></Bars>
     </div>
+
+    <div
+      ref="playListEl"
+      class="animate__animated hidden animate__slideOutRight h-[60vh] overflow-hidden max-md:w-2/5 xl:w-1/4 max-sm:w-full absolute right-0 bottom-[4.8rem] z-50 bg-white border rounded-md shadow-lg">
+      <el-scrollbar height="100%" ref="scrollbar">
+        <p
+          @click="playMusicById(i.id), (playList().playIndex = index)"
+          v-for="(i, index) in playList().playList1"
+          :index="index"
+          :class="[index == playList().playIndex ? 'text-sky-500 opacity-100 bg-gray-200' : '']"
+          class="p-1 px-4 rounded-sm hover:bg-gray-200 opacity-50">
+          <span class="text-sm"> {{ i.name }} </span>
+          <span class="text-xs"> - {{ i.singerName }}</span>
+        </p>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 
@@ -65,22 +83,27 @@ import { bars } from '#/index'
 import { SongApi } from '@/Api/song'
 import { toast } from '@/plugins/toast'
 import router from '@/router'
-import { playControl, ISMobile } from '@/stores'
-import { Music } from '@/utils'
+import { playControl, main, playList } from '@/stores'
+import { Music, playMusicById } from '@/utils'
 import { storeToRefs } from 'pinia'
 
 let progress = ref(0)
-
-let { musicName, singerName, songImg, currentTime, isPlay, playUrl, duration, playId } = storeToRefs(playControl())
 let mp3 = Music
-// let timer: undefined | NodeJS.Timeout
+let playListEl = ref<HTMLElement>()
+let scrollbar = ref()
+let { musicName, singerName, songImg, currentTime, isPlay, playUrl, duration, playId } = storeToRefs(playControl())
+
+let { playNext, playPrev } = playControl()
 
 mp3.addEventListener('timeupdate', () => {
   currentTime.value = mp3.getCurrentTime()
   progress.value = Math.floor((currentTime.value / duration.value) * 100)
 })
 //播放完成事件
-mp3.addEventListener('ended', () => (isPlay.value = false))
+mp3.addEventListener('ended', () => {
+  // isPlay.value = false
+  playNext()
+})
 
 let leftBars = [
   {
@@ -119,26 +142,21 @@ let rightBars = [
   {
     name: '列表',
     ico: 'fa-solid fa-list-ol',
+    fun: function (e: Event & { target: HTMLElement }) {
+      playListEl.value?.classList.remove('hidden')
+      playListEl.value?.classList.toggle('animate__slideInRight')
+      playListEl.value?.classList.toggle('animate__slideOutRight')
+    },
   },
 ] as bars[]
 
 //全局键盘事件
 //BUG 时好时坏
 document.addEventListener('keyup', async (e: KeyboardEvent) => {
-  // console.log(e.target.nodeName)
-
-  if (e !== null && e.target !== null) {
-    console.log(e)
-    // if (e.target.nodeNama !== 'BODY') return
-    if (e.key == ' ') {
-      await play()
-    }
+  if (e.key == ' ') {
+    await play()
   }
 })
-
-/**
- * @description 播放
- */
 
 async function play() {
   if (isPlay.value) mp3.pause()
@@ -148,15 +166,11 @@ async function play() {
     } catch (error) {
       let t = await SongApi.getSongUrl(playId.value)
       await mp3.play(t.data[0].url)
-      playControl().playUrl = t.data[0].url
+      playUrl.value = t.data[0].url
     }
   }
 }
 
-/**
- * 跳转播放
- * @param e
- */
 function jump(e: MouseEvent) {
   let dom = e.target as HTMLElement
   try {
@@ -164,7 +178,6 @@ function jump(e: MouseEvent) {
     mp3.setCurrentTime(duration.value * position)
   } catch (err) {
     toast.error(err as string)
-    // location.reload()
   }
 }
 
@@ -173,7 +186,10 @@ function go() {
   router.push('/play')
 }
 
-onMounted(() => (playControl().isPlay = false))
+onMounted(() => {
+  isPlay.value = false
+  scrollbar.value.setScrollTop(200)
+})
 </script>
 
 <style scoped lang="scss">

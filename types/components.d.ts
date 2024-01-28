@@ -10,16 +10,13 @@ declare module 'vue' {
     Auth: typeof import('./../src/components/top/auth.vue')['default']
     Back: typeof import('./../src/components/top/back.vue')['default']
     Bars: typeof import('./../src/components/playBar/bars.vue')['default']
-    copy: typeof import('./../src/components/list/list copy.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
-    ElProgress: typeof import('element-plus/es')['ElProgress']
-    ElSlider: typeof import('element-plus/es')['ElSlider']
+    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     LeftMenu: typeof import('./../src/components/LeftMenu.vue')['default']
     Lines: typeof import('./../src/components/common/lines.vue')['default']
     List: typeof import('./../src/components/list/list.vue')['default']
-    'List copy': typeof import('./../src/components/list/list copy.vue')['default']
     Loading: typeof import('./../src/components/loading.vue')['default']
     Logo: typeof import('./../src/components/top/logo.vue')['default']
     MSearch: typeof import('./../src/components/top/search/mSearch.vue')['default']
@@ -27,12 +24,8 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     RunHouse: typeof import('./../src/components/playBar/runHouse.vue')['default']
-    Search: typeof import('./../src/components/top/search/index.vue')['default']
     SongNameMobile: typeof import('./../src/components/playBar/songNameMobile.vue')['default']
     TimeText: typeof import('./../src/components/playBar/timeText.vue')['default']
     Top: typeof import('./../src/components/top/index.vue')['default']
-  }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

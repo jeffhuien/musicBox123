@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { SearchSongs } from '#/search/searchSongs'
-let searchData = inject('searchData', ref<SearchSongs>())
+import { ListSongs } from '#/List/ListSongs'
+let searchData = inject('searchData', ref<ListSongs>())
 let searchKeyWords = inject('searchKeyWords', ref<string>())
 
 onMounted(() => {

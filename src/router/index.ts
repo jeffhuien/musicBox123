@@ -3,7 +3,7 @@ import testRoute from '@/router/test'
 import leftMenu from '@/router/leftMenu'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',

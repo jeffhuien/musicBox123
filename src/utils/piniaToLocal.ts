@@ -1,7 +1,7 @@
 import type { PiniaPluginContext } from 'pinia'
 // import { playControl, queryUserList, searchHistory } from '@/stores'
 /** 只有该数组内的状态会被持久化存储 */
-const localStoreId = ['playControl', 'userList', 'searchHistory']
+const localStoreId = ['playControl', 'userList', 'searchHistory', 'playList', 'main']
 
 export default function piniaPlugin({ store }: PiniaPluginContext) {
   if (localStoreId.includes(store.$id)) {
