@@ -10,6 +10,7 @@ const router = createRouter({
       name: 'home',
       component: () => import('@/layout/main/index.vue'),
       children: [...leftMenu],
+      redirect: 'recommend',
     },
     {
       path: '/play',
@@ -39,6 +40,10 @@ const router = createRouter({
     //测试路由
     ...testRoute,
   ],
+})
+
+router.beforeEach((to, from) => {
+  // if (to.path === '/') return 'recommend'
 })
 
 export default router

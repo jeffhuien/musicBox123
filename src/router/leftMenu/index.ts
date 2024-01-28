@@ -26,4 +26,16 @@ export default [
     path: '/find',
     component: () => import('@/views/find/index.vue'),
   },
+  {
+    name: 'cloudMusic',
+    path: '/cloudMusic',
+    component: () => import('@/views/cloudMusic/index.vue'),
+  },
+  {
+    name: 'historyPlay',
+    path: '/historyPlay',
+    component: () => import('@/views/historyPlay/index.vue'),
+  },
 ] as RouteRecordRaw[]
+
+let a = []
