@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vue-tsc --noEmit --skipLibCheck && vite build && node --max_old_space_size=40960",
     "preview": "vite preview"
   },
   "dependencies": {
