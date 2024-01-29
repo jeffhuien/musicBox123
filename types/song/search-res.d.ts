@@ -175,7 +175,7 @@ export interface Privilege {
   sp: number
   st: number
   subp: number
-  toast: boolean
+  ElMessage: boolean
   [property: string]: any
 }
 

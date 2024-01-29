@@ -1,10 +1,9 @@
 import { getPlayUrl } from '#/song/get-url'
 import { Song as s_info } from '#/song/songInfo'
 import { SongApi } from '@/Api/song'
-import { toast } from '@/plugins/toast'
 import { playControl } from '@/stores'
-import Music from './Audio'
 import { fee } from './doc'
+import Music from './Audio'
 import env from './env'
 import store from './store'
 
@@ -49,16 +48,16 @@ async function setStore(song: s_info, url: getPlayUrl) {
   let a = song.fee.toString()
   //无版权无法播放
   if (url.data[0].url === null && song.fee === 0) {
-    toast.info(fee[a], { duration: 3000 })
+    ElMessage.info({ duration: 3000, message: fee[a] })
     throw new Error('无版权无法播放')
   }
-
   if (fee[a] && song.fee != 0) {
-    toast.info(fee[a], { duration: 3000 })
+    ElMessage.info({ duration: 3000, message: fee[a] })
   }
-  await Music.play(playControl().playUrl)
-
   playControl().currentTime = 0
+  console.log('0 了')
+
+  await Music.play(playControl().playUrl)
   playControl().duration = Music.getDuration()
 }
 
@@ -74,11 +73,7 @@ async function playMusic(i: s_info) {
 
 async function playMusicById(id: number) {
   let url = await SongApi.getSongUrl(id)
-  console.log(url)
-
   let song = (await SongApi.getSongDetail(id)).songs[0]
-  console.log(song)
-
   try {
     await setStore(song, url)
   } catch (error) {

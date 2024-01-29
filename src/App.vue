@@ -53,7 +53,7 @@ onMounted(() => {
 function a(q: boolean = false) {
   const menu = document.querySelector('.menu') as HTMLElement
   const box = document.querySelector('.box') as HTMLElement
-  menu.classList.remove('max-sm:hidden')
+  menu.classList.remove('max-md:hidden')
   if (menu == undefined) {
     return
   }

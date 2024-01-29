@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { toast } from '../toast'
 
 export default class Axios {
   protected instance
@@ -14,7 +13,7 @@ export default class Axios {
         const response = await this.instance.request<T>(config)
         resolve(response.data)
       } catch (error: AxiosError | any) {
-        toast.error(error.message)
+        ElMessage.error(error.message)
         reject(error)
       }
     })
@@ -52,7 +51,7 @@ export default class Axios {
     // 添加响应拦截器
     this.instance.interceptors.response.use(
       function (response) {
-        if (response.data.code >= 500) toast.error('服务错误~')
+        if (response.data.code >= 500) ElMessage.error('服务错误~')
 
         // 对响应数据做点什么
         // 2xx 范围内的状态码都会触发该函数。

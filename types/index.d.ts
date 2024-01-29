@@ -18,3 +18,16 @@ export interface musicLocal {
 export interface provideData {
   searchData: ListSongs | undefined
 }
+
+export interface userListType {
+  id: string //uid
+  ls: listsType[]
+}
+
+export interface listsType {
+  //uLists
+  name: string
+  id: string
+  img: string
+  count: number
+}

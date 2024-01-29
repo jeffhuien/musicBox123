@@ -1,11 +1,11 @@
 <template>
-  <div class="absolute">
+  <div class="w-52 h-52">
     <div class="loading"></div>
-    <p class="absolute -left-4 top-12">
-      <span class="text-xs">
-        <slot></slot>
-      </span>
-    </p>
+    <!-- <p class="-left-4 top-12"> -->
+    <span class="text-xs">
+      <slot></slot>
+    </span>
+    <!-- </p> -->
   </div>
 </template>
 

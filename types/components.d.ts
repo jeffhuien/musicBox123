@@ -10,7 +10,9 @@ declare module 'vue' {
     Auth: typeof import('./../src/components/top/auth.vue')['default']
     Back: typeof import('./../src/components/top/back.vue')['default']
     Bars: typeof import('./../src/components/playBar/bars.vue')['default']
+    copy: typeof import('./../src/components/LeftMenu copy.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
+    ElImage: typeof import('element-plus/es')['ElImage']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
@@ -24,8 +26,12 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     RunHouse: typeof import('./../src/components/playBar/runHouse.vue')['default']
+    SongList: typeof import('./../src/components/songList.vue')['default']
     SongNameMobile: typeof import('./../src/components/playBar/songNameMobile.vue')['default']
     TimeText: typeof import('./../src/components/playBar/timeText.vue')['default']
     Top: typeof import('./../src/components/top/index.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

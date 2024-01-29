@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import testRoute from '@/router/test'
 import leftMenu from '@/router/leftMenu'
+import LeftSongList from './LeftSongList'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -9,7 +10,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('@/layout/main/index.vue'),
-      children: [...leftMenu],
+      children: [...leftMenu, ...LeftSongList],
       redirect: 'recommend',
     },
     {
@@ -36,6 +37,17 @@ const router = createRouter({
           component: () => import('@/views/main/index.vue'),
         },
       ],
+    },
+
+    {
+      path: '/404',
+      name: '404',
+      component: () => import('@/views/404.vue'),
+    },
+
+    {
+      path: '/:pathMatch(.*)',
+      redirect: '/404',
     },
     //测试路由
     ...testRoute,

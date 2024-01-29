@@ -8,7 +8,7 @@ body {
 }
 
 #app {
-  @apply max-xl:h-screen max-xl:w-screen;
+  @apply max-xl:h-screen max-xl:w-screen max-md:p-2;
   @apply xl:h-[90vh] xl:w-[80vw];
   @apply shadow-lg shadow-pink-200 border xl:rounded-md overflow-hidden;
   @apply flex flex-col justify-center items-center transition ease-in-out;

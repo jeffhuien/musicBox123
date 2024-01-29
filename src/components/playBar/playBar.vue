@@ -81,18 +81,16 @@
 <script lang="ts" setup>
 import { bars } from '#/index'
 import { SongApi } from '@/Api/song'
-import { toast } from '@/plugins/toast'
-import router from '@/router'
 import { playControl, main, playList } from '@/stores'
 import { Music, playMusicById } from '@/utils'
 import { storeToRefs } from 'pinia'
+import router from '@/router'
 
 let progress = ref(0)
 let mp3 = Music
 let playListEl = ref<HTMLElement>()
 let scrollbar = ref()
 let { musicName, singerName, songImg, currentTime, isPlay, playUrl, duration, playId } = storeToRefs(playControl())
-
 let { playNext, playPrev } = playControl()
 
 mp3.addEventListener('timeupdate', () => {
@@ -101,7 +99,6 @@ mp3.addEventListener('timeupdate', () => {
 })
 //播放完成事件
 mp3.addEventListener('ended', () => {
-  // isPlay.value = false
   playNext()
 })
 
@@ -177,7 +174,7 @@ function jump(e: MouseEvent) {
     let position = e.offsetX / dom.offsetWidth
     mp3.setCurrentTime(duration.value * position)
   } catch (err) {
-    toast.error(err as string)
+    ElMessage.error(err as string)
   }
 }
 
