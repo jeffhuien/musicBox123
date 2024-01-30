@@ -20,7 +20,6 @@
     "vite-plugin-top-level-await": "^1.4.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4",
-    "vue-ElMessage-notification": "^3",
     "vue3-marquee": "^4.1.0"
   },
   "devDependencies": {
