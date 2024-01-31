@@ -11,6 +11,5 @@ Object.entries(import.meta.env as Record<string, any>).forEach(([k, v]) => {
   else if (v == 'null') env[k] = null
   else if (v == 'undefined') env[k] = undefined
 })
-
 // console.log(env.);
 export default env as ViteEnv

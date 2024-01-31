@@ -1,10 +1,10 @@
 import { getPlayUrl } from '#/song/get-url'
 import { Song as s_info } from '#/song/songInfo'
-import { SongApi } from '@/Api/song'
 import { playControl } from '@/stores'
 import { fee } from './doc'
 import Music from './Audio'
 import env from './env'
+import { SongApi } from '@/Api/song'
 import store from './store'
 
 /**

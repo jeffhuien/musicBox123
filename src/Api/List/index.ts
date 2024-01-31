@@ -1,6 +1,7 @@
 import { ListSongs } from '#/List/ListSongs'
 import { UserList } from '#/List/userList'
 import Axios from '@/plugins/axios/axios'
+import { env } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class List extends Axios {
@@ -27,7 +28,7 @@ class List extends Axios {
 }
 
 const ListApi = new List({
-  baseURL: '/api',
+  baseURL: '',
   method: 'get',
 })
 

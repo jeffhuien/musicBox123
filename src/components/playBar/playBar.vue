@@ -85,7 +85,6 @@ import { playControl, main, playList } from '@/stores'
 import { Music, playMusicById } from '@/utils'
 import { storeToRefs } from 'pinia'
 import router from '@/router'
-
 let progress = ref(0)
 let mp3 = Music
 let playListEl = ref<HTMLElement>()

@@ -1,8 +1,12 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
+import { env } from '@/utils'
 
 export default class Axios {
   protected instance
   constructor(config?: AxiosRequestConfig) {
+    if (config?.baseURL || config?.baseURL === '') {
+      config.baseURL = env.VITE_API_URL + config.baseURL
+    }
     this.instance = axios.create(config) //初始化axios
     this.interceptors() //拦截器
   }
@@ -59,6 +63,8 @@ export default class Axios {
         return response
       },
       function (error) {
+        // console.log(instance.defaults)
+
         console.log(error)
 
         // 超出 2xx 范围的状态码都会触发该函数。

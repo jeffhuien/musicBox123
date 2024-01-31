@@ -9,7 +9,7 @@ export default defineStore('playControl', () => {
   let duration = ref<number>(0.01)
   let musicName = ref<string>('快选择音乐播放吧~')
   let singerName = ref<string>('')
-  let songImg = ref<string>('/img/logo.png')
+  let songImg = ref<string>('img/logo.png')
   let playUrl = ref<string>('undefined')
   let playId = ref<number>(0)
 

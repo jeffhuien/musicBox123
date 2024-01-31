@@ -2,6 +2,7 @@
  * @Author: GAO GAO
  * @Date: 2024-01-06 15:24:52
  */
+import { env } from '@/utils'
 import Axios from './axios'
 // import store from '@/utils/store'
 
@@ -15,7 +16,7 @@ import Axios from './axios'
 // }
 
 const Api = new Axios({
-  // baseURL: env.VITE_API_URL,
+  baseURL: env.VITE_API_URL,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

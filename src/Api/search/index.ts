@@ -2,6 +2,7 @@ import { Hot } from '#/search/hot'
 import { SearchSongs } from '#/search/searchSongs'
 import { searchSuggest } from '#/search/searchSuggest'
 import Axios from '@/plugins/axios/axios'
+import { env } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class Search extends Axios {
@@ -26,7 +27,7 @@ class Search extends Axios {
 
   public async SearchSongs(keywords: string) {
     return await this.request<SearchSongs>({
-      baseURL: '/api/cloudsearch',
+      baseURL: env.VITE_API_URL + '/cloudsearch',
       params: {
         keywords,
       },
@@ -35,7 +36,7 @@ class Search extends Axios {
 }
 
 const SearchApi = new Search({
-  baseURL: '/api/search',
+  baseURL: '/search',
   method: 'get',
 })
 
