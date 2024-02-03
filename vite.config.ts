@@ -11,6 +11,8 @@ import parseEnv from './vite/utils'
 export default ({ command, mode }: ConfigEnv) => {
   const root = process.cwd()
   const env = parseEnv(loadEnv(mode, root))
+  console.log(env.VITE_API_URL)
+
   return {
     base: './',
     plugins: [
