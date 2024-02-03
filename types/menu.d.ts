@@ -4,7 +4,8 @@ interface menu {
   item: {
     ico: string
     name: string
-    toName: RouteNames
+    toName?: RouteNames
+    fun?: Function
   }[]
 }
 

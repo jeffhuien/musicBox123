@@ -31,6 +31,10 @@ const menus = ref<menu[]>([
         <i :class="k.ico" class="text-lg mr-2 w-7"></i>
         {{ k.name }}
       </router-link>
+      <a @click="$router.go(0)" class="flex items-center">
+        <i class="fa-solid fa-refresh text-lg mr-2 w-7"></i>
+        更新版本
+      </a>
     </div>
   </div>
 </template>
@@ -38,19 +42,18 @@ const menus = ref<menu[]>([
 <style scoped lang="scss">
 .item-block {
   @apply w-full flex flex-col justify-center;
-
-  h1 {
-    @apply text-xs opacity-30 mb-2;
-    &:first-child {
-      @apply mt-4;
-    }
+}
+h1 {
+  @apply text-xs opacity-30 mb-2;
+  &:first-child {
+    @apply mt-4;
   }
-  a {
-    @apply text-xs p-2 mb-1 rounded-md text-gray-500 hover:bg-gray-100;
+}
+a {
+  @apply text-xs p-2 mb-1 rounded-md text-gray-500 hover:bg-gray-100;
 
-    &.router-link-active {
-      @apply font-bold bg-gray-300 text-sky-500;
-    }
+  &.router-link-active {
+    @apply font-bold bg-gray-300 text-sky-500;
   }
 }
 </style>

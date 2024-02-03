@@ -9,7 +9,7 @@
         :format-tooltip="(val:number) => formatTime(val)"></el-slider>
     </div>
 
-    <div class="flex overflow-hidden w-1/3">
+    <div class="flex overflow-hidden w-1/3 max-sm:w-1/2">
       <div class="play_bg shrink-0 !w-12 !h-12 relative" @click="go">
         <i class="fa-solid fa-angles-up left-0"></i>
         <!-- <!== 歌曲封面 ==> -->
@@ -19,8 +19,7 @@
           :style="[isPlay == false ? 'animation-play-state: paused' : '']" />
       </div>
       <div class="md:ml-2 flex items-center justify-between max-sm:w-[50vw] lg:w-[20vw] overflow-hidden">
-        <div
-          class="flex shrink-0 flex-1 bars ml-1 flex-col justify-center items-start max-sm:w-[30vw] relative !w-full">
+        <div class="flex shrink-0 flex-1 bars ml-1 flex-col justify-center items-start relative !w-full">
           <template class="" v-if="main().isMobile">
             <songNameMobile :musicName="musicName" :singerName="singerName"></songNameMobile>
           </template>
@@ -32,7 +31,7 @@
       </div>
     </div>
     <!-- <!== 控制条 ==> -->
-    <div class="flex justify-center flex-1 relative lg:w-1/3 max-sm:!justify-end max-sm:pr-12">
+    <div class="flex justify-center flex-1 relative lg:w-1/3 w-1/4 max-sm:!justify-end max-sm:pr-12">
       <div class="flex justify-center items-center gap-8 text-xl">
         <i class="fa-solid fa-backward-step text-pink-300 max-md:hidden" @click="playPrev"></i>
         <i
@@ -58,7 +57,7 @@
         <div class="">正在播放:</div>
         <div class="">共{{ playList().playList1?.length }}首</div>
       </div>
-      <el-scrollbar height="100%" ref="scrollbar">
+      <el-scrollbar height="100%" ref="scrollbar" v-if="playList().playList1">
         <p
           @click="playMusicById(i.id), (playList().playIndex = index)"
           v-for="(i, index) in playList().playList1"
@@ -82,6 +81,10 @@
           </span>
         </p>
       </el-scrollbar>
+
+      <div class="w-full h-full flex justify-center items-center static text-sm text-gray-400" v-else>
+        列表内没有音乐哦
+      </div>
     </div>
   </div>
 </template>
