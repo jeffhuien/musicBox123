@@ -9,9 +9,9 @@ let data = defineProps<{
 <template>
   <div class="buttons flex gap-6">
     <template v-for="(item, index) in data.data" :key="index">
-      <button @click="item.fun($event)">
+      <button @click="item.fun?.click" @blur="item.fun?.blur">
         <i :class="[item.ico instanceof Array ? item.ico[0] : item.ico]"></i>
-        <span class="ml-1 sm:hidden">{{ item.name }}</span>
+        <span class="ml-1 max-sm:hidden" :ref="item.id">{{ item.name }}</span>
       </button>
     </template>
   </div>

@@ -20,6 +20,8 @@ function play(row: Song) {
       return {
         id: i.id,
         name: i.name,
+        fee: i.fee,
+        time: formatTime(i.dt, 'ms'),
         singerName: i.ar.length > 1 ? i.ar.map((item: any) => item.name).join('、') : i.ar[0].name,
       }
     })
@@ -28,6 +30,8 @@ function play(row: Song) {
       playList1.value = props.listsSongs?.map((i) => {
         return {
           id: i.id,
+          fee: i.fee,
+          time: formatTime(i.dt, 'ms'),
           name: i.name,
           singerName: i.ar.length > 1 ? i.ar.map((item: any) => item.name).join('、') : i.ar[0].name,
         }
@@ -39,9 +43,13 @@ function play(row: Song) {
 }
 
 function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
+  if (row.fee == 0) {
+    return '!text-gray-400'
+  }
   if (rowIndex == playIndex.value && row.id == playControl().playId) {
     return '!text-sky-500 !opacity-100 !bg-gray-200 !rounded-md'
   }
+
   return ''
 }
 </script>
@@ -127,6 +135,13 @@ function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
             </div>
           </div>
         </div>
+      </template>
+    </el-table-column>
+    <el-table-column :align="'right'">
+      <template #default="scope">
+        <p>
+          {{ formatTime(scope.row.dt, 'ms') }}
+        </p>
       </template>
     </el-table-column>
   </el-table>

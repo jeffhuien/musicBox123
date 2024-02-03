@@ -3,7 +3,12 @@ import { ListSongs } from './List/ListSongs'
 export interface bars {
   name: string
   ico: string[] | string
-  fun: Function
+  id?: string
+  fun: {
+    click?: Function
+    change?: Function
+    blur?: Function
+  }
 }
 
 export interface musicLocal {

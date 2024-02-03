@@ -8,6 +8,7 @@ import { getIsMobile } from '@/utils'
 
 const main = defineStore('main', () => {
   let menuClose = ref(false)
+  let listClose = ref(true)
   const isMobile = ref(false)
 
   function check() {
@@ -19,7 +20,7 @@ const main = defineStore('main', () => {
   window.onresize = () => {
     check()
   }
-  return { isMobile, menuClose }
+  return { isMobile, menuClose, listClose }
 })
 
 export { main, loading, playList, playControl, searchHistory, queryUserList }

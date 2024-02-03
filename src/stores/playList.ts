@@ -4,6 +4,8 @@ interface playListType {
   id: number
   name: string
   singerName: string
+  fee: number
+  time: string
 }
 
 export default defineStore('playList', () => {

@@ -2,7 +2,9 @@
   <suspense>
     <div class="flex flex-col w-full h-full relative">
       <div class="h-20 max-sm:h-14 flex justify-center items-center">
-        <i class="fa-solid fa-square-caret-left box" @click.stop="a(false)"></i>
+        <i
+          class="transition-all fa-solid fa-square-caret-left box md:hidden text-fuchsia-400 text-3xl z-50;"
+          @click.stop="a(false)"></i>
         <top />
       </div>
       <div class="flex-1 overflow-hidden" @click="a(true)">
@@ -21,12 +23,7 @@
   </suspense>
 </template>
 
-<style lang="scss" scoped>
-.box {
-  @apply md:hidden text-gray-500;
-  @apply text-3xl z-50;
-}
-</style>
+<style lang="scss" scoped></style>
 
 <script setup lang="ts">
 import { SearchSongs } from '#/search/searchSongs'
@@ -49,7 +46,6 @@ watch(searchKeyWords, async (newVal, v) => {
 onMounted(() => {
   console.log('加载缓存...')
 })
-
 function a(q: boolean = false) {
   const menu = document.querySelector('.menu') as HTMLElement
   const box = document.querySelector('.box') as HTMLElement

@@ -1,25 +1,16 @@
 <template>
-  <div class="playBar z-50">
+  <div class="playBar p-1 w-full relative lg:justify-between flex-nowrap !bg-opacity-100 z-50 flex items-center">
     <!-- 进度条 -->
-    <div
-      class="playBar-progress group w-full h-[0.2rem] hover:cursor-pointer absolute -top-[0.07rem] left-0"
-      @click="jump($event)">
-      <div class="relative">
-        <span class="absolute block h-[0.1rem] bg-gray-100 w-full"></span>
-        <span
-          class="absolute block h-[0.1rem] bg-blue-600 z-10"
-          :style="['width:' + (currentTime / duration) * 100 + '%']"
-          id="progress">
-        </span>
-      </div>
-      <span
-        class="w-2 h-2 rounded absolute -translate-y-1/2 -translate-x-1/2 z-10 bg-red-700 !hidden group-hover:!block"
-        :style="['left:' + (currentTime / duration) * 100 + '%']"
-        id="idot"></span>
+    <div class="playBar-progress group w-full h-[0.2rem] hover:cursor-pointer absolute -top-[0.07rem] left-0">
+      <el-slider
+        :model-value="currentTime"
+        :max="duration"
+        @update:model-value="setProgress"
+        :format-tooltip="(val:number) => formatTime(val)"></el-slider>
     </div>
 
-    <div class="flex overflow-hidden">
-      <div class="play_bg w-full h-full" @click="go">
+    <div class="flex overflow-hidden w-1/3">
+      <div class="play_bg shrink-0 !w-12 !h-12 relative" @click="go">
         <i class="fa-solid fa-angles-up left-0"></i>
         <!-- <!== 歌曲封面 ==> -->
         <img
@@ -27,21 +18,21 @@
           :src="songImg"
           :style="[isPlay == false ? 'animation-play-state: paused' : '']" />
       </div>
-      <div class="md:ml-2 flex items-center justify-between w-32 lg:w-[30vw] overflow-hidden">
+      <div class="md:ml-2 flex items-center justify-between max-sm:w-[50vw] lg:w-[20vw] overflow-hidden">
         <div
           class="flex shrink-0 flex-1 bars ml-1 flex-col justify-center items-start max-sm:w-[30vw] relative !w-full">
-          <div class="" v-if="main().isMobile">
+          <template class="" v-if="main().isMobile">
             <songNameMobile :musicName="musicName" :singerName="singerName"></songNameMobile>
-          </div>
-          <div class="" v-else>
+          </template>
+          <template class="" v-else>
             <RunHouse class="text-sm" :data="[musicName, singerName].join(' - ')"></RunHouse>
             <Bars class="text-sm mt-[.5rem] w-full max-sm:!hidden" :data="leftBars"></Bars>
-          </div>
+          </template>
         </div>
       </div>
     </div>
     <!-- <!== 控制条 ==> -->
-    <div class="flex justify-center flex-1 relative lg:w-[30vw] max-sm:!justify-end max-sm:pr-12">
+    <div class="flex justify-center flex-1 relative lg:w-1/3 max-sm:!justify-end max-sm:pr-12">
       <div class="flex justify-center items-center gap-8 text-xl">
         <i class="fa-solid fa-backward-step text-pink-300 max-md:hidden" @click="playPrev"></i>
         <i
@@ -52,7 +43,7 @@
       </div>
     </div>
 
-    <div class="lg:w-[30vw] items-center justify-end flex">
+    <div class="lg:w-1/3 items-center justify-end flex">
       <div class="mr-10 left-0 max-md:!hidden">
         <timeText class="text-xs opacity-90" :CurTime="currentTime" :totalTime="duration" />
       </div>
@@ -62,16 +53,33 @@
 
     <div
       ref="playListEl"
-      class="animate__animated hidden animate__slideOutRight h-[60vh] overflow-hidden max-md:w-2/5 xl:w-1/4 max-sm:w-full absolute right-0 bottom-[4.8rem] z-50 bg-white border rounded-md shadow-lg">
+      class="animate__animated hidden animate__slideOutRight h-[60vh] overflow-hidden w-2/5 max-sm:w-full absolute right-0 bottom-[4.8rem] max-sm:bottom-16 z-50 bg-white border rounded-md shadow-lg">
+      <div class="flex text-xs justify-between items-center p-2">
+        <div class="">正在播放:</div>
+        <div class="">共{{ playList().playList1?.length }}首</div>
+      </div>
       <el-scrollbar height="100%" ref="scrollbar">
         <p
           @click="playMusicById(i.id), (playList().playIndex = index)"
           v-for="(i, index) in playList().playList1"
           :index="index"
-          :class="[index == playList().playIndex ? 'text-sky-500 opacity-100 bg-gray-200' : '']"
-          class="p-1 px-4 rounded-sm hover:bg-gray-200 opacity-50">
+          :class="[index == playList().playIndex ? 'text-sky-500 opacity-100 ' : '', i.fee == 0 ? 'text-gray-400' : '']"
+          class="p-1 px-4 rounded-sm hover:bg-gray-200">
           <span class="text-sm"> {{ i.name }} </span>
-          <span class="text-xs"> - {{ i.singerName }}</span>
+          <span class="text-xs text-gray-400"> - {{ i.singerName }}</span>
+          <span
+            class="text-xs inline-block opacity-100 text-yellow-500 ml-3 border border-yellow-500 rounded-md p-1 px-2 scale-75"
+            v-if="i.fee === 1">
+            VIP
+          </span>
+          <span
+            class="text-xs inline-block bg-gray-400 opacity-100 text-white ml-3 border border-gray-100 rounded-md p-1 scale-75"
+            v-if="i.fee === 0">
+            无音源
+          </span>
+          <span class="float-right text-xs text-gray-400">
+            {{ i.time }}
+          </span>
         </p>
       </el-scrollbar>
     </div>
@@ -82,19 +90,23 @@
 import { bars } from '#/index'
 import { SongApi } from '@/Api/song'
 import { playControl, main, playList } from '@/stores'
-import { Music, playMusicById } from '@/utils'
+import { Music, playMusicById, formatTime } from '@/utils'
 import { storeToRefs } from 'pinia'
 import router from '@/router'
-let progress = ref(0)
+import { Arrayable } from 'element-plus/es/utils/typescript'
+
 let mp3 = Music
 let playListEl = ref<HTMLElement>()
 let scrollbar = ref()
 let { musicName, singerName, songImg, currentTime, isPlay, playUrl, duration, playId } = storeToRefs(playControl())
 let { playNext, playPrev } = playControl()
 
+function setProgress(v: Arrayable<number>) {
+  mp3.setCurrentTime(Array.isArray(v) ? v[0] : v)
+}
+
 mp3.addEventListener('timeupdate', () => {
   currentTime.value = mp3.getCurrentTime()
-  progress.value = Math.floor((currentTime.value / duration.value) * 100)
 })
 //播放完成事件
 mp3.addEventListener('ended', () => {
@@ -105,15 +117,21 @@ let leftBars = [
   {
     name: '收藏',
     ico: ['fa-regular fa-heart', 'fa-solid'],
-    fun: function (e: Event) {
-      let target = e.target as HTMLElement
-      target.classList.toggle(this.ico[1])
-      target.style.color = '#ff0000'
+    fun: {
+      click: function (e: Event) {
+        let ico = ['fa-regular fa-heart', 'fa-solid']
+        let target = e.target as HTMLElement
+        target.classList.toggle(ico[1])
+        target.style.color = '#ff0000'
+      },
     },
   },
   {
     name: '评论',
     ico: 'fa-regular fa-comment-dots',
+    fun: {
+      click: function (e: Event) {},
+    },
   },
   {
     name: '下载',
@@ -125,9 +143,12 @@ let rightBars = [
   {
     name: '音量',
     ico: ['fa-solid fa-volume-high', 'fa-volume-low', 'fa-volume-xmark'], //大中无
-    fun: function (e: Event & { target: HTMLElement }) {
-      e.target.classList.toggle(this.ico[2])
-      console.log(e.target)
+    fun: {
+      click: function (e: Event & { target: HTMLElement }) {
+        let ico = ['fa-solid fa-volume-high', 'fa-volume-low', 'fa-volume-xmark'] //大中无
+        e.target.classList.toggle(ico[2])
+        console.log(e.target)
+      },
     },
   },
   {
@@ -137,11 +158,20 @@ let rightBars = [
   },
   {
     name: '列表',
+    id: 'playListEl',
     ico: 'fa-solid fa-list-ol',
-    fun: function (e: Event & { target: HTMLElement }) {
-      playListEl.value?.classList.remove('hidden')
-      playListEl.value?.classList.toggle('animate__slideInRight')
-      playListEl.value?.classList.toggle('animate__slideOutRight')
+    fun: {
+      click: function (e: Event & { target: HTMLElement }) {
+        playListEl.value?.classList.remove('hidden')
+        playListEl.value?.classList.toggle('animate__slideInRight')
+        playListEl.value?.classList.toggle('animate__slideOutRight')
+        main().listClose = !main().listClose
+      },
+      blur: function (e: Event & { target: HTMLElement }) {
+        playListEl.value?.classList.toggle('animate__slideOutRight')
+        playListEl.value?.classList.toggle('animate__slideInRight')
+        main().listClose = !main().listClose
+      },
     },
   },
 ] as bars[]
@@ -167,16 +197,6 @@ async function play() {
   }
 }
 
-function jump(e: MouseEvent) {
-  let dom = e.target as HTMLElement
-  try {
-    let position = e.offsetX / dom.offsetWidth
-    mp3.setCurrentTime(duration.value * position)
-  } catch (err) {
-    ElMessage.error(err as string)
-  }
-}
-
 function go() {
   if (router.currentRoute.value.path == '/play') router.back()
   router.push('/play')
@@ -189,42 +209,42 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.playBar {
-  transition: 0.3s all ease;
-  @apply w-full relative flex lg:justify-between flex-nowrap p-2;
-
-  .playBar-progress {
-    #idot {
-      display: block;
-    }
-
-    &:hover {
-      #idot {
-        display: block;
-      }
-    }
+.play_bg {
+  i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffffee;
+    font-size: 2rem;
+    position: absolute;
+    width: 100%;
+    height: 100%;
   }
 
-  .play_bg {
-    height: 3.5rem;
-    width: 3.5rem;
-    position: relative;
+  &:hover i {
+    opacity: 0.6;
+    z-index: 100;
+  }
+}
 
-    i {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #ffffffee;
-      font-size: 2rem;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
+:deep(.el-slider) {
+  --el-slider-border-radius: none;
+  --el-slider-height: 2px;
+  --el-slider-button-size: 0px;
+  --el-slider-button-wrapper-offset: -16px;
+  align-items: start;
+  :hover {
+    --el-slider-button-size: 10px;
+  }
+  .el-slider__button {
+    @apply border-none bg-red-400;
+  }
+}
 
-    &:hover i {
-      opacity: 0.6;
-      z-index: 100;
-    }
+:deep(.el-popper) {
+  @apply bg-red-400;
+  .el-popper__arrow {
+    @apply hidden;
   }
 }
 </style>
