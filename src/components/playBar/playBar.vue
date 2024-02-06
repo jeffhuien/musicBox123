@@ -90,15 +90,12 @@
 </template>
 
 <script lang="ts" setup>
-// playControl().playMusicById(i.id),
 import { bars } from '#/index'
-import { playControl, main, playList } from '@/stores'
-import { Music, formatTime } from '@/utils'
-import { storeToRefs } from 'pinia'
 import router from '@/router'
+import { main, playControl, playList } from '@/stores'
+import { Music, formatTime } from '@/utils'
 import { Arrayable } from 'element-plus/es/utils/typescript'
-
-// import { playMusicById } from '@/utils/play'
+import { storeToRefs } from 'pinia'
 
 let mp3 = Music
 let playListEl = ref<HTMLElement>()
@@ -108,7 +105,6 @@ let { playNext, playPrev, playMusicById } = playControl()
 
 function setProgress(v: Arrayable<number>) {
   mp3.setCurrentTime(Array.isArray(v) ? v[0] : v)
-  // playControl().$persist()
 }
 
 mp3.addEventListener('timeupdate', () => {
@@ -198,8 +194,11 @@ async function play() {
       await mp3.play(playUrl.value)
     } catch (error) {
       // let t = await SongApi.getSongUrl(playId.value)
+      let t = currentTime.value
+      playMusicById(playId.value)
       // await mp3.play(t.data[0].url)
       // playUrl.value = t.data[0].url
+      mp3.setCurrentTime(t)
     }
   }
 }

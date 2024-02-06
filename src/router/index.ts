@@ -1,8 +1,8 @@
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
-import testRoute from '@/router/test'
 import leftMenu from '@/router/leftMenu'
-import LeftSongList from './LeftSongList'
+import testRoute from '@/router/test'
 import { auth, main } from '@/stores'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import LeftSongList from './LeftSongList'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -69,6 +69,11 @@ router.beforeEach((to, from) => {
     })
     main().loginShow = true
     return '/login'
+  }
+
+  if (to.name === 'login' && auth().isLogin) {
+    ElMessage.success('已经登录过了 ')
+    return from
   }
 })
 
