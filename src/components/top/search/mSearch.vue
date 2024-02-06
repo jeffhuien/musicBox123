@@ -5,7 +5,8 @@ import { SearchApi } from '@/Api/search'
 import router from '@/router'
 import { searchHistory } from '@/stores'
 
-let searchKeyWords = inject('searchKeyWords', ref<string>())
+// let searchKeyWords = inject('searchKeyWords', ref<string>())
+let searchKeyWords = ref<string>()
 let keyword = ref('')
 let data = ref<searchSuggest>()
 let show = ref(false)
@@ -27,6 +28,7 @@ async function enterSearch(keywords: string) {
 }
 
 async function getFocus() {
+  console.log(1234)
   show.value = true
   if (!ls.value.code) ls.value = await SearchApi.Hot()
   if (keyword.value) data.value = await SearchApi.Suggest(keyword.value)

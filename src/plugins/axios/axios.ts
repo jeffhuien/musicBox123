@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { env } from '@/utils'
+import { env, store } from '@/utils'
 
 export default class Axios {
   protected instance
@@ -55,7 +55,7 @@ export default class Axios {
     // 添加响应拦截器
     this.instance.interceptors.response.use(
       function (response) {
-        if (response.data.code >= 500) ElMessage.error('服务错误~')
+        if (response.data.code >= 500 && response.data.code != 801) ElMessage.error('服务错误~')
 
         // 对响应数据做点什么
         // 2xx 范围内的状态码都会触发该函数。

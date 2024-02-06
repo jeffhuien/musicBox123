@@ -1,10 +1,23 @@
 <script setup lang="ts">
 import { ListSongs } from '#/List/ListSongs'
-let searchData = inject('searchData', ref<ListSongs>())
-let searchKeyWords = inject('searchKeyWords', ref<string>())
+import { SearchApi } from '@/Api/search'
+// let searchData = inject('searchData', ref<ListSongs>())
+// let searchKeyWords = inject('searchKeyWords', ref<string>())
+let searchData = ref<ListSongs>()
+let searchKeyWords = ref<string>()
 
-onMounted(() => {
-  searchKeyWords.value = useRouter().currentRoute.value.query.keywords?.toString()
+onMounted(async () => {
+  let r = useRouter().currentRoute
+  searchKeyWords.value = r.value.query.keywords?.toString()
+
+  watch(r, async () => {
+    searchKeyWords.value = r.value.query.keywords?.toString()
+    searchData.value = (await SearchApi.SearchSongs(searchKeyWords.value!)) as unknown as ListSongs
+  })
+
+  if (searchKeyWords.value) {
+    searchData.value = (await SearchApi.SearchSongs(searchKeyWords.value)) as unknown as ListSongs
+  }
 })
 </script>
 <template>

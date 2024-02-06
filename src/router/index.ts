@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router
 import testRoute from '@/router/test'
 import leftMenu from '@/router/leftMenu'
 import LeftSongList from './LeftSongList'
+import { auth, main } from '@/stores'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -38,7 +39,11 @@ const router = createRouter({
         },
       ],
     },
-
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/login/index.vue'),
+    },
     {
       path: '/404',
       name: '404',
@@ -49,13 +54,22 @@ const router = createRouter({
       path: '/:pathMatch(.*)',
       redirect: '/404',
     },
+
     //测试路由
     ...testRoute,
   ],
 })
 
 router.beforeEach((to, from) => {
-  // if (to.path === '/') return 'recommend'
+  if (to.meta.login && !auth().isLogin) {
+    ElMessage({
+      message: '需要登录',
+      duration: 2000,
+      type: 'warning',
+    })
+    main().loginShow = true
+    return '/login'
+  }
 })
 
 export default router

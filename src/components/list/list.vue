@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Song } from '#/song/songInfo'
 import { main, playControl, playList } from '@/stores'
-import { formatTime, playMusic } from '@/utils'
-
+// import { playMusic } from '@/utils/play'
+import { formatTime } from '@/utils'
 let { playList1, playIndex } = toRefs(playList())
+let { playMusic } = playControl()
 
 const props = defineProps({
   listsSongs: {
@@ -39,15 +40,14 @@ function play(row: Song) {
     }
   }
   playIndex.value = playList1.value.findIndex((i) => i.id == row.id, 0)
-  // setStyle()
 }
 
 function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
-  if (row.fee == 0) {
-    return '!text-gray-400'
-  }
+  // if (row.fee == 0) {
+  //   return '!text-gray-400'
+  // }
   if (rowIndex == playIndex.value && row.id == playControl().playId) {
-    return '!text-sky-500 !opacity-100 !bg-gray-200 !rounded-md'
+    return '!text-sky-500 !opacity-100 !bg-gray-100 !rounded-xl'
   }
 
   return ''
@@ -65,7 +65,7 @@ function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
     :show-overflow-tooltip="true"
     :row-class-name="setStyle"
     @row-click="play">
-    <el-table-column label="序号" type="index" width="55" align="right" :show-overflow-tooltip="false" />
+    <el-table-column label="" type="index" align="right" :show-overflow-tooltip="false" />
     <el-table-column label="歌曲" width="300">
       <template #default="scope">
         <div class="">

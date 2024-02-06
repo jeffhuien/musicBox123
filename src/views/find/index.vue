@@ -19,7 +19,11 @@
       </div>
 
       <div class="text-xs flex gap-3 flex-wrap w-full md:justify-between pr-5 border-b">
-        <div class="mb-2" v-for="(i, index) in userLists?.playlist" :index="index" @click="getListSongs(i.id)">
+        <div
+          class="mb-2"
+          v-for="(i, index) in userLists?.playlist"
+          :index="index"
+          @click="getListSongs(i.id.toString())">
           <span class="relative text-xs border mb-3 border-sky-500 bg-white px-3 py-1 rounded-md">
             {{ i.name }}
             <span
@@ -56,7 +60,9 @@ async function get(id: string) {
   }
 }
 
-async function getListSongs(id: number) {
+async function getListSongs(id: string) {
+  console.log(id)
+
   listsSongs.value = await ListApi.getListSongs(id)
   queryUserList().update(id.toString(), listsSongs.value)
 }

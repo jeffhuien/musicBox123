@@ -19,6 +19,7 @@
       <div class="relative">
         <play-bar />
       </div>
+      <!-- <login /> -->
     </div>
   </suspense>
 </template>
@@ -26,22 +27,8 @@
 <style lang="scss" scoped></style>
 
 <script setup lang="ts">
-import { SearchSongs } from '#/search/searchSongs'
-import { SearchApi } from '@/Api/search'
-import router from '@/router'
 import { main } from '@/stores'
-
-let searchData = ref<SearchSongs>()
-let currentRoute = useRouter().currentRoute.value
-let searchKeyWords = ref<string>(currentRoute.query.keywords as string)
 let { menuClose } = toRefs(main())
-provide('searchKeyWords', searchKeyWords)
-provide('searchData', searchData)
-
-watch(searchKeyWords, async (newVal, v) => {
-  searchData.value = await SearchApi.SearchSongs(newVal)
-  router.push(`/search?keywords=${newVal}`)
-})
 
 onMounted(() => {
   console.log('加载缓存...')
@@ -49,7 +36,7 @@ onMounted(() => {
 function a(q: boolean = false) {
   const menu = document.querySelector('.menu') as HTMLElement
   const box = document.querySelector('.box') as HTMLElement
-  menu.classList.remove('max-md:hidden')
+  menu?.classList.remove('max-md:hidden')
   if (menu == undefined) {
     return
   }

@@ -10,4 +10,5 @@ export default defineStore('loading', {
     return { searchLoading, searchBoxLoading, indexLoading, searchHotLoading }
   },
   actions: {},
+  persist: true,
 })

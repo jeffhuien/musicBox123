@@ -29,6 +29,7 @@ export default [
   {
     name: 'cloudMusic',
     path: '/cloudMusic',
+    meta: { login: true },
     component: () => import('@/views/cloudMusic/index.vue'),
   },
   {
@@ -37,5 +38,3 @@ export default [
     component: () => import('@/views/historyPlay/index.vue'),
   },
 ] as RouteRecordRaw[]
-
-let a = []

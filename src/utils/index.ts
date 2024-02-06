@@ -1,11 +1,8 @@
-import { getPlayUrl } from '#/song/get-url'
-import { Song as s_info } from '#/song/songInfo'
-import { playControl } from '@/stores'
-import { fee } from './doc'
 import Music from './Audio'
+import { fee } from './doc'
 import env from './env'
-import { SongApi } from '@/Api/song'
 import store from './store'
+// import { playMusic, playMusicById } from '@/utils/play'
 
 /**
  *
@@ -37,48 +34,15 @@ function getIsMobile() {
   return false
 }
 
-async function setStore(song: s_info, url: getPlayUrl) {
-  playControl().playUrl = url.data[0].url
-  playControl().songImg = song.al.picUrl
-  playControl().musicName = song.name
-  playControl().singerName = song.ar.length > 0 ? song.ar?.map((item: any) => item.name).join('、') : song.ar[0].name
-  playControl().isPlay = true
-  playControl().playId = song.id
-
-  let a = song.fee.toString()
-  //无版权无法播放
-  if (url.data[0].url === null && song.fee === 0) {
-    ElMessage.info({ duration: 3000, message: fee[a] })
-    throw new Error('无版权无法播放')
-  }
-  if (fee[a] && song.fee != 0) {
-    ElMessage.info({ duration: 3000, message: fee[a] })
-  }
-  playControl().currentTime = 0
-  console.log('0 了')
-
-  await Music.play(playControl().playUrl)
-  playControl().duration = Music.getDuration()
+export {
+  //
+  Music,
+  env,
+  fee,
+  formatTime,
+  getDeviceSize,
+  getIsMobile,
+  // playMusic,
+  // playMusicById,
+  store,
 }
-
-async function playMusic(i: s_info) {
-  let url = await SongApi.getSongUrl(i.id)
-  try {
-    await setStore(i, url)
-  } catch (error) {
-    playControl().playNext()
-    throw new Error('无版权无法播放')
-  }
-}
-
-async function playMusicById(id: number) {
-  let url = await SongApi.getSongUrl(id)
-  let song = (await SongApi.getSongDetail(id)).songs[0]
-  try {
-    await setStore(song, url)
-  } catch (error) {
-    throw new Error('无版权无法播放')
-  }
-}
-
-export { Music, env, fee, formatTime, getDeviceSize, getIsMobile, playMusic, playMusicById, store }

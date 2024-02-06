@@ -90,26 +90,30 @@
 </template>
 
 <script lang="ts" setup>
+// playControl().playMusicById(i.id),
 import { bars } from '#/index'
-import { SongApi } from '@/Api/song'
 import { playControl, main, playList } from '@/stores'
-import { Music, playMusicById, formatTime } from '@/utils'
+import { Music, formatTime } from '@/utils'
 import { storeToRefs } from 'pinia'
 import router from '@/router'
 import { Arrayable } from 'element-plus/es/utils/typescript'
+
+// import { playMusicById } from '@/utils/play'
 
 let mp3 = Music
 let playListEl = ref<HTMLElement>()
 let scrollbar = ref()
 let { musicName, singerName, songImg, currentTime, isPlay, playUrl, duration, playId } = storeToRefs(playControl())
-let { playNext, playPrev } = playControl()
+let { playNext, playPrev, playMusicById } = playControl()
 
 function setProgress(v: Arrayable<number>) {
   mp3.setCurrentTime(Array.isArray(v) ? v[0] : v)
+  // playControl().$persist()
 }
 
 mp3.addEventListener('timeupdate', () => {
   currentTime.value = mp3.getCurrentTime()
+  console.log(currentTime.value)
 })
 //播放完成事件
 mp3.addEventListener('ended', () => {
@@ -193,9 +197,9 @@ async function play() {
     try {
       await mp3.play(playUrl.value)
     } catch (error) {
-      let t = await SongApi.getSongUrl(playId.value)
-      await mp3.play(t.data[0].url)
-      playUrl.value = t.data[0].url
+      // let t = await SongApi.getSongUrl(playId.value)
+      // await mp3.play(t.data[0].url)
+      // playUrl.value = t.data[0].url
     }
   }
 }
@@ -207,7 +211,7 @@ function go() {
 
 onMounted(() => {
   isPlay.value = false
-  scrollbar.value.setScrollTop(200)
+  scrollbar.value?.setScrollTop(200)
 })
 </script>
 

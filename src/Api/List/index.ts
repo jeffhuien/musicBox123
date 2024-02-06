@@ -17,7 +17,7 @@ class List extends Axios {
       },
     })
   }
-  public async getListSongs(id: number) {
+  public async getListSongs(id: string) {
     return await this.request<ListSongs>({
       url: '/playlist/track/all',
       params: {

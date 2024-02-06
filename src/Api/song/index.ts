@@ -2,7 +2,7 @@ import { getPlayUrl } from '#/song/get-url'
 import { songInfo } from '#/song/songInfo'
 import Axios from '@/plugins/axios/axios'
 import { AxiosRequestConfig } from 'axios'
-class Song extends Axios {
+const Song = class extends Axios {
   constructor(config?: AxiosRequestConfig) {
     super(config)
   }
@@ -33,5 +33,6 @@ const SongApi = new Song({
   baseURL: '/song',
   method: 'get',
 })
+console.log(new Date().getTime())
 
 export { SongApi }
