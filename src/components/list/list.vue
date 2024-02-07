@@ -1,21 +1,35 @@
 <script setup lang="ts">
+import { CloudSongDataType } from '#/song/cloudSong'
 import { Song } from '#/song/songInfo'
 import { main, playControl, playList } from '@/stores'
-// import { playMusic } from '@/utils/play'
 import { formatTime } from '@/utils'
+
 let { playList1, playIndex } = toRefs(playList())
-let { playMusic } = playControl()
+let { playCloudMusic, playMusic } = playControl()
 
 const props = defineProps({
   listsSongs: {
-    type: Object as PropType<Song[]>,
+    type: Object as PropType<Song[] | CloudSongDataType[]>,
     required: false,
     default: () => [],
+  },
+
+  noTag: {
+    type: Boolean,
+    default: false,
+  },
+  cloud: {
+    type: Boolean,
+    default: false,
   },
 })
 
 function play(row: Song) {
-  playMusic(row)
+  if (!props.cloud) {
+    playMusic(row)
+  } else {
+    playCloudMusic(row)
+  }
   if (!playList1.value) {
     playList1.value = props.listsSongs?.map((i) => {
       return {
@@ -66,7 +80,7 @@ function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
     :row-class-name="setStyle"
     @row-click="play">
     <el-table-column label="" type="index" align="right" :show-overflow-tooltip="false" />
-    <el-table-column label="歌曲" width="300">
+    <el-table-column label="歌曲" min-width="40%">
       <template #default="scope">
         <div class="">
           <span>
@@ -74,13 +88,13 @@ function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
           </span>
           <span
             class="text-xs bg-yellow-600 text-white ml-3 border border-yellow-100 rounded-xl px-2"
-            v-if="scope.row.fee === 1">
+            v-if="scope.row.fee === 1 && !props.noTag">
             vip
           </span>
         </div>
       </template>
     </el-table-column>
-    <el-table-column label="歌手" width="300">
+    <el-table-column label="歌手" min-width="20%">
       <template #default="scope">
         <span v-if="scope.row.ar.length > 1">
           {{ scope.row.ar.map((item: any) => item.name).join('、') }}
@@ -90,15 +104,19 @@ function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
         </span>
       </template>
     </el-table-column>
-    <el-table-column label="专辑" :hidden-sm-and-down="true">
+    <el-table-column label="专辑" :hidden-sm-and-down="true" min-width="20%">
       <template #default="scope">
         {{ scope.row.al.name }}
       </template>
     </el-table-column>
-    <el-table-column label="时长" :hidden-sm-and-down="true">
+    <el-table-column label="时长" :hidden-sm-and-down="true" min-width="10%">
       <template #default="scope">
         {{ formatTime(scope.row.dt, 'ms') }}
       </template>
+    </el-table-column>
+
+    <el-table-column label="大小" :hidden-sm-and-down="true" min-width="10%" v-if="props.cloud">
+      <template #default="scope"> {{ (scope.row.fileSize / 1000000).toFixed(1) }}M </template>
     </el-table-column>
   </el-table>
 
@@ -121,7 +139,7 @@ function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
               {{ scope.row.name }}
               <span
                 class="text-xs bg-yellow-600 text-white ml-3 border border-yellow-100 rounded-xl px-2"
-                v-if="scope.row.fee === 1">
+                v-if="scope.row.fee === 1 && !props.noTag == true">
                 vip
               </span>
             </div>

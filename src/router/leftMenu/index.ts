@@ -19,6 +19,8 @@ export default [
   {
     name: 'mv',
     path: '/mv',
+    meta: { enter: 'animate__fadeInRight' },
+
     component: () => import('@/views/mv/index.vue'),
   },
   {
@@ -29,7 +31,7 @@ export default [
   {
     name: 'cloudMusic',
     path: '/cloudMusic',
-    meta: { login: true },
+    meta: { login: true, enter: 'animate__fadeInRight' },
     component: () => import('@/views/cloudMusic/index.vue'),
   },
   {

@@ -1,4 +1,5 @@
 import { UserList } from '#/List/userList'
+import { CloudSongType } from '#/song/cloudSong'
 import Axios from '@/plugins/axios/axios'
 import { auth } from '@/stores'
 import { env, store } from '@/utils'
@@ -42,12 +43,23 @@ class Auth extends Axios {
     if (!uid) {
       uid = auth().user?.data.account.id.toString()
     }
-    console.log(this)
-
     return await this.request<UserList>({
       url: '/playlist',
       params: {
         uid,
+      },
+    })
+  }
+
+  async getPlayUrl(id: string) {
+    return await this.request<any>({
+      baseURL: env.VITE_API_URL,
+      url: '/song/url',
+      params: {
+        id,
+      },
+      data: {
+        cookie: store.get('cookie'),
       },
     })
   }

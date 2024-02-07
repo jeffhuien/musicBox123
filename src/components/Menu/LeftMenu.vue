@@ -25,7 +25,7 @@ const menus = ref<menu[]>([
 
 <template>
   <div class="w-full flex flex-col justify-center p-4">
-    <a v-if="!auth().user" @click="main().loginShow = true" class="flex items-center">
+    <a v-if="!auth().user" @click=";(main().loginShow = true), $router.push('/login')" class="flex items-center">
       <i class="fa-solid fa-user text-lg mr-2 w-7"></i>
       登录
     </a>

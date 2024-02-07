@@ -72,7 +72,16 @@ export const playControl = defineStore(
         throw new Error('无版权无法播放')
       }
     }
-
+    async function playCloudMusic(i: s_info) {
+      const { AuthApi } = await import('@/Api/Auth')
+      let url = await AuthApi.getPlayUrl(i.id.toString())
+      try {
+        await setStore(i, url, false)
+      } catch (error) {
+        playNext()
+        throw new Error('无版权无法播放')
+      }
+    }
     async function playMusicById(id: number) {
       const { SongApi } = await import('@/Api/song')
 
@@ -85,25 +94,25 @@ export const playControl = defineStore(
       }
     }
 
-    async function setStore(song: s_info, url: getPlayUrl) {
+    async function setStore(song: s_info, url: getPlayUrl, msg: boolean = true) {
       playUrl.value = url.data[0].url
-      console.log(song, url)
       songImg.value = song.al.picUrl
       musicName.value = song.name
-      console.log(musicName.value, song.name)
 
       singerName.value = song.ar.length > 0 ? song.ar?.map((item: any) => item.name).join('、') : song.ar[0].name
       isPlay.value = true
       playId.value = song.id
 
-      let a = song.fee.toString()
-      //无版权无法播放
-      if (url.data[0].url === null && song.fee === 0) {
-        ElMessage.info({ duration: 3000, message: fee[a] })
-        throw new Error('无版权无法播放')
-      }
-      if (fee[a] && song.fee != 0) {
-        ElMessage.info({ duration: 3000, message: fee[a] })
+      if (msg) {
+        let a = song.fee.toString()
+        //无版权无法播放
+        if (url.data[0].url === null && song.fee === 0) {
+          ElMessage.info({ duration: 3000, message: fee[a] })
+          throw new Error('无版权无法播放')
+        }
+        if (fee[a] && song.fee != 0) {
+          ElMessage.info({ duration: 3000, message: fee[a] })
+        }
       }
       currentTime.value = 0
       await Music.play(playUrl.value)
@@ -123,7 +132,7 @@ export const playControl = defineStore(
       playId,
       playNext,
       playPrev,
-
+      playCloudMusic,
       playMusic,
       playMusicById,
     }

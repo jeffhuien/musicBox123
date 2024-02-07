@@ -9,7 +9,11 @@
       </el-scrollbar>
       <div class="flex-grow overflow-hidden h-full flex-1 w-5/6 md:pr-2">
         <router-view v-slot="{ Component }">
-          <transition appear enter-active-class="animate__animated animate__slideInUp">
+          <transition
+            appear
+            :enter-active-class="
+              $route.meta.enter ? 'animate__animated ' + $route.meta.enter : 'animate__animated animate__fadeIn'
+            ">
             <keep-alive>
               <component :is="Component" />
             </keep-alive>

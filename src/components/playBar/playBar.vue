@@ -109,7 +109,6 @@ function setProgress(v: Arrayable<number>) {
 
 mp3.addEventListener('timeupdate', () => {
   currentTime.value = mp3.getCurrentTime()
-  console.log(currentTime.value)
 })
 //播放完成事件
 mp3.addEventListener('ended', () => {
