@@ -1,7 +1,6 @@
 import { getPlayUrl } from '#/song/get-url'
 import { Song as s_info } from '#/song/songInfo'
-import { Music } from '@/utils'
-import { fee } from '@/utils/doc'
+import { Music, fee, setDocumentTitle } from '@/utils'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import playList from './playList'
@@ -19,7 +18,7 @@ export const playControl = defineStore(
     let playUrl = ref<string>('undefined')
     let playId = ref<number>(0)
 
-    let { playList1, playIndex } = toRefs(playList())
+    let { playList1, playIndex, isCloud } = toRefs(playList())
 
     async function playNext() {
       // 下一首
@@ -34,8 +33,11 @@ export const playControl = defineStore(
         }
         try {
           // const { playMusicById } = await import('@/utils/play')
-
-          await playMusicById(nextId)
+          if (isCloud) {
+            await playCloudMusic(undefined, nextId.toString())
+          } else {
+            await playMusicById(nextId)
+          }
         } catch (error) {
           console.log(error)
           playNext()
@@ -54,8 +56,11 @@ export const playControl = defineStore(
           playIndex.value = playList1.value.length
         }
         try {
-          // const { playMusicById } = await import('@/utils/play')
-          await playMusicById(prevId)
+          if (isCloud) {
+            await playCloudMusic(undefined, prevId.toString())
+          } else {
+            await playMusicById(prevId)
+          }
         } catch (error) {
           playPrev()
         }
@@ -72,14 +77,24 @@ export const playControl = defineStore(
         throw new Error('无版权无法播放')
       }
     }
-    async function playCloudMusic(i: s_info) {
+    async function playCloudMusic(i?: s_info, id?: string) {
+      let Id: string
+      let d: s_info
+      if (i) {
+        Id = i.id.toString()
+        d = i
+      } else {
+        Id = id!
+        const { SongApi } = await import('@/Api/song')
+        d = (await SongApi.getSongDetail(Id)).songs[0]
+      }
       const { AuthApi } = await import('@/Api/Auth')
-      let url = await AuthApi.getPlayUrl(i.id.toString())
+      let url = await AuthApi.getPlayUrl(Id)
       try {
-        await setStore(i, url, false)
+        await setStore(d, url, false)
       } catch (error) {
         playNext()
-        throw new Error('无版权无法播放')
+        // throw new Error('无版权无法播放')
       }
     }
     async function playMusicById(id: number) {
@@ -117,6 +132,7 @@ export const playControl = defineStore(
       currentTime.value = 0
       await Music.play(playUrl.value)
       duration.value = Music.getDuration()
+      setDocumentTitle(musicName.value + ' - ' + singerName.value)
     }
 
     return {

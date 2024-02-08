@@ -13,6 +13,8 @@ export default defineStore(
   () => {
     // 播放列表
     let playList1 = ref<playListType[]>()
+    let isCloud = ref(false)
+    let name = ref('')
     // 当前播放的歌曲
     let playIndex = ref(1)
     // 当前播放模式
@@ -22,6 +24,8 @@ export default defineStore(
       playList1,
       playIndex,
       playMode,
+      isCloud,
+      name,
     }
   },
   {

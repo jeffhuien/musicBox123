@@ -52,35 +52,44 @@
 
     <div
       ref="playListEl"
-      class="animate__animated hidden animate__slideOutRight h-[60vh] overflow-hidden w-2/5 max-sm:w-full absolute right-0 bottom-[4.8rem] max-sm:bottom-16 z-50 bg-white border rounded-md shadow-lg">
+      class="animate__animated flex flex-col gap-1 animate__slideOutRight h-[60vh] overflow-hidden w-2/5 max-sm:w-full absolute right-0 bottom-[4.8rem] max-sm:bottom-16 z-50 bg-white border rounded-md shadow-lg">
       <div class="flex text-xs justify-between items-center p-2">
-        <div class="">正在播放:</div>
+        <div class="">正在播放: {{ playList().name }}</div>
         <div class="">共{{ playList().playList1?.length }}首</div>
       </div>
-      <el-scrollbar height="100%" ref="scrollbar" v-if="playList().playList1">
-        <p
-          @click="playMusicById(i.id), (playList().playIndex = index)"
-          v-for="(i, index) in playList().playList1"
-          :index="index"
-          :class="[index == playList().playIndex ? 'text-sky-500 opacity-100 ' : '', i.fee == 0 ? 'text-gray-400' : '']"
-          class="p-1 px-4 rounded-sm hover:bg-gray-200">
-          <span class="text-sm"> {{ i.name }} </span>
-          <span class="text-xs text-gray-400"> - {{ i.singerName }}</span>
-          <span
-            class="text-xs inline-block opacity-100 text-yellow-500 ml-3 border border-yellow-500 rounded-md p-1 px-2 scale-75"
-            v-if="i.fee === 1">
-            VIP
-          </span>
-          <span
-            class="text-xs inline-block bg-gray-400 opacity-100 text-white ml-3 border border-gray-100 rounded-md p-1 scale-75"
-            v-if="i.fee === 0">
-            无音源
-          </span>
-          <span class="float-right text-xs text-gray-400">
-            {{ i.time }}
-          </span>
-        </p>
-      </el-scrollbar>
+
+      <div class="flex-1 overflow-hidden" v-if="playList().playList1">
+        <el-scrollbar height="100%" ref="scrollbar">
+          <p
+            @click="BarPlay(i as unknown as Song, index)"
+            v-for="(i, index) in playList().playList1"
+            :index="index"
+            :class="[
+              index == playList().playIndex ? 'text-sky-500 opacity-100 ' : '',
+              i.fee == 0 && !playList().isCloud ? 'text-gray-400' : '',
+            ]"
+            class="p-1 px-4 rounded-sm hover:bg-gray-200">
+            <span class="text-sm"> {{ i.name }} </span>
+            <span class="text-xs text-gray-400"> - {{ i.singerName }}</span>
+            <template v-if="!playList().isCloud">
+              <span
+                class="text-xs inline-block opacity-100 text-yellow-500 ml-3 border border-yellow-500 rounded-md p-1 px-2 scale-75"
+                v-if="i.fee === 1">
+                VIP
+              </span>
+              <span
+                class="text-xs inline-block bg-gray-400 opacity-100 text-white ml-3 border border-gray-100 rounded-md p-1 scale-75"
+                v-if="i.fee === 0">
+                无音源
+              </span>
+            </template>
+
+            <span class="float-right text-xs text-gray-400">
+              {{ i.time }}
+            </span>
+          </p>
+        </el-scrollbar>
+      </div>
 
       <div class="w-full h-full flex justify-center items-center static text-sm text-gray-400" v-else>
         列表内没有音乐哦
@@ -91,6 +100,7 @@
 
 <script lang="ts" setup>
 import { bars } from '#/index'
+import { Song } from '#/song/songInfo'
 import router from '@/router'
 import { main, playControl, playList } from '@/stores'
 import { Music, formatTime } from '@/utils'
@@ -101,7 +111,7 @@ let mp3 = Music
 let playListEl = ref<HTMLElement>()
 let scrollbar = ref()
 let { musicName, singerName, songImg, currentTime, isPlay, playUrl, duration, playId } = storeToRefs(playControl())
-let { playNext, playPrev, playMusicById } = playControl()
+let { playNext, playPrev, playMusicById, playCloudMusic } = playControl()
 
 function setProgress(v: Arrayable<number>) {
   mp3.setCurrentTime(Array.isArray(v) ? v[0] : v)
@@ -160,7 +170,7 @@ let rightBars = [
   },
   {
     name: '列表',
-    id: 'playListEl',
+    // id: 'playListEl',
     ico: 'fa-solid fa-list-ol',
     fun: {
       click: function (e: Event & { target: HTMLElement }) {
@@ -170,8 +180,8 @@ let rightBars = [
         main().listClose = !main().listClose
       },
       blur: function (e: Event & { target: HTMLElement }) {
-        playListEl.value?.classList.toggle('animate__slideOutRight')
-        playListEl.value?.classList.toggle('animate__slideInRight')
+        playListEl.value?.classList.add('animate__slideOutRight')
+        playListEl.value?.classList.remove('animate__slideInRight')
         main().listClose = !main().listClose
       },
     },
@@ -211,6 +221,15 @@ onMounted(() => {
   isPlay.value = false
   scrollbar.value?.setScrollTop(200)
 })
+
+function BarPlay(i: Song, index: number) {
+  if (playList().isCloud) {
+    playCloudMusic(i)
+  } else {
+    playMusicById(i.id)
+  }
+  playList().playIndex = index
+}
 </script>
 
 <style scoped lang="scss">

@@ -22,7 +22,7 @@ const format = (percentage: number) => (percentage === 100 ? 'Full' : `${percent
         <span class="text-xs max-sm:block opacity-50"> {{ c }}G/ {{ t }}G </span>
       </div>
       <div class="w-2/5">
-        <el-progress :percentage="parseFloat(c) / parseFloat(t)" :format="format" />
+        <el-progress :style="'text-xs'" :percentage="parseFloat(c) / parseFloat(t)" :format="format" />
       </div>
     </div>
 
@@ -53,5 +53,8 @@ const format = (percentage: number) => (percentage === 100 ? 'Full' : `${percent
 :deep(.el-table td.el-table__cell),
 :deep(.el-table th.el-table__cell.is-leaf) {
   border: none;
+}
+:deep(.el-progress__text) {
+  @apply text-xs;
 }
 </style>

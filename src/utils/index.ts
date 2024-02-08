@@ -34,6 +34,23 @@ function getIsMobile() {
   return false
 }
 
+let timer: NodeJS.Timeout
+function setDocumentTitle(title: string) {
+  if (timer) clearInterval(timer)
+  if (document && title.length > 10) {
+    let t: string = title + `   `
+
+    timer = setInterval(function () {
+      let start = t.substring(0, 1)
+      let end = t.substring(1)
+      t = end + start
+      document.title = t
+    }, 800)
+  } else {
+    document.title = title
+  }
+}
+
 export {
   //
   Music,
@@ -42,7 +59,6 @@ export {
   formatTime,
   getDeviceSize,
   getIsMobile,
-  // playMusic,
-  // playMusicById,
   store,
+  setDocumentTitle,
 }

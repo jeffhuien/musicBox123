@@ -10,14 +10,15 @@ let listInfo = queryUserList().getItem(Id.value.toString())
 let data = ref<ListSongs | undefined>()
 
 if (Id) {
-  data.value = await ListApi.getListSongs(Id.value)
+  data.value = await ListApi.getListSongs(Id.value.toString())
 } else {
   useRouter().push({ name: '404' })
 }
 watch(useRoute(), async (newValue) => {
+  if (!(newValue.name === 'song.list')) return
   Id.value = parseInt(newValue.params.id.toString())
   listInfo = queryUserList().getItem(Id.value.toString())
-  data.value = await ListApi.getListSongs(Id.value)
+  data.value = await ListApi.getListSongs(Id.value.toString())
 })
 </script>
 
