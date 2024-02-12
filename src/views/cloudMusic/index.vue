@@ -11,7 +11,28 @@ let f = data.data.map<CloudSongDataType>((x: any) => {
 })
 let c = (parseInt(data.size) / 1000000000).toFixed(2)
 let t = (parseInt(data.maxSize) / 1000000000).toFixed(2)
+let findText = ref('')
 const format = (percentage: number) => (percentage === 100 ? 'Full' : `${percentage.toFixed(3)}%`)
+
+// let findData = ref<CloudSongDataType[]>()
+// let e = ref<string[]>([])
+// function find(name: string) {
+//   console.log(name)
+//   let r = f.find((x) => {
+//     console.log(x.name)
+
+//     if (x.name == name || x.name?.includes(name)) findData.value?.push(x)
+//     // x.ar.forEach((y) => {
+//     //   if (y.name == name || y.name?.includes(name)) {
+//     //     if (!e.value.includes(x.id.toString())) findData.value?.push(x)
+//     //   }
+//     // })
+//   })
+
+//   console.log(findData.value)
+
+//   return findData
+// }
 </script>
 
 <template>
@@ -31,12 +52,12 @@ const format = (percentage: number) => (percentage === 100 ? 'Full' : `${percent
         <buttons></buttons>
       </div>
       <div class="relative text-right">
-        <!-- TODO finish -->
+        <!-- TODO 完成搜素功能 -->
         <input
           type="text"
           placeholder="搜索"
-          @input=""
           @keyup.stop=""
+          v-model="findText"
           class="transition-all duration-700 w-20 focus:w-40 rounded-3xl border caret-pink-500 pl-4 pr-8 py-1 max-sm:py-1 text-xs text-gray-600 focus:outline-sky-200 hover:border-lime-300 outline-none" />
         <i class="fa-solid fa-magnifying-glass absolute top-[20%] right-2 opacity-50"></i>
         <!-- <el-input v-model="input1" class="w-50 m-2" size="large" placeholder="Please Input" :suffix-icon="Search" /> -->

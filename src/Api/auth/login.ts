@@ -3,7 +3,7 @@ import { store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class Login extends Axios {
-  constructor(config?: AxiosRequestConfig) {
+  constructor(config: AxiosRequestConfig) {
     super(config)
   }
 

@@ -1,12 +1,13 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { env, store } from '@/utils'
+import { env } from '@/utils'
 
 export default class Axios {
   protected instance
-  constructor(config?: AxiosRequestConfig) {
-    if (config?.baseURL || config?.baseURL === '') {
+  constructor(config: AxiosRequestConfig) {
+    if (config?.baseURL || config.baseURL === '') {
       config.baseURL = env.VITE_API_URL + config.baseURL
     }
+    if (!config.baseURL) config['baseURL'] = env.VITE_API_URL
     this.instance = axios.create(config) //初始化axios
     this.interceptors() //拦截器
   }

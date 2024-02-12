@@ -19,7 +19,6 @@
       <div class="relative">
         <play-bar />
       </div>
-      <!-- <login /> -->
     </div>
   </suspense>
 </template>
@@ -29,6 +28,11 @@
 <script setup lang="ts">
 import { main } from '@/stores'
 let { menuClose } = toRefs(main())
+onBeforeMount(() => {
+  if (main().menuClose && !main().isMobile) {
+    main().menuClose = false
+  }
+})
 
 onMounted(() => {
   console.log('加载缓存...')

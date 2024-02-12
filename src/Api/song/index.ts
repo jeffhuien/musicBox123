@@ -3,7 +3,7 @@ import { songInfo } from '#/song/songInfo'
 import Axios from '@/plugins/axios/axios'
 import { AxiosRequestConfig } from 'axios'
 const Song = class extends Axios {
-  constructor(config?: AxiosRequestConfig) {
+  constructor(config: AxiosRequestConfig) {
     super(config)
   }
 

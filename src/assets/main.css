@@ -4,12 +4,14 @@
 @tailwind utilities;
 
 body {
-  @apply transition ease-in-out duration-500  h-screen w-screen flex  xl:justify-center items-center box-content select-none;
+  @apply transition ease-in-out duration-500  h-screen w-screen flex  xl:justify-center items-center box-content;
+  /* @apply select-none; */
 }
 
 #app {
-  @apply max-xl:h-screen max-xl:w-screen max-md:p-2;
-  @apply xl:h-[90vh] xl:w-[80vw];
+  /* @apply max-xl:h-screen max-xl:w-screen max-md:p-2;
+  @apply xl:h-[90vh] xl:w-[80vw]; */
+  @apply w-screen h-screen;
   @apply shadow-lg shadow-pink-200 border xl:rounded-md overflow-hidden;
   @apply flex flex-col justify-center items-center transition ease-in-out;
 }

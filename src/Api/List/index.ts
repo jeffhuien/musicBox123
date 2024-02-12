@@ -1,11 +1,10 @@
 import { ListSongs } from '#/List/ListSongs'
 import { UserList } from '#/List/userList'
 import Axios from '@/plugins/axios/axios'
-import { env } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class List extends Axios {
-  constructor(config?: AxiosRequestConfig) {
+  constructor(config: AxiosRequestConfig) {
     super(config)
   }
 
@@ -17,6 +16,16 @@ class List extends Axios {
       },
     })
   }
+
+  public async getListDetail(id: string) {
+    return await this.request<any>({
+      url: '/playlist/detail',
+      params: {
+        id,
+      },
+    })
+  }
+
   public async getListSongs(id: string) {
     return await this.request<ListSongs>({
       url: '/playlist/track/all',

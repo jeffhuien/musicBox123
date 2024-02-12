@@ -6,7 +6,7 @@ import { env, store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class Auth extends Axios {
-  constructor(config?: AxiosRequestConfig) {
+  constructor(config: AxiosRequestConfig) {
     super(config)
   }
 
