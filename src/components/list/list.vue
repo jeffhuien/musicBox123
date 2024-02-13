@@ -55,6 +55,8 @@ function play(row: Song) {
   }
   if (props.cloud) {
     isCloud.value = true
+  } else {
+    isCloud.value = false
   }
   playIndex.value = playList1.value.findIndex((i) => i.id == row.id, 0)
 }
@@ -83,7 +85,7 @@ function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
       :show-overflow-tooltip="true"
       :row-class-name="setStyle"
       @row-click="play">
-      <el-table-column label="" type="index" align="right" :show-overflow-tooltip="false" />
+      <el-table-column label="" type="index" align="center" min-width="5%" :show-overflow-tooltip="false" />
       <el-table-column label="歌曲" min-width="40%">
         <template #default="scope">
           <div class="">
@@ -182,5 +184,8 @@ function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
 :deep(.el-table td.el-table__cell),
 :deep(.el-table th.el-table__cell.is-leaf) {
   border: none;
+}
+:deep(.el-table__header-wrapper) {
+  @apply text-xs;
 }
 </style>

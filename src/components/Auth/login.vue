@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { loginApi } from '@/Api/Auth'
+import { AuthApi, loginApi } from '@/Api/Auth'
 import router from '@/router'
 import { auth, main } from '@/stores'
 import { store } from '@/utils'
@@ -25,8 +25,8 @@ function close() {
 
 async function login() {
   if (auth().user?.data) {
-    console.log(2)
-    ElMessage('已经登录过了 ')
+    ElMessage.success('已经登录过了1 ')
+    clearInterval(timer)
     return
   }
   let a = await loginApi.login()
@@ -35,8 +35,9 @@ async function login() {
     timer = setInterval(async () => {
       const statusRes = await loginApi.checkStatus(a.key)
       if (statusRes.code === 800) {
-        alert('二维码已过期,请重新获取')
-        clearInterval(timer)
+        // alert('二维码已过期,请重新获取')
+        // clearInterval(timer)
+        login()
       }
       if (statusRes.code === 803) {
         // 这一步会返回cookie
@@ -45,20 +46,29 @@ async function login() {
         log.value = true
         main().loginShow = false
         let userInfo = await loginApi.getLoginStatus(statusRes.cookie)
+        let level = await AuthApi.getInfo()
+
         store.set('cookie', statusRes.cookie)
+        console.log('info', userInfo)
         auth().setAuthInfo(userInfo)
+        auth().level = level.data.level
+        auth().$persist()
         router.go(-1)
       }
-      if (!loginEl.value) {
-        clearInterval(timer)
-        ElMessage.success('登录取消')
-      }
+      // if (!loginEl.value) {
+      //   clearInterval(timer)
+      // }
     }, 3000)
   }
 }
 
 onMounted(() => {
   login()
+})
+
+onBeforeRouteLeave(() => {
+  if (!auth().isLogin) ElMessage.warning('取消登录')
+  clearInterval(timer)
 })
 </script>
 

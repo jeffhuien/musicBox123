@@ -14,7 +14,8 @@ if (Id) {
   if (auth().isLogin) {
     Detail.value = await ListApi.getListDetail(Id.value.toString())
     info.value = Detail.value?.playlist
-    data.value = info.value?.tracks as unknown as Song[]
+    data.value = (await ListApi.getListSongs(Id.value.toString())).songs as unknown as Song[]
+    console.log(data.value)
   } else {
     let { songs } = await ListApi.getListSongs(Id.value.toString())
     data.value = songs as unknown as Song[]
@@ -26,10 +27,23 @@ if (Id) {
 watch(useRoute(), async (newValue) => {
   if (!(newValue.name === 'song.list')) return
   Id.value = parseInt(newValue.params.id.toString())
+  data.value = undefined
   // listInfo = queryUserList().getItem(Id.value.toString())
   Detail.value = await ListApi.getListDetail(Id.value.toString())
   info.value = Detail.value?.playlist
-  data.value = info.value?.tracks as unknown as Song[]
+  data.value = (await ListApi.getListSongs(Id.value.toString())).songs as unknown as Song[]
+})
+
+onBeforeMount(() => {
+  console.log(9999)
+})
+
+onMounted(() => {
+  console.log(12345)
+})
+
+onBeforeUpdate(() => {
+  console.log(1111)
 })
 </script>
 
@@ -78,8 +92,9 @@ watch(useRoute(), async (newValue) => {
     </div>
 
     <div class="flex-1 !overflow-hidden">
-      <div class="h-full">
-        <list :lists-songs="(data as unknown as  Song[])" />
+      <div class="h-full animate__animated animate__fadeIn">
+        <list :lists-songs="(data as unknown as  Song[])" v-if="data" />
+        <Loading v-else class="">loading</Loading>
       </div>
     </div>
   </div>

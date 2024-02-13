@@ -15,6 +15,7 @@ const {
         :to="{ name: `song.list`, params: { id: k.id } }"
         class="flex items-center"
         v-for="(k, index) in list"
+        v-if="list"
         :index="index">
         <!-- <i :class="k.ico" class="text-lg mr-2 w-7"></i> -->
         <div class="flex text-xs w-full">
@@ -27,6 +28,7 @@ const {
           </div>
         </div>
       </router-link>
+      <span v-else class="opacity-50 text-xs mt-5">登录可用</span>
     </div>
   </div>
 </template>

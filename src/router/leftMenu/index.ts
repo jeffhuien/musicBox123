@@ -14,6 +14,7 @@ export default [
   {
     name: 'iLike',
     path: '/iLike',
+    meta: { login: true },
     component: () => import('@/views/iLike/index.vue'),
   },
   {

@@ -119,6 +119,7 @@ function lostFocus() {
                 {{ i.first }}
               </li>
             </ul>
+            <Loading v-else class="">loading</Loading>
           </div>
         </div>
       </div>

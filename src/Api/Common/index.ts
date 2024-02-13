@@ -1,4 +1,4 @@
-import { RecommendListType, banner } from '#/index'
+import { RecommendListType, banner, historyListType } from '#/index'
 import Axios from '@/plugins/axios/axios'
 import { store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
@@ -18,10 +18,23 @@ class Common extends Axios {
     })
   }
 
-  //首页信息
-  public async getLists() {
+  /**首页信息*/
+  public async getLists(limit = 30) {
     return await this.request<RecommendListType>({
-      url: '/personalized?limit=30',
+      url: '/personalized',
+      params: {
+        limit: 30,
+      },
+      data: {
+        cookie: store.get('cookie'),
+      },
+    })
+  }
+
+  /**首页信息*/
+  public async getHistoryList() {
+    return await this.request<historyListType>({
+      url: '/record/recent/song',
       data: {
         cookie: store.get('cookie'),
       },

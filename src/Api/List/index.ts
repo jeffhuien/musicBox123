@@ -1,6 +1,7 @@
 import { ListSongs } from '#/List/ListSongs'
 import { UserList } from '#/List/userList'
 import Axios from '@/plugins/axios/axios'
+import { store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class List extends Axios {
@@ -22,6 +23,9 @@ class List extends Axios {
       url: '/playlist/detail',
       params: {
         id,
+      },
+      data: {
+        cookie: store.get('cookie'),
       },
     })
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-52 h-52">
+  <div class="absolute top-1/2 left-1/2 translate-x-1/2 w-52 h-52 flex flex-col">
     <div class="loading"></div>
     <!-- <p class="-left-4 top-12"> -->
     <span class="text-xs">

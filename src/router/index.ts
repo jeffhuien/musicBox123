@@ -61,6 +61,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
+  console.log(to.name, to.meta)
+
   if (to.meta.login && !auth().isLogin) {
     ElMessage({
       message: '需要登录',

@@ -5,12 +5,13 @@ export default defineStore(
   () => {
     let user = ref<AuthType>()
     const isLogin = ref(false)
+    const level = ref(0)
+    // 设置用户信息
     function setAuthInfo(u: AuthType) {
       user.value = u
       isLogin.value = true
-      // 设置用户信息
     }
-    return { user, setAuthInfo, isLogin }
+    return { user, setAuthInfo, isLogin, level }
   },
   {
     persist: true,

@@ -1,5 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { env } from '@/utils'
+import { env, store } from '@/utils'
+import router from '@/router'
+import { auth } from '@/stores'
 
 export default class Axios {
   protected instance
@@ -61,13 +63,25 @@ export default class Axios {
         // 对响应数据做点什么
         // 2xx 范围内的状态码都会触发该函数。
         // 对响应数据做点什么
+        // if (response.data.code == 301 || response.data.code == 302 || response.data.msg == '需要登录') {
+        //   ElMessage.warning('登录已过期，请重新登录~~')
+        //   store.remove('cookie')
+        //   store.remove('user')
+        //   // auth().user = undefined
+        //   auth().isLogin = false
+        //   router.push('/login')
+        // }
         return response
       },
       function (error) {
         // console.log(instance.defaults)
 
-        console.log(error)
-
+        if (error.response.data.code == 301 && error.response.data.msg == '需要登录') {
+          ElMessage.warning('登录已过期，请重新登录~~')
+          store.remove('cookie')
+          auth().$reset()
+          router.push('/login')
+        }
         // 超出 2xx 范围的状态码都会触发该函数。
         // 对响应错误做点什么
         return Promise.reject(error)

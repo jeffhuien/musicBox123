@@ -18,6 +18,15 @@ const Song = class extends Axios {
     })
   }
 
+  public async check(id: number | string) {
+    return this.request<{ success: boolean }>({
+      baseURL: '/check/music',
+      params: {
+        id,
+      },
+    })
+  }
+
   public async getSongDetail(id: number | string) {
     return this.request<songInfo>({
       url: '/detail',

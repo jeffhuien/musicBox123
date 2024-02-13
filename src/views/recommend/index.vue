@@ -7,6 +7,14 @@ banner.value = await CommonApi.getIndexInfo()
 
 const list = ref<RecommendListType>()
 list.value = await CommonApi.getLists()
+
+async function change(e: Event) {
+  list.value = undefined
+  const target = e.target as HTMLInputElement
+  target.classList.add('animate-spin')
+  list.value = await CommonApi.getLists()
+  target.classList.remove('animate-spin')
+}
 </script>
 
 <template>
@@ -20,25 +28,25 @@ list.value = await CommonApi.getLists()
         </el-carousel-item>
       </el-carousel>
     </div>
+
     <div class="list">
-      <h1 class="opacity-80 font-bold mb-2">
-        今日推荐
+      <h1 class="opacity-80 font-bold mb-2 flex justify-between">
+        今日推荐歌单
+        <span class="">
+          <i class="fa-solid fa-refresh" @click="change($event)"></i>
+          <span class="text-xs"> 换一批 </span>
+        </span>
         <!-- {{ list?.result[0] }} -->
       </h1>
 
       <div class="grid grid-cols-6 gap-3 max-xl:grid-cols-5 max-sm:grid-cols-3">
         <el-card
+          v-if="list"
           class="w-42 !border-none !shadow-none relative group transition-all"
           v-for="(i, d) in list?.result"
           :body-class="'!p-0 '"
           :index="d">
-          <div
-            class=""
-            @click="
-              $router.push({
-                path: '/list/' + i.id?.toString(),
-              })
-            ">
+          <div class="" @click="$router.push('/list/' + i.id?.toString())">
             <div class="relative flex justify-center items-center">
               <img class="w-42 !rounded-lg" :src="i.picUrl" />
               <i class="fa-regular fa-play-circle text-5xl text-white absolute hidden group-hover:block" />
@@ -55,6 +63,7 @@ list.value = await CommonApi.getLists()
             </div>
           </div>
         </el-card>
+        <Loading v-else class="">loading</Loading>
       </div>
     </div>
   </el-scrollbar>

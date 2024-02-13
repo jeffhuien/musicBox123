@@ -20,12 +20,15 @@ export default defineStore(
     // 当前播放模式
     let playMode = ref<'loop' | 'as'>('loop')
 
+    let historyPlayList = ref<any>()
+
     return {
       playList1,
       playIndex,
       playMode,
       isCloud,
       name,
+      historyPlayList,
     }
   },
   {

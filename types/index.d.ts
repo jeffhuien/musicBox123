@@ -1,4 +1,5 @@
 import { ListSongs } from './List/ListSongs'
+import { Song, songInfo } from './song/songInfo'
 
 export interface bars {
   name: string
@@ -82,4 +83,17 @@ export interface RecommendListType {
     highQuality: boolean
     alg: string
   }[]
+}
+
+export interface historyListType {
+  code: number
+  data: {
+    total: number
+    list: {
+      resourceId: string
+      playTime: number //时间戳
+      resourceType: string
+      data: Song
+    }[]
+  }
 }
