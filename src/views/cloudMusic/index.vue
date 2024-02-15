@@ -65,7 +65,7 @@ const format = (percentage: number) => (percentage === 100 ? 'Full' : `${percent
     </div>
 
     <div class="flex-1 overflow-hidden">
-      <list :lists-songs="f" :noTag="true" :cloud="true"></list>
+      <list :lists-songs="f" :noTag="true" :list-name="'我的云盘'" :cloud="true"></list>
     </div>
   </div>
 </template>

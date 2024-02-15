@@ -5,7 +5,7 @@
         class="w-1/6 md:min-w-[12rem] h-full bg-white z-20 shrink-0 shadow-lg menu max-md:hidden"
         :class="[main().isMobile ? 'animate__animated animate__slideOutLeft' : '']">
         <left-menu />
-        <song-list-menu :list="(data as listsType[])" />
+        <song-list-menu v-if="data" :list="(data as listsType[])" />
       </el-scrollbar>
       <div class="flex-grow overflow-hidden h-full flex-1 w-5/6 md:pr-2">
         <router-view v-slot="{ Component }">
@@ -38,11 +38,11 @@ let data = ref<listsType[] | boolean>()
 let { user } = storeToRefs(auth())
 
 if (user.value) {
-  let t = await ListApi.getList(user.value.data.profile.userId.toString())
-  queryUserList().add(user.value.data.profile.userId.toString(), t)
+  let uId = user.value.data.profile.userId.toString()
+  let t = await ListApi.getList(uId)
+  queryUserList().add(uId, t)
   queryUserList().cur = 0
   data.value = userList.value[cur.value].ls
-  // console.log(data.value)
 }
 </script>
 

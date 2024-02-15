@@ -17,6 +17,7 @@ const router = createRouter({
     {
       path: '/play',
       name: 'play',
+      meta: { enter: 'animate__slideInUp', leave: 'animate__slideOutDown' },
       component: () => import('@/layout/play/index.vue'),
       children: [
         {

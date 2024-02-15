@@ -4,7 +4,7 @@ import { Song } from '#/song/songInfo'
 import { main, playControl, playList } from '@/stores'
 import { formatTime } from '@/utils'
 
-let { playList1, playIndex, isCloud } = toRefs(playList())
+let { playList1, playIndex, isCloud, name } = toRefs(playList())
 let { playCloudMusic, playMusic } = playControl()
 
 const props = defineProps({
@@ -13,7 +13,9 @@ const props = defineProps({
     required: false,
     default: () => [],
   },
-
+  listName: {
+    type: String,
+  },
   noTag: {
     type: Boolean,
     default: false,
@@ -25,39 +27,46 @@ const props = defineProps({
 })
 
 function play(row: Song) {
+  function _set(i: Song | CloudSongDataType) {
+    return {
+      id: i.id,
+      name: i.name,
+      fee: i.fee,
+      time: formatTime(i.dt, 'ms'),
+      singerName: i.ar?.length > 1 ? i.ar.map((item: any) => item.name).join('、') : i.ar[0].name,
+    }
+  }
   if (!props.cloud) {
     playMusic(row)
+    isCloud.value = false
   } else {
     playCloudMusic(row)
+    isCloud.value = true
   }
   if (!playList1.value) {
     playList1.value = props.listsSongs?.map((i) => {
-      return {
-        id: i.id,
-        name: i.name,
-        fee: i.fee,
-        time: formatTime(i.dt, 'ms'),
-        singerName: i.ar.length > 1 ? i.ar.map((item: any) => item.name).join('、') : i.ar[0].name,
-      }
+      return _set(i)
     })
+    if (props?.listName) name.value = props.listName
   } else {
-    if (!(playList1.value?.length == props.listsSongs.length && playList1.value[0].id == props.listsSongs[0].id)) {
+    if (
+      !(
+        playList1.value?.length == props.listsSongs.length &&
+        playList1.value[0].id == props.listsSongs[0].id &&
+        name.value == props.listName
+      )
+    ) {
       playList1.value = props.listsSongs?.map((i) => {
-        return {
-          id: i.id,
-          fee: i.fee,
-          time: formatTime(i.dt, 'ms'),
-          name: i.name,
-          singerName: i.ar.length > 1 ? i.ar.map((item: any) => item.name).join('、') : i.ar[0].name,
-        }
+        return _set(i)
       })
+      if (props?.listName) name.value = props.listName
     }
   }
-  if (props.cloud) {
-    isCloud.value = true
-  } else {
-    isCloud.value = false
-  }
+  // if (props.cloud) {
+  //   isCloud.value = true
+  // } else {
+  //   isCloud.value = false
+  // }
   playIndex.value = playList1.value.findIndex((i) => i.id == row.id, 0)
 }
 
@@ -71,6 +80,10 @@ function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
 
   return ''
 }
+
+defineExpose({
+  play,
+})
 </script>
 
 <template>
@@ -93,9 +106,9 @@ function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
               {{ scope.row.name }}
             </span>
             <span
-              class="text-xs bg-yellow-600 text-white ml-3 border border-yellow-100 rounded-xl px-2"
+              class="text-xs scale-75 inline-block text-yellow-500 ml-1 border border-yellow-400 rounded-md px-2"
               v-if="scope.row.fee === 1 && !props.noTag">
-              vip
+              VIP
             </span>
           </div>
         </template>

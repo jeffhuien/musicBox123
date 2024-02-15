@@ -52,26 +52,34 @@
 
     <div
       ref="playListEl"
-      class="animate__animated flex flex-col gap-1 animate__slideOutRight h-[60vh] overflow-hidden w-2/5 max-sm:w-full absolute right-0 bottom-[4.8rem] max-sm:bottom-16 z-50 bg-white border rounded-md shadow-lg">
-      <div class="flex text-xs justify-between items-center p-2">
-        <div class="">正在播放: {{ playList().name }}</div>
-        <div class="">共{{ playList().playList1?.length }}首</div>
+      :class="[main().listClose ? 'animate__slideOutRight' : 'animate__slideInRight']"
+      class="animate__animated flex flex-col gap-1 h-[60vh] overflow-hidden w-2/5 max-sm:w-full absolute right-0 bottom-[4.8rem] max-sm:bottom-16 z-50 bg-white border rounded-md shadow-lg">
+      <div class="flex gap-2 flex-col text-xs p-2">
+        <div class="">正在播放的歌单: {{ playList().name }}</div>
+        <div class="flex gap-2">
+          <div>
+            共 <span class="text-sky-600"> {{ playList().playList1?.length }} </span> 首
+          </div>
+        </div>
       </div>
 
       <div class="flex-1 overflow-hidden" v-if="playList().playList1">
         <el-scrollbar height="100%" ref="scrollbar">
-          <p
-            @click="BarPlay(i as unknown as Song, index)"
-            v-for="(i, index) in playList().playList1"
-            :index="index"
-            :class="[
-              index == playList().playIndex ? 'text-sky-500 opacity-100 ' : '',
-              i.fee == 0 && !playList().isCloud ? 'text-gray-400' : '',
-            ]"
-            class="p-1 px-4 rounded-sm hover:bg-gray-200">
-            <span class="text-sm"> {{ i.name }} </span>
-            <span class="text-xs text-gray-400"> - {{ i.singerName }}</span>
-            <template v-if="!playList().isCloud">
+          <div
+            class="w-full flex items-center justify-between p-1 px-4 rounded-sm hover:bg-gray-200"
+            v-for="(i, index) in playList().playList1">
+            <p
+              @click="BarPlay(i as unknown as Song, index)"
+              :index="index"
+              :class="[
+                index == playList().playIndex ? 'text-sky-500 opacity-100 ' : '',
+                i.fee == 0 && !playList().isCloud ? 'text-gray-400' : '',
+              ]"
+              class="flex-1 truncate">
+              <span class="text-sm"> {{ i.name }} </span>
+              <span class="text-xs text-gray-400"> - {{ i.singerName }}</span>
+            </p>
+            <div class="shrink-0" v-if="!playList().isCloud">
               <span
                 class="text-xs inline-block opacity-100 text-yellow-500 ml-3 border border-yellow-500 rounded-md p-1 px-2 scale-75"
                 v-if="i.fee === 1">
@@ -82,12 +90,12 @@
                 v-if="i.fee === 0">
                 无音源
               </span>
-            </template>
+            </div>
 
             <span class="float-right text-xs text-gray-400">
               {{ i.time }}
             </span>
-          </p>
+          </div>
         </el-scrollbar>
       </div>
 
@@ -174,15 +182,11 @@ let rightBars = [
     ico: 'fa-solid fa-list-ol',
     fun: {
       click: function (e: Event & { target: HTMLElement }) {
-        playListEl.value?.classList.remove('hidden')
-        playListEl.value?.classList.toggle('animate__slideInRight')
-        playListEl.value?.classList.toggle('animate__slideOutRight')
+        playListEl.value?.classList.toggle('hidden')
         main().listClose = !main().listClose
       },
       blur: function (e: Event & { target: HTMLElement }) {
-        playListEl.value?.classList.add('animate__slideOutRight')
-        playListEl.value?.classList.remove('animate__slideInRight')
-        main().listClose = !main().listClose
+        main().listClose = true
       },
     },
   },
@@ -219,7 +223,10 @@ function go() {
 
 onMounted(() => {
   isPlay.value = false
-  scrollbar.value?.setScrollTop(200)
+  // scrollbar.value?.setScrollTop(200)
+  main().listClose = true
+  playListEl.value?.classList.add('hidden')
+  playListEl.value?.classList.remove('flex')
 })
 
 function BarPlay(i: Song, index: number) {
