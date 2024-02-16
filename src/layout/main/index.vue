@@ -1,13 +1,20 @@
 <template>
   <div class="w-full h-full flex flex-col">
     <div class="flex w-full h-full gap-3 relative">
-      <el-scrollbar
-        class="w-1/6 md:min-w-[12rem] h-full bg-white z-20 shrink-0 shadow-lg menu max-md:hidden"
-        :class="[main().isMobile ? 'animate__animated animate__slideOutLeft' : '']">
-        <left-menu />
-        <song-list-menu v-if="data" :list="(data as listsType[])" />
-      </el-scrollbar>
-      <div class="flex-grow overflow-hidden h-full flex-1 w-5/6 md:pr-2">
+      <div
+        class="shrink-0 w-1/6 h-full transition-all duration-700 max-sm:absolute z-50"
+        :class="[menuClose ? '!w-0' : 'max-sm:w-3/5']">
+        <el-scrollbar class="relative w-full md:min-w-[12rem] h-full bg-white shrink-0 shadow-lg">
+          <left-menu />
+          <song-list-menu v-if="data" :list="(data as listsType[])" />
+        </el-scrollbar>
+        <i
+          class="fa-solid absolute top-1/4 left-full py-3 px-1 rounded-e-md bg-black bg-opacity-40 text-white z-50 text-sm -translate-y-1"
+          :class="[menuClose ? 'fa-angle-right' : 'fa-angle-left']"
+          @click="menuClose = !menuClose"></i>
+      </div>
+
+      <div class="flex-grow overflow-hidden h-full flex-1 w-5/6 md:pr-2" @click="menuClose = true">
         <router-view v-slot="{ Component }">
           <transition
             appear
@@ -31,6 +38,9 @@ import { auth, main, queryUserList } from '@/stores'
 import { storeToRefs } from 'pinia'
 // import from '@/components/'
 let { userList, cur } = toRefs(queryUserList())
+const { menuClose } = toRefs(main())
+
+// let menuClose = ref(false)
 
 // let data = ref(userList.value.length ? userList.value[cur.value].ls : false)
 let data = ref<listsType[] | boolean>()

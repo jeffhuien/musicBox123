@@ -12,13 +12,12 @@ function BarPlay(i: Song, index: number) {
   playList().playIndex = index
 }
 let closeV = ref(false)
-console.log(closeV.value)
 </script>
 
 <template>
   <div class="flex flex-col h-full w-full">
     <div class="h-full w-full flex">
-      <div ref="playEL" class="shrink-0 transition-all duration-700" :class="[closeV ? 'w-0' : 'w-80']">
+      <div class="shrink-0 transition-all duration-700" :class="[closeV ? 'w-0' : 'w-80']">
         <div
           class="w-full h-full flex flex-col gap-1 max-sm:w-full max-sm:bottom-16 z-50 rounded-md shadow-lg relative">
           <div class="flex-1 overflow-hidden" v-if="playList().playList1">

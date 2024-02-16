@@ -2,7 +2,7 @@
   <suspense>
     <div class="flex flex-col w-full h-full relative">
       <div class="h-20 max-sm:h-14 flex justify-center items-center">
-        <i class="transition-all fa-solid fa-square-caret-left box md:hidden text-fuchsia-400 text-3xl z-50;"></i>
+        <!-- <i class="transition-all fa-solid fa-square-caret-left box md:hidden text-fuchsia-400 text-3xl z-50;"></i> -->
         <top />
       </div>
       <div class="flex-1 overflow-hidden">
