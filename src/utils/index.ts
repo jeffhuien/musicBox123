@@ -1,3 +1,4 @@
+import { auth } from '@/stores'
 import Music from './Audio'
 import { fee } from './doc'
 import env from './env'
@@ -51,6 +52,13 @@ function setDocumentTitle(title: string) {
   }
 }
 
+function logOut() {
+  auth().user = undefined
+  auth().isLogin = false
+  auth().level = 0
+  store.remove('cookie')
+}
+
 export {
   //
   Music,
@@ -61,4 +69,5 @@ export {
   getIsMobile,
   store,
   setDocumentTitle,
+  logOut,
 }

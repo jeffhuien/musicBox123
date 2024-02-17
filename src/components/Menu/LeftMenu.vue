@@ -2,6 +2,7 @@
 import { menu } from '#/menu'
 import { RouteNames } from '@/enum/routeName'
 import { auth, main } from '@/stores'
+import { logOut } from '@/utils'
 const menus = ref<menu[]>([
   {
     name: '发现音乐',
@@ -29,6 +30,12 @@ const menus = ref<menu[]>([
       <i class="fa-solid fa-user text-lg mr-2 w-7"></i>
       登录
     </a>
+
+    <a v-else @click="logOut()" class="flex items-center">
+      <i class="fa-solid fa-user text-lg mr-2 w-7"></i>
+      注销
+    </a>
+
     <a @click="$router.go(0)" class="flex items-center">
       <i class="fa-solid fa-refresh text-lg mr-2 w-7"></i>
       更新版本

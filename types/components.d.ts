@@ -42,6 +42,7 @@ declare module 'vue' {
     SongListMenu: typeof import('./../src/components/Menu/songListMenu.vue')['default']
     SongListView: typeof import('./../src/components/list/songListView.vue')['default']
     SongNameMobile: typeof import('./../src/components/playBar/songNameMobile.vue')['default']
+    Tag: typeof import('./../src/components/common/tag.vue')['default']
     TimeText: typeof import('./../src/components/playBar/timeText.vue')['default']
     Top: typeof import('./../src/components/top/index.vue')['default']
   }

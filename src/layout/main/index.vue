@@ -2,8 +2,8 @@
   <div class="w-full h-full flex flex-col">
     <div class="flex w-full h-full gap-3 relative">
       <div
-        class="shrink-0 w-1/6 h-full transition-all duration-700 max-sm:absolute z-50"
-        :class="[menuClose ? '!w-0' : 'max-sm:w-3/5']">
+        class="shrink-0 h-full transition-all duration-700 max-sm:absolute z-50"
+        :class="[menuClose && main().isMobile ? '!w-0' : 'max-sm:w-3/5']">
         <el-scrollbar class="relative w-full md:min-w-[12rem] h-full bg-white shrink-0 shadow-lg">
           <left-menu />
           <song-list-menu v-if="data" :list="(data as listsType[])" />
@@ -14,7 +14,9 @@
           @click="menuClose = !menuClose"></i>
       </div>
 
-      <div class="flex-grow overflow-hidden h-full flex-1 w-5/6 md:pr-2" @click="menuClose = true">
+      <div
+        class="flex-grow overflow-hidden h-full flex-1 w-5/6 md:pr-2"
+        @click="!main().isMobile ? 0 : (menuClose = true)">
         <router-view v-slot="{ Component }">
           <transition
             appear

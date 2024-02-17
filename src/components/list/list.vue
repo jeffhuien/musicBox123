@@ -101,14 +101,15 @@ defineExpose({
       <el-table-column label="" type="index" align="center" min-width="5%" :show-overflow-tooltip="false" />
       <el-table-column label="歌曲" min-width="40%">
         <template #default="scope">
-          <div class="">
+          <div class="flex">
             <span>
               {{ scope.row.name }}
             </span>
-            <span
-              class="text-xs scale-75 inline-block text-yellow-500 ml-1 border border-yellow-400 rounded-md px-2"
-              v-if="scope.row.fee === 1 && !props.noTag">
-              VIP
+            <span v-if="scope.row.fee === 1 && !props.noTag">
+              <Tag :type="'vip'" />
+            </span>
+            <span v-if="scope.row.fee === 0 && !props.noTag">
+              <Tag :type="'notSource'" />
             </span>
           </div>
         </template>

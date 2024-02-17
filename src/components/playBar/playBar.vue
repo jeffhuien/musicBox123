@@ -80,15 +80,11 @@
               <span class="text-xs text-gray-400"> - {{ i.singerName }}</span>
             </p>
             <div class="shrink-0" v-if="!playList().isCloud">
-              <span
-                class="text-xs inline-block opacity-100 text-yellow-500 ml-3 border border-yellow-500 rounded-md p-1 px-2 scale-75"
-                v-if="i.fee === 1">
-                VIP
+              <span v-if="i.fee === 1">
+                <Tag :type="'vip'" />
               </span>
-              <span
-                class="text-xs inline-block bg-gray-400 opacity-100 text-white ml-3 border border-gray-100 rounded-md p-1 scale-75"
-                v-if="i.fee === 0">
-                无音源
+              <span v-if="i.fee === 0">
+                <Tag :type="'notSource'" />
               </span>
             </div>
 
