@@ -46,14 +46,13 @@ async function login() {
         log.value = true
         main().loginShow = false
         let userInfo = await loginApi.getLoginStatus(statusRes.cookie)
-        let level = await AuthApi.getInfo()
-
         store.set('cookie', statusRes.cookie)
-        console.log('info', userInfo)
+        let level = await AuthApi.getInfo()
         auth().setAuthInfo(userInfo)
         auth().level = level.data.level
         auth().$persist()
         router.go(-1)
+        clearInterval(timer)
       }
       // if (!loginEl.value) {
       //   clearInterval(timer)

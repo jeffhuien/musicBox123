@@ -38,24 +38,24 @@ import { listsType } from '#/index'
 import { ListApi } from '@/Api/List'
 import { auth, main, queryUserList } from '@/stores'
 import { storeToRefs } from 'pinia'
-// import from '@/components/'
 let { userList, cur } = toRefs(queryUserList())
 const { menuClose } = toRefs(main())
 
-// let menuClose = ref(false)
-
-// let data = ref(userList.value.length ? userList.value[cur.value].ls : false)
 let data = ref<listsType[] | boolean>()
-
-let { user } = storeToRefs(auth())
-
-if (user.value) {
+async function setData(user: Ref<any>) {
   let uId = user.value.data.profile.userId.toString()
   let t = await ListApi.getList(uId)
   queryUserList().add(uId, t)
   queryUserList().cur = 0
   data.value = userList.value[cur.value].ls
 }
+
+let { user } = storeToRefs(auth())
+if (user.value?.data) setData(user)
+
+watch(user, async () => {
+  setData(user)
+})
 </script>
 
 <style scoped lang="scss">

@@ -122,7 +122,7 @@ export const playControl = defineStore(
         let a = song.fee.toString()
         //无版权无法播放
         if (url.data[0].url === null && song.fee === 0) {
-          ElMessage.info({ duration: 3000, message: fee[a] })
+          ElMessage.info({ duration: 3000, message: fee['404'] })
           throw new Error('无版权无法播放')
         }
         if (fee[a] && song.fee != 0) {

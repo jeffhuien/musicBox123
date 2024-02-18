@@ -1,6 +1,7 @@
 import { getPlayUrl } from '#/song/get-url'
 import { songInfo } from '#/song/songInfo'
 import Axios from '@/plugins/axios/axios'
+import { env } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 const Song = class extends Axios {
   constructor(config: AxiosRequestConfig) {
@@ -20,7 +21,7 @@ const Song = class extends Axios {
 
   public async check(id: number | string) {
     return this.request<{ success: boolean }>({
-      baseURL: '/check/music',
+      baseURL: env.VITE_API_URL + '/check/music',
       params: {
         id,
       },
@@ -42,6 +43,4 @@ const SongApi = new Song({
   baseURL: '/song',
   method: 'get',
 })
-console.log(new Date().getTime())
-
 export { SongApi }

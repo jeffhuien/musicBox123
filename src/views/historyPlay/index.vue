@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { CommonApi } from '@/Api/Common'
 import { auth } from '@/stores'
-import buttons from '@/components/common/buttons.vue'
 import { historyListType } from '#/index'
 let data: historyListType
 let t = ref()
@@ -15,14 +14,12 @@ onBeforeMount(async () => {
 
 <template>
   <div class="w-full h-full flex flex-col">
-    <div class="text-2xl opacity-80 flex items-center justify-between mb-5">
+    <div class="text-2xl opacity-80 flex p-2 items-center justify-between mb-5">
       <div class="mr-10">最近播放</div>
     </div>
 
     <div class="mr-5 flex justify-between mb-3">
-      <div class="">
-        <buttons></buttons>
-      </div>
+      <div class=""></div>
       <div class="relative text-right">
         <!-- TODO 完成搜素功能 -->
         <input
@@ -36,7 +33,7 @@ onBeforeMount(async () => {
     </div>
 
     <div class="flex-1 overflow-hidden" v-if="t">
-      <list v-if="t" :lists-songs="t" :noTag="true"></list>
+      <list v-if="t" :lists-songs="t"></list>
       <loading v-else></loading>
     </div>
   </div>

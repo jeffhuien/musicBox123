@@ -3,6 +3,7 @@ import { menu } from '#/menu'
 import { RouteNames } from '@/enum/routeName'
 import { auth, main } from '@/stores'
 import { logOut } from '@/utils'
+import { ElMessageBox } from 'element-plus'
 const menus = ref<menu[]>([
   {
     name: '发现音乐',
@@ -22,6 +23,20 @@ const menus = ref<menu[]>([
     ],
   },
 ])
+
+function LogOut() {
+  ElMessageBox.confirm('确认要注销登录吗？', {
+    confirmButtonText: '是',
+    cancelButtonText: '否',
+    type: 'warning',
+  }).then(() => {
+    logOut()
+    ElMessage({
+      type: 'success',
+      message: 'bye bye~',
+    })
+  })
+}
 </script>
 
 <template>
@@ -31,7 +46,7 @@ const menus = ref<menu[]>([
       登录
     </a>
 
-    <a v-else @click="logOut()" class="flex items-center">
+    <a v-else @click="LogOut" class="flex items-center">
       <i class="fa-solid fa-user text-lg mr-2 w-7"></i>
       注销
     </a>

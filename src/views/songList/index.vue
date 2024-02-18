@@ -7,10 +7,12 @@ import { useRoute, useRouter } from 'vue-router'
 
 let Id = ref<string>(useRoute().params.id as string)
 // let listInfo = queryUserList().getItem(Id.value)
-let data = ref<Song[]>()
+let data = ref<Song[] | undefined>(undefined)
 let Detail = ref<ListDetail>()
 let info = ref<Playlist>()
 if (Id) {
+  console.log('dd')
+
   if (auth().isLogin) {
     Detail.value = await ListApi.getListDetail(Id.value)
     info.value = Detail.value?.playlist
@@ -24,6 +26,8 @@ if (Id) {
 }
 
 watch(useRoute(), async (newValue) => {
+  console.log('wa')
+
   if (!(newValue.name === 'song.list')) return
   Id.value = newValue.params.id as string
   data.value = undefined
@@ -32,6 +36,11 @@ watch(useRoute(), async (newValue) => {
   info.value = Detail.value?.playlist
   data.value = (await ListApi.getListSongs(Id.value)).songs as unknown as Song[]
 })
+
+onBeforeMount(() => {
+  data.value = undefined
+})
+onBeforeMount(() => console.log(123121212))
 </script>
 
 <template>

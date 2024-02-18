@@ -37,12 +37,6 @@ export default class Axios {
     this.instance.interceptors.request.use(
       function (config) {
         // 在发送请求之前做些什么
-        // switch (config.url) {
-        //   case '/search/suggest': {
-        //   }
-        //   case '1': {
-        //   }
-        // }
         return config
       },
       function (error) {
@@ -58,19 +52,9 @@ export default class Axios {
     // 添加响应拦截器
     this.instance.interceptors.response.use(
       function (response) {
-        if (response.data.code >= 500 && response.data.code != 801) ElMessage.error('服务错误~')
-
         // 对响应数据做点什么
         // 2xx 范围内的状态码都会触发该函数。
         // 对响应数据做点什么
-        // if (response.data.code == 301 || response.data.code == 302 || response.data.msg == '需要登录') {
-        //   ElMessage.warning('登录已过期，请重新登录~~')
-        //   store.remove('cookie')
-        //   store.remove('user')
-        //   // auth().user = undefined
-        //   auth().isLogin = false
-        //   router.push('/login')
-        // }
         return response
       },
       function (error) {

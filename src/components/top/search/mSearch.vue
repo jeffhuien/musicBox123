@@ -4,6 +4,7 @@ import { searchSuggest } from '#/search/searchSuggest'
 import { SearchApi } from '@/Api/search'
 import router from '@/router'
 import { searchHistory } from '@/stores'
+import { random } from 'lodash'
 
 // let searchKeyWords = inject('searchKeyWords', ref<string>())
 let searchKeyWords = ref<string>()
@@ -27,8 +28,8 @@ async function enterSearch(keywords: string) {
   searchKeyWords.value = keywords
 }
 
+if (!ls.value.code) ls.value = await SearchApi.Hot()
 async function getFocus() {
-  console.log(1234)
   show.value = true
   if (!ls.value.code) ls.value = await SearchApi.Hot()
   if (keyword.value) data.value = await SearchApi.Suggest(keyword.value)
@@ -36,9 +37,24 @@ async function getFocus() {
 function lostFocus() {
   setTimeout(() => {
     show.value = false
-    data.value = {} as searchSuggest
+    data.value = undefined
   }, 300)
 }
+
+let timer: NodeJS.Timeout | null = null
+let Text = ref('')
+function randomText() {
+  let l = ls.value.result?.hots?.length
+  let t
+  try {
+    t = ls.value.result.hots ? ls.value.result.hots[random(0, l)]?.first : ''
+  } catch (error) {
+    t = ''
+  }
+  return t
+}
+Text.value = randomText()
+timer = setInterval(() => (Text.value = randomText()), 3000)
 
 //TODO 搜索建议关键词匹配
 //TODO 搜索无建议时央视
@@ -55,14 +71,11 @@ function lostFocus() {
       @keyup.stop=""
       @focus="getFocus"
       @blur="lostFocus"
+      :placeholder="Text"
       @keyup.enter="enterSearch(keyword)" />
     <div
       v-show="show"
       class="max-sm:scale-90 suggest min-h-[13rem] flex overflow-hidden absolute top-[120%] max-sm:top-2 max-sm:-left-2 z-20 text-sm w-72 bg-white rounded-md shadow-lg">
-      <!-- <div class="w-full h-full flex justify-center items-center" v-if="loading().searchBoxLoading">
-        <Loading class="">loading...</Loading>
-      </div> -->
-
       <div v-if="data?.result" class="h-full w-full">
         <div v-if="data.result.albums" class="flex flex-col gap-2 p-2 h-full border bg-white">
           <div class="flex p-1 border-b">

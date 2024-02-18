@@ -8,6 +8,7 @@ const props = defineProps<{
   name?: string
 }>()
 const { data, info, name } = toRefs(props)
+
 let ls = ref()
 function playAll() {
   ls.value.play(data.value![0])

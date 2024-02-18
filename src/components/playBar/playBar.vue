@@ -55,35 +55,35 @@
       :class="[main().listClose ? 'animate__slideOutRight' : 'animate__slideInRight']"
       class="animate__animated flex flex-col gap-1 h-[60vh] overflow-hidden w-2/5 max-sm:w-full absolute right-0 bottom-[4.8rem] max-sm:bottom-16 z-50 bg-white border rounded-md shadow-lg">
       <div class="flex gap-2 flex-col text-xs p-2">
-        <div class="">正在播放的歌单: {{ playList().name }}</div>
+        <div class="">正在播放的歌单: {{ name }}</div>
         <div class="flex gap-2">
           <div>
-            共 <span class="text-sky-600"> {{ playList().playList1?.length }} </span> 首
+            共 <span class="text-sky-600"> {{ playList1?.length }} </span> 首
           </div>
         </div>
       </div>
 
-      <div class="flex-1 overflow-hidden" v-if="playList().playList1">
+      <div class="flex-1 overflow-hidden" v-if="playList1">
         <el-scrollbar height="100%" ref="scrollbar">
           <div
             class="w-full flex items-center justify-between p-1 px-4 rounded-sm hover:bg-gray-200"
-            v-for="(i, index) in playList().playList1">
+            v-for="(i, index) in playList1">
             <p
               @click="BarPlay(i as unknown as Song, index)"
               :index="index"
               :class="[
-                index == playList().playIndex ? 'text-sky-500 opacity-100 ' : '',
-                i.fee == 0 && !playList().isCloud ? 'text-gray-400' : '',
+                index == playIndex ? 'text-sky-500 opacity-100 ' : '',
+                i.fee == 0 && !isCloud ? 'text-gray-400' : '',
               ]"
               class="flex-1 truncate">
               <span class="text-sm"> {{ i.name }} </span>
               <span class="text-xs text-gray-400"> - {{ i.singerName }}</span>
             </p>
-            <div class="shrink-0" v-if="!playList().isCloud">
+            <div class="shrink-0" v-if="!isCloud">
               <span v-if="i.fee === 1">
                 <Tag :type="'vip'" />
               </span>
-              <span v-if="i.fee === 0">
+              <span v-if="i.fee === 404">
                 <Tag :type="'notSource'" />
               </span>
             </div>
@@ -116,6 +116,7 @@ let playListEl = ref<HTMLElement>()
 let scrollbar = ref()
 let { musicName, singerName, songImg, currentTime, isPlay, playUrl, duration, playId } = storeToRefs(playControl())
 let { playNext, playPrev, playMusicById, playCloudMusic } = playControl()
+let { playList1, playIndex, isCloud, name } = toRefs(playList())
 
 function setProgress(v: Arrayable<number>) {
   mp3.setCurrentTime(Array.isArray(v) ? v[0] : v)
@@ -226,12 +227,12 @@ onMounted(() => {
 })
 
 function BarPlay(i: Song, index: number) {
-  if (playList().isCloud) {
+  if (isCloud.value) {
     playCloudMusic(i)
   } else {
     playMusicById(i.id)
   }
-  playList().playIndex = index
+  playIndex.value = index
 }
 </script>
 
