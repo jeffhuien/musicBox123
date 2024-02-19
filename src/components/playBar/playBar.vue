@@ -1,7 +1,7 @@
 <template>
-  <div class="playBar p-1 w-full relative lg:justify-between flex-nowrap !bg-opacity-100 z-50 flex items-center">
+  <div class="playBar p-1 w-full h-full relative lg:justify-between flex-nowrap !bg-opacity-100 z-50 flex items-center">
     <!-- 进度条 -->
-    <div class="playBar-progress group w-full h-[0.2rem] hover:cursor-pointer absolute -top-[0.07rem] left-0">
+    <div class="playBar-progress group !bg-pink-600 w-full hover:cursor-pointer absolute -top-[0.07rem] left-0">
       <el-slider
         :model-value="currentTime"
         :max="duration"
@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <div class="lg:w-1/3 items-center justify-end flex">
+    <div class="lg:w-1/3 items-center justify-end flex h-full">
       <div class="mr-10 left-0 max-md:!hidden">
         <timeText class="text-xs opacity-90" :CurTime="currentTime" :totalTime="duration" />
       </div>
@@ -71,10 +71,7 @@
             <p
               @click="BarPlay(i as unknown as Song, index)"
               :index="index"
-              :class="[
-                index == playIndex ? 'text-sky-500 opacity-100 ' : '',
-                i.fee == 0 && !isCloud ? 'text-gray-400' : '',
-              ]"
+              :class="[index == playIndex ? 'text-sky-500 opacity-100 ' : '']"
               class="flex-1 truncate">
               <span class="text-sm"> {{ i.name }} </span>
               <span class="text-xs text-gray-400"> - {{ i.singerName }}</span>
@@ -83,9 +80,9 @@
               <span v-if="i.fee === 1">
                 <Tag :type="'vip'" />
               </span>
-              <span v-if="i.fee === 404">
+              <!-- <span v-if="i.fee === 404">
                 <Tag :type="'notSource'" />
-              </span>
+              </span> -->
             </div>
 
             <span class="float-right text-xs text-gray-400">
@@ -159,12 +156,12 @@ let leftBars = [
 let rightBars = [
   {
     name: '音量',
-    ico: ['fa-solid fa-volume-high', 'fa-volume-low', 'fa-volume-xmark'], //大中无
+    ico: ['fa-solid fa-volume-high', 'fa-volume-xmark'], //大中无
     fun: {
       click: function (e: Event & { target: HTMLElement }) {
-        let ico = ['fa-solid fa-volume-high', 'fa-volume-low', 'fa-volume-xmark'] //大中无
-        e.target.classList.toggle(ico[2])
-        console.log(e.target)
+        let ico = ['fa-volume-high', 'fa-volume-xmark'] //大中无
+        // e.target.classList.toggle(ico[1])
+        playControl().isMuted = !playControl().isMuted
       },
     },
   },
@@ -254,19 +251,22 @@ function BarPlay(i: Song, index: number) {
     z-index: 100;
   }
 }
-
+// FIXME: 这里需要优化,鼠标
 :deep(.el-slider) {
   --el-slider-border-radius: none;
   --el-slider-height: 2px;
   --el-slider-button-size: 0px;
   --el-slider-button-wrapper-offset: -16px;
-  align-items: start;
+  @apply items-start h-0;
   :hover {
     --el-slider-button-size: 10px;
   }
   .el-slider__button {
     @apply border-none bg-red-400;
   }
+}
+:deep(.el-slider__bar) {
+  @apply bg-sky-300;
 }
 
 :deep(.el-popper) {

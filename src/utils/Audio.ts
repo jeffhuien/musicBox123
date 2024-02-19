@@ -29,7 +29,11 @@ class Music {
   }
 
   setVolume(volume: number): void {
-    this.audio.volume = Math.max(0, Math.min(1, volume))
+    this.audio.volume = volume
+  }
+
+  setMuted() {
+    this.audio.muted = !this.audio.muted
   }
 
   getCurrentTime(): number {
@@ -39,15 +43,9 @@ class Music {
   getDuration(): number {
     return this.audio.duration
   }
-  getSrc(): string {
-    return this.audio.src
-  }
+
   setCurrentTime(arg0: number) {
     this.audio.currentTime = arg0
-  }
-
-  isPlaying(): boolean {
-    return !this.audio.paused
   }
 
   addEventListener(event: string, callback: EventListenerOrEventListenerObject): void {

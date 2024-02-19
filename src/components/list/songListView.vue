@@ -34,18 +34,18 @@ function playAll() {
       <div class="text-xs flex flex-col justify-between truncate">
         <h1 class="text-2xl max-sm:text-sm opacity-70 font-bold">{{ name ? name : info?.name }}</h1>
         <div class="flex items-center gap-3" @click="$router.push('/user/' + info?.creator.userId)">
-          <ElAvatar :src="info?.creator.avatarUrl || '/img/logo.png'"></ElAvatar>
+          <ElAvatar :src="info?.creator.avatarUrl || '/img/logo.png'" size="default"></ElAvatar>
           {{ info?.creator.nickname || 'yuayua' }}
         </div>
         <div class="opacity-50 text-justify truncate">
-          简介：
+          <span class="">简介：</span>
           <span class="">
             {{ info?.description || '未添加简介' }}
           </span>
         </div>
         <div class="">
           <div v-if="info?.tags.length" class="flex gap-2 items-center">
-            <span class="opacity-50"> 标签：</span>
+            <span class="opacity-50">标签：</span>
             <span v-for="i in info.tags" class="p-1 rounded-md text-white bg-teal-500">
               {{ i }}
             </span>
@@ -59,6 +59,9 @@ function playAll() {
         <ElButton type="success" @click="playAll"> <i class="fa-solid fa-play mr-2"></i> 播放全部</ElButton>
       </div>
       <div class="">right</div>
+    </div>
+    <div class="w-full text-xs bg-red-50 rounded-sm border">
+      <p class="p-2 text-pink-400">含歌曲{{ data.length }}首,其中VIP歌曲33首</p>
     </div>
 
     <div class="flex-1 !overflow-hidden">

@@ -88,7 +88,7 @@ function play(row: Song) {
 
 function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
   if (rowIndex == playIndex.value && row.id == playControl().playId) {
-    return '!text-sky-500 !opacity-100 !bg-gray-100 !rounded-xl'
+    return '!text-sky-500 !border-pink-200 !rounded-xl'
   }
   return ''
 }
@@ -109,15 +109,21 @@ if (listsSongs.value) {
       height="100%"
       width="100%"
       :flexible="true"
-      :highlight-current-row="true"
       class="h-full"
       :show-overflow-tooltip="true"
       :tooltip-options="{ effect: 'light', showArrow: false, offset: -40, popperClass: '!border-red-200' }"
       :row-class-name="setStyle"
+      :cell-class-name="'!px-0'"
       @row-click="play">
       <template v-if="!main().isMobile">
-        <el-table-column label="" type="index" align="center" min-width="5%" :show-overflow-tooltip="false" />
-        <el-table-column label="歌曲" min-width="40%">
+        <el-table-column
+          label=""
+          type="index"
+          align="center"
+          min-width="5%"
+          :class-name="'text-gray-400'"
+          :show-overflow-tooltip="false" />
+        <el-table-column align="left" label="歌曲" min-width="40%">
           <template #default="scope">
             <div class="flex">
               <span>
@@ -126,9 +132,9 @@ if (listsSongs.value) {
               <span v-if="scope.row.fee === 1 && !noTag">
                 <Tag :type="'vip'" />
               </span>
-              <span v-if="scope.row.fee === 404 && !noTag">
+              <!-- <span v-if="scope.row.fee === 404 && !noTag">
                 <Tag :type="'notSource'" />
-              </span>
+              </span> -->
             </div>
           </template>
         </el-table-column>
@@ -174,9 +180,9 @@ if (listsSongs.value) {
                   <span v-if="scope.row.fee === 1 && !noTag">
                     <Tag :type="'vip'" />
                   </span>
-                  <span v-if="scope.row.fee === 404 && !noTag">
+                  <!-- <span v-if="scope.row.fee === 404 && !noTag">
                     <Tag :type="'notSource'" />
-                  </span>
+                  </span> -->
                 </div>
                 <div class="w-full truncate text-xs opacity-50">
                   <span v-if="scope.row.ar?.length > 1" class="!w-4/6 truncate">
@@ -186,7 +192,6 @@ if (listsSongs.value) {
                     <template v-if="scope.row.ar">
                       {{ scope.row.ar[0]?.name }}
                     </template>
-                    <template v-else> 加载失败 </template>
                   </span>
                 </div>
               </div>
@@ -209,7 +214,9 @@ if (listsSongs.value) {
   </template>
 
   <template v-else>
-    <div>加载失败</div>
+    <div class="w-full h-full flex justify-center items-center">
+      <ElEmpty description="加载失败" />
+    </div>
   </template>
 </template>
 

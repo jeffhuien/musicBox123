@@ -17,7 +17,7 @@ export const playControl = defineStore(
     let songImg = ref<string>('img/logo.png')
     let playUrl = ref<string>('undefined')
     let playId = ref<number>(0)
-
+    let isMuted = ref(false)
     let { playList1, playIndex, isCloud } = toRefs(playList())
 
     async function playNext() {
@@ -135,10 +135,17 @@ export const playControl = defineStore(
       setDocumentTitle(musicName.value + ' - ' + singerName.value)
     }
 
+    watch([volume, isMuted], (newV, oldV) => {
+      console.log(newV)
+      Music.setVolume(newV[0])
+      newV[1] != oldV[1] ? Music.setMuted() : ''
+    })
+
     return {
       //
       duration,
       isPlay,
+      isMuted,
       volume,
       singerName,
       musicName,
