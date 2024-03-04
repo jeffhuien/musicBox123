@@ -11,14 +11,14 @@ let data = defineProps<{
   <div class="flex gap-6 h-full items-center">
     <template v-for="(item, index) in data.data" :key="index">
       <template v-if="item.name == '音量'">
-        <div class="relative group w-full h-full flex justify-center items-center">
-          <span @click="item.fun?.click" @blur="item.fun?.blur">
+        <div class="relative max-md:hidden group w-full h-full flex justify-center items-center">
+          <button @click="item.fun?.click" @blur="item.fun?.blur">
             <i class="fa-solid" :class="[playControl().isMuted ? item.ico[1] : item.ico[0]]"></i>
-            <span class="ml-1 max-sm:hidden" :ref="item.id">{{ item.name }}</span>
-          </span>
+            <span class="ml-1 max-sm:hidden">{{ item.name }}</span>
+          </button>
 
           <div
-            class="hidden -translate-x-1/2 py-3 left-1/2 group-hover:flex flex-col justify-center gap-2 shadow-xl rounded-xl items-center border w-14 h-32 bg-white z-20 absolute bottom-10">
+            class="hidden -translate-x-1/2 py-3 left-1/2 group-hover:flex flex-col justify-center gap-2 shadow-xl rounded-md items-center border w-14 h-32 bg-white z-20 absolute bottom-10">
             <div class="flex-1">
               <ElSlider
                 v-model="playControl().volume"
@@ -35,16 +35,20 @@ let data = defineProps<{
       </template>
 
       <template v-else>
-        <span @click="item.fun?.click" @blur="item.fun?.blur">
-          <i :class="[item.ico instanceof Array ? item.ico[0] : item.ico]"></i>
-          <span class="ml-1 max-sm:hidden" :ref="item.id">{{ item.name }}</span>
-        </span>
+        <div
+          class="relative group h-full flex justify-center items-center"
+          :class="[item.name != '列表' ? 'max-md:hidden' : '']">
+          <button @blur.native.capture="item.fun?.blur" @click="item.fun?.click">
+            <i :class="[item.ico instanceof Array ? item.ico[0] : item.ico]"></i>
+            <span class="ml-1 max-sm:hidden">{{ item.name }}</span>
+          </button>
+        </div>
       </template>
     </template>
   </div>
 </template>
 <style scoped lang="scss">
-span {
+button {
   @apply relative;
 
   span {

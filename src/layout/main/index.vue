@@ -41,6 +41,7 @@ import { storeToRefs } from 'pinia'
 let { userList, cur } = toRefs(queryUserList())
 const { menuClose } = toRefs(main())
 
+// BUG 非实时更新
 let data = ref<listsType[] | boolean>()
 async function setData(user: Ref<any>) {
   let uId = user.value.data.profile.userId.toString()

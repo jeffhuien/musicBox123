@@ -18,6 +18,7 @@ class Auth extends Axios {
       },
     })
   }
+
   public async getLevel() {
     return this.request<any>({
       url: `/level`,
@@ -30,8 +31,8 @@ class Auth extends Axios {
     return this.request<CloudSongType>({
       url: '/cloud',
       params: {
-        limit: lim ? lim : '',
-        offset: off ? off : '',
+        // limit: lim ? lim : '',
+        // offset: off ? off : '',
       },
       data: {
         cookie: store.get('cookie'),
@@ -66,14 +67,14 @@ class Auth extends Axios {
 }
 
 const AuthApi = new Auth({
-  baseURL: '/user',
+  baseURL: '/api/user',
   method: 'post',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-    // 'X-CSRFToken': localStorage.getItem('cookie'),
-    // Authorization: localStorage.getItem('cookie'),
-  },
+  // headers: {
+  //   'Content-Type': 'application/json',
+  //   'X-Requested-With': 'XMLHttpRequest',
+  //   // 'X-CSRFToken': localStorage.getItem('cookie'),
+  //   // Authorization: localStorage.getItem('cookie'),
+  // },
   data: {
     cookie: store.get('cookie'),
   },

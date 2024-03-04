@@ -43,6 +43,7 @@ class Common extends Axios {
 }
 
 const CommonApi = new Common({
+  baseURL: 'api/',
   method: 'post',
   maxRate: 123,
 })

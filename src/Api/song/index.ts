@@ -40,7 +40,7 @@ const Song = class extends Axios {
 }
 
 const SongApi = new Song({
-  baseURL: '/song',
+  baseURL: 'api/song',
   method: 'get',
 })
 export { SongApi }

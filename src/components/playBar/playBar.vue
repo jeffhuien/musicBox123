@@ -46,8 +46,8 @@
       <div class="mr-10 left-0 max-md:!hidden">
         <timeText class="text-xs opacity-90" :CurTime="currentTime" :totalTime="duration" />
       </div>
-      <Bars class="text-sm mr-6 max-md:hidden" :data="rightBars"></Bars>
-      <Bars class="text-sm mr-6 hidden max-md:block" :data="[rightBars[rightBars.length - 1]]"></Bars>
+      <Bars class="text-sm mr-6" :data="rightBars"></Bars>
+      <!-- <Bars class="text-sm mr-6 hidden max-md:block" :data="[rightBars[rightBars.length - 1]]"></Bars> -->
     </div>
 
     <div
@@ -93,7 +93,7 @@
       </div>
 
       <div class="w-full h-full flex justify-center items-center static text-sm text-gray-400" v-else>
-        列表内没有音乐哦
+        <el-empty :description="'列表内没有音乐哦'"> </el-empty>
       </div>
     </div>
   </div>
@@ -107,6 +107,10 @@ import { main, playControl, playList } from '@/stores'
 import { Music, formatTime } from '@/utils'
 import { Arrayable } from 'element-plus/es/utils/typescript'
 import { storeToRefs } from 'pinia'
+
+function aas() {
+  console.log(122)
+}
 
 let mp3 = Music
 let playListEl = ref<HTMLElement>()
@@ -178,8 +182,11 @@ let rightBars = [
       click: function (e: Event & { target: HTMLElement }) {
         playListEl.value?.classList.toggle('hidden')
         main().listClose = !main().listClose
+        console.log(1222)
       },
       blur: function (e: Event & { target: HTMLElement }) {
+        console.log(1234)
+
         main().listClose = true
       },
     },

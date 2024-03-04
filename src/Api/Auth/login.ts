@@ -57,7 +57,7 @@ class Login extends Axios {
 }
 
 const loginApi = new Login({
-  baseURL: '/login',
+  baseURL: 'api/login',
   method: 'post',
   data: {
     cookie: store.get('cookie'),

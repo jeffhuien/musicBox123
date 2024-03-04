@@ -1,7 +1,7 @@
 import { ListSongs } from '#/List/ListSongs'
 import { UserList } from '#/List/userList'
 import Axios from '@/plugins/axios/axios'
-import { store } from '@/utils'
+import { env, store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class List extends Axios {
@@ -9,18 +9,9 @@ class List extends Axios {
     super(config)
   }
 
-  public async getList(uid: string) {
-    return await this.request<UserList>({
-      url: '/user/playlist',
-      params: {
-        uid,
-      },
-    })
-  }
-
   public async getListDetail(id: string) {
     return await this.request<any>({
-      url: '/playlist/detail',
+      url: '/detail',
       params: {
         id,
       },
@@ -29,10 +20,31 @@ class List extends Axios {
       },
     })
   }
+  public async getList(uid: string) {
+    return await this.request<UserList>({
+      baseURL: env.VITE_API_URL + '/user/playlist',
 
+      params: {
+        uid,
+      },
+    })
+  }
+  public async collect(t: number, id: string) {
+    return await this.request<any>({
+      url: '/subscribe',
+      method: 'post',
+      params: {
+        t,
+        id,
+      },
+      data: {
+        cookie: store.get('cookie'),
+      },
+    })
+  }
   public async getListSongs(id: string) {
     return await this.request<ListSongs>({
-      url: '/playlist/track/all',
+      url: '/track/all',
       params: {
         id,
       },
@@ -41,7 +53,7 @@ class List extends Axios {
 }
 
 const ListApi = new List({
-  baseURL: '',
+  baseURL: 'api/playlist',
   method: 'get',
 })
 

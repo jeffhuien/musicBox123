@@ -36,7 +36,7 @@ class Search extends Axios {
 }
 
 const SearchApi = new Search({
-  baseURL: '/search',
+  baseURL: 'api/search',
   method: 'get',
 })
 

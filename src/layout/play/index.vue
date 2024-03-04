@@ -30,7 +30,7 @@ let closeV = ref(false)
                   :index="index"
                   :class="[
                     index == playList().playIndex ? 'text-sky-500 opacity-100 ' : '',
-                    i.fee == 0 && !playList().isCloud ? 'text-gray-400' : '',
+                    // i.fee == 0 && !playList().isCloud ? 'text-gray-400' : '',
                   ]"
                   class="flex-1 truncate">
                   <span class="text-sm"> {{ i.name }} </span>
@@ -40,9 +40,9 @@ let closeV = ref(false)
                   <span v-if="i.fee === 1">
                     <Tags :type="'vip'" />
                   </span>
-                  <span v-if="i.fee === 0">
+                  <!-- <span v-if="i.fee === 0">
                     <tags :type="'notSource'" />
-                  </span>
+                  </span> -->
                 </div>
                 <span class="float-right text-xs text-gray-400">
                   {{ i.time }}

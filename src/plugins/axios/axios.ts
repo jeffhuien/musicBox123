@@ -6,10 +6,10 @@ import { auth } from '@/stores'
 export default class Axios {
   protected instance
   constructor(config: AxiosRequestConfig) {
-    if (config?.baseURL || config.baseURL === '') {
-      config.baseURL = env.VITE_API_URL + config.baseURL
-    }
-    if (!config.baseURL) config['baseURL'] = env.VITE_API_URL
+    // if (config?.baseURL || config.baseURL === '') {
+    //   config.baseURL = env.VITE_API_URL + config.baseURL
+    // }
+    // if (!config.baseURL) config['baseURL'] = env.VITE_API_URL
     this.instance = axios.create(config) //初始化axios
     this.interceptors() //拦截器
   }
@@ -55,16 +55,29 @@ export default class Axios {
         // 对响应数据做点什么
         // 2xx 范围内的状态码都会触发该函数。
         // 对响应数据做点什么
-        return response
-      },
-      function (error) {
-        // console.log(instance.defaults)
-
-        if (error.response.data.code == 301 && error.response.data.msg == '需要登录') {
+        if (response.data.code == 302 && response?.data.msg == null) {
           ElMessage.warning('登录已过期，请重新登录~~')
           store.remove('cookie')
           auth().$reset()
           router.push('/login')
+        }
+        return response
+      },
+      function (error) {
+        // console.log(instance.defaults)
+        try {
+          if (error.response.data.code == 301 && error.response.data.msg == '需要登录') {
+            if (auth().isLogin) {
+              ElMessage.warning('登录已过期，请重新登录~~')
+              store.remove('cookie')
+              auth().$reset()
+            } else {
+              ElMessage.warning('需要登录~~')
+              router.push('/login')
+            }
+          }
+        } catch (error) {
+          ElMessage.error('服务错误，请尝试刷新~~')
         }
         // 超出 2xx 范围的状态码都会触发该函数。
         // 对响应错误做点什么
