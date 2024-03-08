@@ -31,7 +31,7 @@
       </div>
     </div>
     <!-- <!== 控制条 ==> -->
-    <div class="flex justify-center flex-1 relative lg:w-1/3 w-1/4 max-sm:!justify-end max-sm:pr-12">
+    <div class="flex justify-center flex-1 relative shrink-0 lg:w-1/3 w-1/4 max-sm:!justify-end max-sm:pr-12">
       <div class="flex justify-center items-center gap-8 text-xl">
         <i class="fa-solid fa-backward-step text-pink-300 max-md:hidden" @click="playPrev"></i>
         <i

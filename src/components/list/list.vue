@@ -49,12 +49,14 @@ function _check() {
 
 function play(row: Song) {
   function _set(i: Song | CloudSongDataType) {
+    console.log(i.name, i.dt)
+    let time = formatTime(i.dt, 'ms')
     return {
       id: i.id,
       name: i.name,
       fee: i.fee,
-      time: formatTime(i.dt, 'ms'),
-      singerName: i.ar?.length > 1 ? i.ar.map((item: any) => item.name).join('、') : i.ar[0].name,
+      time: time ?? '未知',
+      singerName: i.ar ? (i.ar?.length > 1 ? i.ar.map((item: any) => item.name).join('、') : i.ar[0].name) : 'Error',
     }
   }
   if (!cloud.value) {

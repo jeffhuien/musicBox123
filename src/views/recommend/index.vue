@@ -48,7 +48,7 @@ async function change(e: Event) {
           :index="d">
           <div class="" @click="$router.push('/list/' + i.id?.toString())">
             <div class="relative flex justify-center items-center">
-              <img class="w-42 !rounded-lg" :src="i.picUrl" />
+              <img class="w-42 h-42 !rounded-lg" :src="i.picUrl" />
               <i class="fa-regular fa-play-circle text-5xl text-white absolute hidden group-hover:block" />
             </div>
             <div class="relative py-2">

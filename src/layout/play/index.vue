@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Song } from '#/song/songInfo'
+import { CommonApi } from '@/Api/Common'
 import Tags from '@/components/common/tag.vue'
 import { playControl, playList } from '@/stores'
 
 const { playMusicById, playCloudMusic } = playControl()
-function BarPlay(i: Song, index: number) {
+async function BarPlay(i: Song, index: number) {
   if (playList().isCloud) {
     playCloudMusic(i)
   } else {
@@ -13,6 +14,16 @@ function BarPlay(i: Song, index: number) {
   playList().playIndex = index
 }
 let closeV = ref(false)
+let lyric = ref()
+lyric.value = await CommonApi.getLyric(playControl().playId)
+watch(
+  () => playControl().playId,
+  async (newV: number) => {
+    console.log('newV', newV)
+    lyric.value = await CommonApi.getLyric(newV)
+    console.log(lyric)
+  },
+)
 </script>
 
 <template>
@@ -59,7 +70,9 @@ let closeV = ref(false)
             @click="closeV = !closeV"></i>
         </div>
       </div>
-      <div class="flex-1">song & lircy</div>
+      <div class="flex-1">
+        <lyricView :lrcStr="lyric.lrc.lyric" />
+      </div>
     </div>
   </div>
 </template>

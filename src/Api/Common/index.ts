@@ -40,6 +40,26 @@ class Common extends Axios {
       },
     })
   }
+
+  public async getLyric(id: number) {
+    return await this.request<{
+      lrc: { lyric: string }
+    }>({
+      url: '/lyric',
+      params: {
+        id,
+      },
+    })
+  }
+
+  public async check(id: number | string) {
+    return this.request<{ success: boolean }>({
+      baseURL: '/check/music',
+      params: {
+        id,
+      },
+    })
+  }
 }
 
 const CommonApi = new Common({

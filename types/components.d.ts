@@ -34,6 +34,8 @@ declare module 'vue' {
     Loading: typeof import('./../src/components/Loading/loading.vue')['default']
     Login: typeof import('./../src/components/Auth/login.vue')['default']
     Logo: typeof import('./../src/components/top/logo.vue')['default']
+    Lyric: typeof import('../src/components/common/lyricView.vue')['default']
+    LyricView: typeof import('./../src/components/common/lyricView.vue')['default']
     MSearch: typeof import('./../src/components/top/search/mSearch.vue')['default']
     PlayBar: typeof import('./../src/components/playBar/playBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
