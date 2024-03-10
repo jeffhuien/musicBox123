@@ -113,9 +113,9 @@ if (listsSongs.value) {
       :flexible="true"
       class="h-full"
       :show-overflow-tooltip="true"
-      :tooltip-options="{ effect: 'light', showArrow: false, offset: -40, popperClass: '!border-red-200' }"
-      :row-class-name="setStyle"
-      :cell-class-name="'!px-0'"
+      :tooltip-options="{ effect: 'light', showArrow: false, offset: -60, popperClass: '!border-red-200' }"
+      :row-class-name="(setStyle, '')"
+      :header-cell-class-name="'!bg-no'"
       @row-click="play">
       <template v-if="!main().isMobile">
         <el-table-column
@@ -123,12 +123,13 @@ if (listsSongs.value) {
           type="index"
           align="center"
           min-width="5%"
+          :fit="true"
           :class-name="'text-gray-400'"
           :show-overflow-tooltip="false" />
         <el-table-column align="left" label="歌曲" min-width="40%">
           <template #default="scope">
-            <div class="flex">
-              <span>
+            <div class="flex w-full justify-between">
+              <span class="w-2/3 truncate">
                 {{ scope.row.name }}
               </span>
               <span v-if="scope.row.fee === 1 && !noTag">
@@ -153,7 +154,7 @@ if (listsSongs.value) {
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="专辑" :hidden-sm-and-down="true" min-width="20%">
+        <el-table-column label="专辑" :hidden-sm-and-down="true" min-width="10%">
           <template #default="scope">
             {{ scope.row.al?.name }}
           </template>
@@ -163,7 +164,6 @@ if (listsSongs.value) {
             {{ formatTime(scope.row.dt, 'ms') }}
           </template>
         </el-table-column>
-
         <el-table-column label="大小" :hidden-sm-and-down="true" min-width="10%" v-if="cloud">
           <template #default="scope"> {{ (scope.row.fileSize / 1000000).toFixed(1) }}M </template>
         </el-table-column>

@@ -61,6 +61,10 @@ onMounted(() => {
   n.value = ls.value?.parentElement?.parentElement?.offsetHeight
     ? Math.floor(ls.value?.parentElement?.parentElement?.offsetHeight / h.value / 2)
     : 0
+
+  scrollBar.value!.update = () => {
+    console.log(1234)
+  }
 })
 
 onUpdated(() => {

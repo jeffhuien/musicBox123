@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { MusicConfig } from '#/config'
+
 import { menu } from '#/menu'
 import { RouteNames } from '@/enum/routeName'
 import { auth, main } from '@/stores'
 import { logOut } from '@/utils'
 import { ElMessageBox } from 'element-plus'
+
 const menus = ref<menu[]>([
   {
     name: '发现音乐',
@@ -55,6 +58,10 @@ function LogOut() {
       <i class="fa-solid fa-refresh text-lg mr-2 w-7"></i>
       更新版本
     </a>
+    <a @click="$router.push({ name: 'setting' })" class="flex items-center">
+      <i class="fa-solid fa-gear text-lg mr-2 w-7"></i>
+      设置
+    </a>
     <div class="item-block" v-for="(i, index) in menus" :index="index">
       <h1>{{ i.name }}</h1>
       <router-link :to="{ name: k.toName }" class="flex items-center" v-for="(k, index) in i.item" :index="index">
@@ -76,10 +83,10 @@ h1 {
   }
 }
 a {
-  @apply text-xs p-2 mb-1 rounded-md text-gray-500 hover:bg-gray-100;
+  @apply text-xs p-2 mb-1 rounded-md text-gray-500 hover:bg-gray-50;
 
   &.router-link-active {
-    @apply font-bold bg-gray-300 text-sky-500;
+    @apply font-bold bg-pink-400 text-white;
   }
 }
 </style>

@@ -36,35 +36,51 @@ async function change(e: Event) {
           <i class="fa-solid fa-refresh" @click="change($event)"></i>
           <span class="text-xs"> 换一批 </span>
         </span>
-        <!-- {{ list?.result[0] }} -->
       </h1>
-
-      <div class="grid grid-cols-6 gap-3 max-xl:grid-cols-5 max-sm:grid-cols-3">
-        <el-card
-          v-if="list"
-          class="w-42 !border-none !shadow-none relative group transition-all"
-          v-for="(i, d) in list?.result"
-          :body-class="'!p-0 '"
-          :index="d">
-          <div class="" @click="$router.push('/list/' + i.id?.toString())">
-            <div class="relative flex justify-center items-center">
-              <img class="w-42 h-42 !rounded-lg" :src="i.picUrl" />
-              <i class="fa-regular fa-play-circle text-5xl text-white absolute hidden group-hover:block" />
-            </div>
-            <div class="relative py-2">
-              <span class="text-sm line-clamp-2 overflow-hidden hover:text-sky-500 hover:cursor-pointer">{{
-                i.name
-              }}</span>
-              <span
-                class="text-xs absolute -top-6 right-2 text-white bg-black bg-opacity-50 px-2 py-[2px] rounded-full">
-                <i class="fa-solid fa-play text-white mr-[2px]"> </i>
-                {{ (i.playCount / 10000).toFixed(2) }}万</span
-              >
-            </div>
+      <el-skeleton
+        class="w-full h-full flex gap-3 flex-wrap justify-between"
+        :loading="list?.result.length ? false : true"
+        animated
+        :count="20"
+        :throttle="2000">
+        <template #default>
+          <div
+            class="grid xl:grid-cols-6 md:grid-cols-5 max-md:grid-cols-4 gap-3 max-xl:grid-cols-5 max-sm:grid-cols-3">
+            <!-- <div class="grid grid-cols-6 gap-3 max-xl:grid-cols-5 max-sm:grid-cols-3"> -->
+            <el-card
+              class="w-42 !border-none !shadow-none relative group transition-all"
+              v-for="(i, d) in list?.result"
+              :body-class="'!p-0 '"
+              :index="d">
+              <div class="" @click="$router.push('/list/' + i.id?.toString())">
+                <div class="relative flex justify-center items-center">
+                  <el-image lazy class="w-42 h-42 !rounded-lg" :src="i.picUrl" />
+                  <i class="fa-regular fa-play-circle text-5xl text-white absolute hidden group-hover:block" />
+                </div>
+                <div class="relative py-2">
+                  <span class="text-sm line-clamp-2 overflow-hidden hover:text-sky-500 hover:cursor-pointer">{{
+                    i.name
+                  }}</span>
+                  <span
+                    class="text-xs absolute -top-6 right-2 text-white bg-black bg-opacity-50 px-2 py-[2px] rounded-full">
+                    <i class="fa-solid fa-play text-white mr-[2px]"> </i>
+                    {{ (i.playCount / 10000).toFixed(2) }}万</span
+                  >
+                </div>
+              </div>
+            </el-card>
           </div>
-        </el-card>
-        <Loading v-else class="">loading</Loading>
-      </div>
+          <!-- <Loading v-else class="">loading</Loading> -->
+        </template>
+
+        <template #template>
+          <div class="h-40 w-1/6 flex flex-col gap-1">
+            <el-skeleton-item variant="image" style="height: 80%" />
+            <el-skeleton-item variant="text" style="height: 10px" />
+            <el-skeleton-item variant="text" style="height: 10px; width: 30%" />
+          </div>
+        </template>
+      </el-skeleton>
     </div>
   </el-scrollbar>
 </template>

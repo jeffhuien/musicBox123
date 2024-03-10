@@ -97,7 +97,9 @@ function s({ scrollTop }: { scrollTop: number }) {
         </div> -->
       </template>
 
-      <div v-if="!show" class="w-full p-2 flex flex-col justify-between gap-2 sticky top-0 z-50 truncate bg-white">
+      <div
+        v-if="!show"
+        class="w-full p-2 rounded-b-xl flex flex-col justify-between gap-2 sticky top-0 z-50 truncate bg-pink-100 mb-4">
         <div class="flex gap-2 items-center">
           <div class="relative w-12 h-12">
             <el-image :src="info?.coverImgUrl || '/img/logo.png'" class="w-full h-full rounded-md" />
@@ -111,12 +113,17 @@ function s({ scrollTop }: { scrollTop: number }) {
         </div>
       </div>
 
-      <div class="flex-1 !overflow-hidden">
-        <div class="h-full animate__animated animate__fadeIn">
-          <list :lists-songs="(data as unknown as  Song[])" :list-name="info?.name" ref="ls" v-if="data" />
-          <Loading v-else class="">loading</Loading>
-        </div>
+      <!-- <div class="flex-1 !overflow-hidden !rounded-xl"> -->
+      <div class="h-full animate__animated animate__fadeIn">
+        <list
+          :lists-songs="(data as unknown as  Song[])"
+          class="rounded-xl"
+          :list-name="info?.name"
+          ref="ls"
+          v-if="data" />
+        <Loading v-else class="">loading</Loading>
       </div>
+      <!-- </div> -->
     </div>
   </ElScrollbar>
 </template>
@@ -125,5 +132,12 @@ function s({ scrollTop }: { scrollTop: number }) {
 :deep(.el-table td.el-table__cell),
 :deep(.el-table th.el-table__cell.is-leaf) {
   border: none;
+}
+
+:deep(.el-table tr) {
+  background: none;
+}
+:deep(.el-table) {
+  background: none;
 }
 </style>

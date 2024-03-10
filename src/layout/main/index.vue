@@ -4,7 +4,7 @@
       <div
         class="shrink-0 h-full transition-all duration-700 max-sm:absolute z-50"
         :class="[menuClose && main().isMobile ? '!w-0' : 'max-sm:w-3/5']">
-        <el-scrollbar class="relative w-full md:min-w-[12rem] h-full bg-white shrink-0 shadow-lg">
+        <el-scrollbar class="relative w-full md:min-w-[12rem] h-full shrink-0 shadow-lg rounded-xl">
           <left-menu />
           <song-list-menu v-if="data" :list="(data as listsType[])" />
         </el-scrollbar>

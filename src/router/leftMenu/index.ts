@@ -40,4 +40,10 @@ export default [
     path: '/historyPlay',
     component: () => import('@/views/historyPlay/index.vue'),
   },
+  {
+    name: 'setting',
+    path: '/setting',
+    meta: { enter: 'animate__slideInUp' },
+    component: () => import('@/views/setting/index.vue'),
+  },
 ] as RouteRecordRaw[]

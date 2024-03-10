@@ -1,6 +1,7 @@
 import { getPlayUrl } from '#/song/get-url'
 import { songInfo } from '#/song/songInfo'
 import Axios from '@/plugins/axios/axios'
+import { main } from '@/stores'
 import { env } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 const Song = class extends Axios {
@@ -8,7 +9,7 @@ const Song = class extends Axios {
     super(config)
   }
 
-  public async getSongUrl(id: number | string, level: string = 'standard') {
+  public async getSongUrl(id: number | string, level: string = main().config.quality) {
     return this.request<getPlayUrl>({
       url: '/url/v1',
       method: 'get',
