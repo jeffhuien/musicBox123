@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full dark:bg-gray-800 bg-white dark:text-white">
     <Suspense>
       <router-view v-slot="{ Component }">
         <transition

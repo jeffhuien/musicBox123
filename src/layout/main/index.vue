@@ -9,9 +9,10 @@
           <div class="w-full h-full flex flex-col">
             <div class="flex w-full h-full gap-3 relative">
               <div
-                class="dark:bg-gray-800 bg-white shrink-0 h-full transition-all duration-700 max-sm:absolute z-50"
-                :class="[menuClose && main().isMobile ? '!w-0' : 'max-sm:w-3/5']">
-                <el-scrollbar class="relative w-full md:min-w-[12rem] h-full shrink-0 shadow-lg rounded-xl">
+                class="shrink-0 h-full transition-all bg-white w-48 duration-700 z-50"
+                :class="[menuClose && main().isMobile ? '!w-0' : '', main().isMobile ? 'max-sm:absolute' : '']">
+                <el-scrollbar
+                  class="dark:bg-gray-800 relative w-full md:min-w-[12rem] h-full shrink-0 shadow-lg rounded-xl">
                   <left-menu />
                   <song-list-menu v-if="data" :list="(data as listsType[])" />
                 </el-scrollbar>

@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import { MusicConfig } from '#/config'
-
 import { menu } from '#/menu'
 import { RouteNames } from '@/enum/routeName'
-import { auth, main } from '@/stores'
-import { logOut } from '@/utils'
-import { ElMessageBox } from 'element-plus'
-
+import { main } from '@/stores'
 const menus = ref<menu[]>([
   {
     name: '发现音乐',
@@ -26,42 +21,11 @@ const menus = ref<menu[]>([
     ],
   },
 ])
-
-function LogOut() {
-  ElMessageBox.confirm('确认要注销登录吗？', {
-    confirmButtonText: '是',
-    cancelButtonText: '否',
-    type: 'warning',
-  }).then(() => {
-    logOut()
-    ElMessage({
-      type: 'success',
-      message: 'bye bye~',
-    })
-  })
-}
 </script>
 
 <template>
   <div class="w-full flex flex-col justify-center p-4">
-    <a v-if="!auth().isLogin" @click=";(main().loginShow = true), $router.push('/login')" class="flex items-center">
-      <i class="fa-solid fa-user text-lg mr-2 w-7"></i>
-      登录
-    </a>
-
-    <a v-else @click="LogOut" class="flex items-center">
-      <i class="fa-solid fa-user text-lg mr-2 w-7"></i>
-      注销
-    </a>
-
-    <a @click="$router.go(0)" class="flex items-center">
-      <i class="fa-solid fa-refresh text-lg mr-2 w-7"></i>
-      更新版本
-    </a>
-    <a @click="$router.push({ name: 'setting' })" class="flex items-center">
-      <i class="fa-solid fa-gear text-lg mr-2 w-7"></i>
-      设置
-    </a>
+    <Setting-btn v-if="main().isMobile"></Setting-btn>
     <div class="item-block" v-for="(i, index) in menus" :index="index">
       <h1 class="dark:text-white">{{ i.name }}</h1>
       <router-link :to="{ name: k.toName }" class="flex items-center" v-for="(k, index) in i.item" :index="index">

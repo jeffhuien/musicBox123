@@ -52,7 +52,7 @@ async function change(e: Event) {
               v-for="(i, d) in list?.result"
               :body-class="'!p-0 '"
               :index="d">
-              <div class="" @click="$router.push('/list/' + i.id?.toString())">
+              <div class="dark:bg-gray-800 bg-white dark:text-white" @click="$router.push('/list/' + i.id?.toString())">
                 <div class="relative flex justify-center items-center">
                   <el-image lazy class="w-42 h-42 !rounded-lg" :src="i.picUrl" />
                   <i class="fa-regular fa-play-circle text-5xl text-white absolute hidden group-hover:block" />
