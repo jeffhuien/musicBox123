@@ -9,7 +9,7 @@ const {
 
 <template>
   <div class="w-full flex flex-col justify-center p-4 pt-0">
-    <h1>自建歌单</h1>
+    <h1 class="dark:text-white">自建歌单</h1>
     <div class="item-block">
       <router-link
         :to="{ name: `song.list`, params: { id: k.id } }"

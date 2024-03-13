@@ -63,7 +63,7 @@ function LogOut() {
       设置
     </a>
     <div class="item-block" v-for="(i, index) in menus" :index="index">
-      <h1>{{ i.name }}</h1>
+      <h1 class="dark:text-white">{{ i.name }}</h1>
       <router-link :to="{ name: k.toName }" class="flex items-center" v-for="(k, index) in i.item" :index="index">
         <i :class="k.ico" class="text-lg mr-2 w-7"></i>
         {{ k.name }}

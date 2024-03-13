@@ -2,7 +2,9 @@
 import { Song } from '#/song/songInfo'
 import { CommonApi } from '@/Api/Common'
 import Tags from '@/components/common/tag.vue'
+import router from '@/router'
 import { playControl, playList } from '@/stores'
+console.log(router.currentRoute)
 
 const { playMusicById, playCloudMusic } = playControl()
 async function BarPlay(i: Song, index: number) {
@@ -19,16 +21,14 @@ lyric.value = await CommonApi.getLyric(playControl().playId)
 watch(
   () => playControl().playId,
   async (newV: number) => {
-    console.log('newV', newV)
     lyric.value = await CommonApi.getLyric(newV)
-    console.log(lyric)
   },
 )
 </script>
 
 <template>
-  <div class="flex flex-col h-full w-full">
-    <div class="h-full w-full flex">
+  <div class="flex flex-col w-full h-full overflow-hidden">
+    <div class="flex-1 overflow-hidden flex">
       <div class="shrink-0 transition-all duration-700 max-sm:hidden" :class="[closeV ? 'w-0' : 'w-80']">
         <div class="w-full h-full flex flex-col gap-1 z-50 rounded-md shadow-lg relative">
           <div class="flex-1 overflow-hidden" v-if="playList().playList1">
@@ -73,6 +73,9 @@ watch(
       <div class="flex-1">
         <lyricView :lrcStr="lyric.lrc.lyric" />
       </div>
+    </div>
+    <div class="">
+      <PlayBar />
     </div>
   </div>
 </template>

@@ -8,7 +8,7 @@ import playList from './playList'
 export const playControl = defineStore(
   'playControl',
   () => {
-    let volume = ref<number>(100)
+    let volume = ref<number>(1)
     let isPlay = ref<boolean>(false)
     let currentTime = ref<number>(0.01)
     let duration = ref<number>(0.01)
@@ -136,7 +136,6 @@ export const playControl = defineStore(
     }
 
     watch([volume, isMuted], (newV, oldV) => {
-      console.log(newV)
       Music.setVolume(newV[0])
       newV[1] != oldV[1] ? Music.setMuted() : ''
     })

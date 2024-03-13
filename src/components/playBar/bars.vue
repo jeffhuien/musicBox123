@@ -13,14 +13,17 @@ let data = defineProps<{
       <template v-if="item.name == '音量'">
         <div class="relative max-md:hidden group w-full h-full flex justify-center items-center">
           <button @click="item.fun?.click" @blur="item.fun?.blur">
-            <i class="fa-solid" :class="[playControl().isMuted ? item.ico[1] : item.ico[0]]"></i>
+            <i
+              class="fa-solid w-5 shrink-0"
+              :class="[playControl().isMuted || playControl().volume == 0 ? item.ico[1] : item.ico[0]]"></i>
             <span class="ml-1 max-sm:hidden">{{ item.name }}</span>
           </button>
 
           <div
-            class="hidden -translate-x-1/2 py-3 left-1/2 group-hover:flex flex-col justify-center gap-2 shadow-xl rounded-md items-center border w-14 h-32 bg-white z-20 absolute bottom-10">
+            class="hidden -translate-x-1/2 py-3 left-1/2 group-hover:flex flex-col justify-center gap-2 shadow-xl rounded-md items-center border w-14 !h-32 bg-white z-20 absolute bottom-10">
             <div class="flex-1">
               <ElSlider
+                class="!h-full"
                 v-model="playControl().volume"
                 :disabled="playControl().isMuted"
                 :vertical="true"
@@ -36,7 +39,7 @@ let data = defineProps<{
 
       <template v-else>
         <div
-          class="relative group h-full flex justify-center items-center"
+          class="relative group w-5 shrink-0 h-full flex justify-center items-center"
           :class="[item.name != '列表' ? 'max-md:hidden' : '']">
           <button @blur.native.capture="item.fun?.blur" @click="item.fun?.click">
             <i :class="[item.ico instanceof Array ? item.ico[0] : item.ico]"></i>

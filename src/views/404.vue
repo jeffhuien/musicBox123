@@ -14,7 +14,7 @@
       <!-- Continue With -->
       <div class="flex flex-col mt-48 h-32">
         <div class="text-gray-400 font-bold uppercase">
-          <router-link :to="{ name: 'home' }" class="hover:text-purple-600">回首页</router-link>
+          <a @click="$router.go(-1)" class="hover:text-purple-600">返回</a>
         </div>
       </div>
     </div>

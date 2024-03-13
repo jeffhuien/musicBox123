@@ -11,7 +11,16 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('@/layout/main/index.vue'),
-      children: [...leftMenu, ...LeftSongList],
+      children: [
+        ...leftMenu,
+        ...LeftSongList,
+
+        {
+          path: '/search',
+          name: 'search',
+          component: () => import('@/layout/search/index.vue'),
+        },
+      ],
       redirect: 'recommend',
     },
     {
@@ -19,27 +28,8 @@ const router = createRouter({
       name: 'play',
       meta: { enter: 'animate__slideInUp', leave: 'animate__slideOutDown' },
       component: () => import('@/layout/play/index.vue'),
-      children: [
-        {
-          path: 'b',
-          name: 'b',
-          component: () => import('@/views/main/index.vue'),
-        },
-      ],
     },
 
-    {
-      path: '/search',
-      name: 'search',
-      component: () => import('@/layout/search/index.vue'),
-      children: [
-        {
-          path: 'b',
-          name: 'b',
-          component: () => import('@/views/main/index.vue'),
-        },
-      ],
-    },
     {
       path: '/login',
       name: 'login',
@@ -62,8 +52,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  console.log(to.name, to.meta)
-
   if (to.meta.login && !auth().isLogin) {
     ElMessage({
       message: '需要登录',

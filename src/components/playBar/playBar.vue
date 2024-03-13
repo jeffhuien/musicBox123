@@ -108,10 +108,6 @@ import { Music, formatTime } from '@/utils'
 import { Arrayable } from 'element-plus/es/utils/typescript'
 import { storeToRefs } from 'pinia'
 
-function aas() {
-  console.log(122)
-}
-
 let mp3 = Music
 let playListEl = ref<HTMLElement>()
 let scrollbar = ref()
