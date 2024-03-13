@@ -47,7 +47,7 @@ h1 {
   }
 }
 a {
-  @apply text-xs p-2 mb-1 rounded-md text-gray-500 hover:bg-gray-50;
+  @apply text-xs p-2 mb-1 rounded-md text-gray-500 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700;
 
   &.router-link-active {
     @apply font-bold bg-pink-400 text-white;

@@ -1,5 +1,6 @@
 <template>
-  <div class="playBar p-1 w-full h-full relative lg:justify-between flex-nowrap !bg-opacity-100 z-50 flex items-center">
+  <div
+    class="text-gray-500 playBar p-1 w-full h-full relative lg:justify-between flex-nowrap !bg-opacity-100 z-50 flex items-center">
     <!-- 进度条 -->
     <div class="playBar-progress group !bg-pink-600 w-full hover:cursor-pointer absolute -top-[0.07rem] left-0">
       <el-slider
@@ -32,13 +33,13 @@
     </div>
     <!-- <!== 控制条 ==> -->
     <div class="flex justify-center flex-1 relative shrink-0 lg:w-1/3 w-1/4 max-sm:!justify-end max-sm:pr-12">
-      <div class="flex justify-center items-center gap-8 text-xl">
-        <i class="fa-solid fa-backward-step text-pink-300 max-md:hidden" @click="playPrev"></i>
+      <div class="flex justify-center items-center gap-8 text-xl text-sky-300 dark:text-gray-500">
+        <i class="fa-solid fa-backward-step max-md:hidden" @click="playPrev"></i>
         <i
-          class="fa-solid text-pink-300 shrink-0 text-4xl w-5 max-sm:text-2xl"
+          class="fa-solid shrink-0 text-4xl w-5 max-sm:text-2xl"
           :class="[isPlay ? 'fa-pause' : 'fa-play ']"
           @click="play"></i>
-        <i class="fa-solid fa-forward-step text-pink-300 max-md:hidden" @click="playNext"></i>
+        <i class="fa-solid fa-forward-step max-md:hidden" @click="playNext"></i>
       </div>
     </div>
 

@@ -32,7 +32,9 @@ let data = defineProps<{
                 :step="0.01"
                 :max="1" />
             </div>
-            <span class="text-xs">{{ playControl().isMuted ? 0 : (playControl().volume * 100).toFixed(0) }}%</span>
+            <span class="text-xs dark:text-gray-400"
+              >{{ playControl().isMuted ? 0 : (playControl().volume * 100).toFixed(0) }}%</span
+            >
           </div>
         </div>
       </template>

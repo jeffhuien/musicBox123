@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Playlist } from '#/List/ListDetail'
 import { Song } from '#/song/songInfo'
-import { auth } from '@/stores'
+import { auth, main } from '@/stores'
 const props = defineProps<{
   data: Song[]
   info: Playlist
@@ -98,8 +98,8 @@ function s({ scrollTop }: { scrollTop: number }) {
       </template>
 
       <div
-        v-if="!show"
-        class="w-full p-2 rounded-b-xl flex flex-col justify-between gap-2 sticky top-0 z-50 truncate bg-pink-100 mb-4">
+        v-if="!show && !main().isMobile"
+        class="w-full p-2 rounded-b-xl flex flex-col justify-between gap-2 sticky top-0 z-50 truncate bg-white border dark:border-none shadow-lg dark:bg-gray-600 mb-4 animate__animated animate__slideInDown">
         <div class="flex gap-2 items-center">
           <div class="relative w-12 h-12">
             <el-image :src="info?.coverImgUrl || '/img/logo.png'" class="w-full h-full rounded-md" />

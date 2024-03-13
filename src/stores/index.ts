@@ -6,17 +6,26 @@ import auth from './auth'
 import { defineStore } from 'pinia'
 import { getIsMobile } from '@/utils'
 import { playControl } from './playControl'
-import { MusicConfig } from '#/config'
+import { ColorModeConfig, MusicConfig } from '#/config'
+
+interface configItem {
+  [key: string]: any
+  quality: MusicConfig
+  colorMode: ColorModeConfig
+}
 
 const main = defineStore(
   'main',
   () => {
-    let menuClose = ref(false)
-    let listClose = ref(true)
-    let config = ref<{ quality: MusicConfig }>({ quality: MusicConfig.standard })
-    config.value.quality = MusicConfig.standard
+    const menuClose = ref(false)
+    const listClose = ref(true)
+    const config = ref<configItem>({
+      quality: MusicConfig.standard,
+      colorMode: ColorModeConfig.system,
+    })
     const isMobile = ref(false)
     const loginShow = ref(false)
+
     function check() {
       if (getIsMobile()) isMobile.value = true
       else isMobile.value = false
@@ -25,6 +34,7 @@ const main = defineStore(
     check()
     window.onresize = () => {
       check()
+      console.log(1)
     }
     return { isMobile, loginShow, menuClose, listClose, config }
   },

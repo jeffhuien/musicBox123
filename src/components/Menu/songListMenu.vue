@@ -42,7 +42,7 @@ h1 {
   @apply w-full flex flex-col justify-center;
 
   a {
-    @apply text-xs p-2 mb-1 rounded-md text-gray-500 hover:bg-gray-100;
+    @apply text-xs p-2 mb-1 rounded-md text-gray-500 hover:bg-gray-100  dark:hover:bg-gray-700;
 
     &.router-link-active {
       @apply font-bold bg-gray-300 text-sky-500;

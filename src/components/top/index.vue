@@ -10,6 +10,7 @@
       <mSearch class="" />
     </div>
     <div class="md:w-1/3 flex pl-10 max-sm:hidden">
+      <setting-btn></setting-btn>
       <Auth></Auth>
     </div>
   </div>
