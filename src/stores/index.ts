@@ -4,7 +4,6 @@ import searchHistory from './searchHistory'
 import playList from './playList'
 import auth from './auth'
 import { defineStore } from 'pinia'
-import { getIsMobile } from '@/utils'
 import { playControl } from './playControl'
 import { ColorModeConfig, MusicConfig } from '#/config'
 
@@ -26,16 +25,6 @@ const main = defineStore(
     const isMobile = ref(false)
     const loginShow = ref(false)
 
-    function check() {
-      if (getIsMobile()) isMobile.value = true
-      else isMobile.value = false
-    }
-
-    check()
-    window.onresize = () => {
-      check()
-      console.log(1)
-    }
     return { isMobile, loginShow, menuClose, listClose, config }
   },
   {

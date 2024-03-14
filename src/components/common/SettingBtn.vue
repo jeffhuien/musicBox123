@@ -25,6 +25,11 @@ const props = defineProps({
 })
 
 let show = ref(false)
+let {
+  documentElement: {
+    value: { classList },
+  },
+} = toRefs(document)
 </script>
 
 <template>
@@ -50,7 +55,10 @@ let show = ref(false)
     <a @click="show = !show" class="relative flex items-center [&>span]:hover:inline-block">
       <i
         class="fa-solid text-lg mr-2 w-7"
-        :class="[main().config.colorMode != ColorModeConfig.dark ? 'fa-sun' : 'fa-moon']"></i>
+        :class="[
+          classList.value != '' ? 'fa-' + (classList.value == ColorModeConfig.dark ? 'moon' : 'sun') : 'fa-sun',
+        ]">
+      </i>
       <div v-show="show" class="rounded-md text-sm absolute top-10 z-20 bg-white flex flex-col gap-3 w-28 py-2">
         <p
           @click="main().config.colorMode = ColorModeConfig.dark"

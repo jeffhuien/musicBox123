@@ -47,22 +47,6 @@ const CommonConfig: { label: string; value: any; source: any; commit?: string }[
     commit: `黑、白、跟随系统`,
   },
 ]
-
-function setColor(value: string) {
-  if (value === 'system') {
-    document.documentElement.classList.value = ''
-
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? document.documentElement.classList.add('dark')
-      : document.documentElement.classList.remove('dark')
-  } else {
-    document.documentElement.classList.value = value
-  }
-}
-setColor(config.value.colorMode)
-watch(config.value, (newVal) => {
-  setColor(newVal.colorMode)
-})
 </script>
 <style lang="scss" scoped>
 :deep(.el-radio__input.is-checked) {

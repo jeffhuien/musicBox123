@@ -54,7 +54,7 @@
     <div
       ref="playListEl"
       :class="[main().listClose ? 'animate__slideOutRight' : 'animate__slideInRight']"
-      class="animate__animated flex flex-col gap-1 h-[60vh] overflow-hidden w-2/5 max-sm:w-full absolute right-0 bottom-[4.8rem] max-sm:bottom-16 z-50 bg-white border rounded-md shadow-lg">
+      class="dark:bg-gray-800 animate__animated flex flex-col gap-1 h-[60vh] overflow-hidden w-2/5 max-sm:w-full absolute right-0 bottom-[4.8rem] max-sm:bottom-16 z-50 bg-white border rounded-md shadow-lg">
       <div class="flex gap-2 flex-col text-xs p-2">
         <div class="">正在播放的歌单: {{ name }}</div>
         <div class="flex gap-2">
@@ -179,11 +179,8 @@ let rightBars = [
       click: function (e: Event & { target: HTMLElement }) {
         playListEl.value?.classList.toggle('hidden')
         main().listClose = !main().listClose
-        console.log(1222)
       },
       blur: function (e: Event & { target: HTMLElement }) {
-        console.log(1234)
-
         main().listClose = true
       },
     },

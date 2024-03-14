@@ -19,7 +19,35 @@
 <style lang="scss" scoped></style>
 
 <script setup lang="ts">
+import { main } from './stores'
+import { getIsMobile } from '@/utils'
+
+const { config, isMobile } = toRefs(main())
 onMounted(() => {
   console.log('加载缓存...')
+  function setColor(value: string) {
+    if (value === 'system') {
+      document.documentElement.classList.value = ''
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? document.documentElement.classList.add('dark')
+        : document.documentElement.classList.remove('dark')
+    } else {
+      document.documentElement.classList.value = value
+    }
+  }
+  setColor(config.value.colorMode)
+  watch(config.value, (newVal) => {
+    setColor(newVal.colorMode)
+  })
+
+  function check() {
+    if (getIsMobile()) isMobile.value = true
+    else isMobile.value = false
+  }
+  check()
+  console.log('移动', isMobile.value)
+  window.onresize = () => {
+    check()
+  }
 })
 </script>
