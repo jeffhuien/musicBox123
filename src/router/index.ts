@@ -20,6 +20,11 @@ const router = createRouter({
           name: 'search',
           component: () => import('@/layout/search/index.vue'),
         },
+        {
+          path: '/commit',
+          name: 'commit',
+          component: () => import('@/views/commit/index.vue'),
+        },
       ],
       redirect: 'recommend',
     },

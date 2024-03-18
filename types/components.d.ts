@@ -12,6 +12,7 @@ declare module 'vue' {
     Bars: typeof import('./../src/components/playBar/bars.vue')['default']
     Buttons: typeof import('./../src/components/common/buttons.vue')['default']
     CloudList: typeof import('./../src/components/list/cloudList.vue')['default']
+    Commit: typeof import('./../src/components/common/commit.vue')['default']
     ConfigBtn: typeof import('../src/components/common/SettingBtn.vue')['default']
     copy: typeof import('./../src/components/list/list copy.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
