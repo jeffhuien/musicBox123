@@ -19,12 +19,14 @@
 <style lang="scss" scoped></style>
 
 <script setup lang="ts">
+import { ColorModeConfig } from '#/config'
 import { main } from './stores'
 import { getIsMobile } from '@/utils'
 
 const { config, isMobile } = toRefs(main())
 onMounted(() => {
   console.log('加载缓存...')
+  config.value.colorMode = ColorModeConfig.system
   function setColor(value: string) {
     if (value === 'system') {
       document.documentElement.classList.value = ''
@@ -45,7 +47,6 @@ onMounted(() => {
     else isMobile.value = false
   }
   check()
-  console.log('移动', isMobile.value)
   window.onresize = () => {
     check()
   }

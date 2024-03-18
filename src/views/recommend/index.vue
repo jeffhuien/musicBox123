@@ -46,9 +46,8 @@ async function change(e: Event) {
         <template #default>
           <div
             class="grid xl:grid-cols-6 md:grid-cols-5 max-md:grid-cols-4 gap-3 max-xl:grid-cols-5 max-sm:grid-cols-3">
-            <!-- <div class="grid grid-cols-6 gap-3 max-xl:grid-cols-5 max-sm:grid-cols-3"> -->
             <el-card
-              class="w-42 !border-none !shadow-none relative group transition-all"
+              class="w-42 !border-none !shadow-none relative group transition-all !bg-no hover:-translate-y-4"
               v-for="(i, d) in list?.result"
               :body-class="'!p-0 '"
               :index="d">
@@ -58,9 +57,9 @@ async function change(e: Event) {
                   <i class="fa-regular fa-play-circle text-5xl text-white absolute hidden group-hover:block" />
                 </div>
                 <div class="relative py-2">
-                  <span class="text-sm line-clamp-2 overflow-hidden hover:text-sky-500 hover:cursor-pointer">{{
-                    i.name
-                  }}</span>
+                  <span class="text-sm line-clamp-2 overflow-hidden hover:text-sky-500 hover:cursor-pointer">
+                    {{ i.name }}
+                  </span>
                   <span
                     class="text-xs absolute -top-6 right-2 text-white bg-black bg-opacity-50 px-2 py-[2px] rounded-full">
                     <i class="fa-solid fa-play text-white mr-[2px]"> </i>
