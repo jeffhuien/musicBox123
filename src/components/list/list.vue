@@ -107,15 +107,18 @@ if (listsSongs.value) {
 <template>
   <template v-if="listsSongs">
     <el-table
-      :data="listsSongs"
       height="100%"
       width="100%"
-      :flexible="true"
       class="h-full"
+      :data="listsSongs"
+      :flexible="true"
       :show-overflow-tooltip="true"
       :tooltip-options="{ effect: 'light', showArrow: false, offset: -60, popperClass: '!border-red-200' }"
-      :row-class-name="(setStyle, '')"
-      :header-cell-class-name="'!bg-no'"
+      :row-class-name="(setStyle, '!bg-no  dark:hover:!bg-gray-700 hover:!bg-gray-50 dark:hover:text-gray-400')"
+      :cell-class-name="' !border-none  '"
+      :class-name="'!bg-no'"
+      :header-cell-class-name="'!bg-no !border-none'"
+      :header-row-class-name="'!bg-no'"
       @row-click="play">
       <template v-if="!main().isMobile">
         <el-table-column
@@ -223,11 +226,7 @@ if (listsSongs.value) {
 </template>
 
 <style scoped lang="scss">
-:deep(.el-table td.el-table__cell),
-:deep(.el-table th.el-table__cell.is-leaf) {
-  border: none;
-}
-:deep(.el-table__header-wrapper) {
-  @apply text-xs;
+:deep(.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell) {
+  background-color: #ffffff00 !important;
 }
 </style>

@@ -20,10 +20,11 @@
 
 <script setup lang="ts">
 import { ColorModeConfig } from '#/config'
+import { storeToRefs } from 'pinia'
 import { main } from './stores'
 import { getIsMobile } from '@/utils'
 
-const { config, isMobile } = toRefs(main())
+const { config, isMobile } = storeToRefs(main())
 onMounted(() => {
   console.log('加载缓存...')
   config.value.colorMode = ColorModeConfig.system

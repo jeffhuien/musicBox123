@@ -22,15 +22,14 @@ onMounted(async () => {
 </script>
 <template>
   <div class="w-full h-full flex flex-col">
-    <div class="flex-1 h-full overflow-hidden">
+    <div class="flex-1 h-full overflow-hidden dark:bg-gray-800">
       <list class="h-full" :lists-songs="searchData?.result?.songs"></list>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-:deep(.el-table td.el-table__cell),
-:deep(.el-table th.el-table__cell.is-leaf) {
-  border: none;
+:deep(.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell) {
+  @apply bg-no;
 }
 </style>

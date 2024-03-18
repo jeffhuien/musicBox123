@@ -30,9 +30,10 @@
 <script lang="ts" setup>
 import { ColorModeConfig, MusicConfig } from '#/config'
 import { main } from '@/stores'
+import { storeToRefs } from 'pinia'
 
 const active = ref('first')
-const { config } = toRefs(main())
+const { config } = storeToRefs(main())
 const CommonConfig: { label: string; value: any; source: any; commit?: string }[] = [
   {
     label: '音乐品质',

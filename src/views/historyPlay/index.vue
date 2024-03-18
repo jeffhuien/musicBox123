@@ -40,11 +40,10 @@ onBeforeMount(async () => {
 </template>
 
 <style scoped lang="scss">
-:deep(.el-table td.el-table__cell),
-:deep(.el-table th.el-table__cell.is-leaf) {
-  border: none;
-}
 :deep(.el-progress__text) {
   @apply text-xs;
+}
+:deep(.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell) {
+  background-color: #ffffff00 !important;
 }
 </style>
