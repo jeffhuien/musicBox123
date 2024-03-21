@@ -13,7 +13,7 @@ watch(router.currentRoute, (n) => {
 
 <template>
   <div class="flex flex-col h-full w-full">
-    <div class="p-4 max-sm:hidden border-b">
+    <div class="p-4 max-sm:hidden border-b dark:border-b-gray-50 dark:border-opacity-10">
       <Top></Top>
     </div>
     <div class="flex flex-1 gap-2 overflow-hidden">

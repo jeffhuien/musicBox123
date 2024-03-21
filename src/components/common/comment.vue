@@ -43,11 +43,11 @@ let input = ref('0')
 
 <template>
   <div class="p-4 w-full text-sm h-full flex max-sm:flex-col gap-3 relative" v-if="res">
-    <div class="info sticky top-0 flex flex-col gap-4 xl:w-1/4 md:w-1/2 max-sm:w-full">
+    <div class="info sticky top-0 flex flex-col gap-4 xl:w-1/4 md:w-1/3 max-sm:w-full">
       <div class="w-full flex sm:flex-col max-sm:flex-row gap-2">
         <ElImage
           :src="info?.img"
-          class="xl:size-90 md:w-full md:h-width max-sm:size-16 rounded-xl shadow-lg"
+          class="w-32 xl:size-80 md:size-60 max-sm:size-16 rounded-xl shadow-lg"
           @click="playControl().isPlay = !playControl().isPlay"></ElImage>
         <div class="flex flex-col gap-2">
           <div class="name md:text-2xl md:line-clamp-1">{{ info?.name }}</div>
@@ -78,11 +78,11 @@ let input = ref('0')
       </div>
     </div>
 
-    <el-scrollbar class="content">
+    <el-scrollbar class="content xl:w-3/4 flex-1">
       <div class="space-y-2">
         <h1 class="text-xl">精彩评论</h1>
         <div
-          class="flex w-full gap-4 mb-2 items-center p-3 border-b dark:border-b-gray-50 border-opacity-10"
+          class="flex w-full gap-4 mb-2 items-center p-3 border-b dark:border-b-gray-50 dark:border-opacity-10"
           v-for="(i, index) in res?.comments">
           <ElAvatar :src="i.user.avatarUrl" :size="'default'" class=""></ElAvatar>
           <div class="flex-1 flex-grow-2 flex flex-col gap-2">

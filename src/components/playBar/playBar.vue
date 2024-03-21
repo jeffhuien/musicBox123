@@ -67,7 +67,7 @@
       <div class="flex-1 overflow-hidden" v-if="playList1">
         <el-scrollbar height="100%" ref="scrollbar">
           <div
-            class="w-full flex items-center justify-between p-1 px-4 rounded-sm hover:bg-gray-200"
+            class="w-full flex items-center justify-between p-1 px-4 rounded-sm hover:bg-gray-200 dark:hover:bg-gray-700"
             v-for="(i, index) in playList1">
             <p
               @click="BarPlay(i as unknown as Song, index)"
@@ -198,19 +198,20 @@ document.addEventListener('keyup', async (e: KeyboardEvent) => {
 })
 
 async function play() {
-  if (isPlay.value) mp3.pause()
-  else {
-    try {
-      await mp3.play(playUrl.value)
-    } catch (error) {
-      // let t = await SongApi.getSongUrl(playId.value)
-      let t = currentTime.value
-      playMusicById(playId.value)
-      // await mp3.play(t.data[0].url)
-      // playUrl.value = t.data[0].url
-      mp3.setCurrentTime(t)
-    }
-  }
+  isPlay.value = !isPlay.value
+  // if (isPlay.value) mp3.pause()
+  // else {
+  //   try {
+  //     await mp3.play(playUrl.value)
+  //   } catch (error) {
+  //     // let t = await SongApi.getSongUrl(playId.value)
+  //     let t = currentTime.value
+  //     playMusicById(playId.value)
+  //     // await mp3.play(t.data[0].url)
+  //     // playUrl.value = t.data[0].url
+  //     mp3.setCurrentTime(t)
+  //   }
+  // }
 }
 
 function go() {
@@ -219,8 +220,6 @@ function go() {
 }
 
 onMounted(() => {
-  isPlay.value = false
-  // scrollbar.value?.setScrollTop(200)
   main().listClose = true
   playListEl.value?.classList.add('hidden')
   playListEl.value?.classList.remove('flex')

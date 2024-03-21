@@ -56,6 +56,7 @@ let ls = ref<HTMLDivElement>()
 let scrollBar = ref<InstanceType<typeof ElScrollbar>>()
 let h = ref(0)
 let n = ref(0)
+let p = ref<HTMLElement>()
 onMounted(() => {
   h.value = ls.value?.children.item(0)?.clientHeight ?? 0
   n.value = ls.value?.parentElement?.parentElement?.offsetHeight
@@ -65,6 +66,9 @@ onMounted(() => {
   scrollBar.value!.update = () => {
     console.log(1234)
   }
+  scrollBar.value!.wrapRef.addEventListener('keyup', (e) => {
+    e.preventDefault()
+  })
 })
 
 onUpdated(() => {

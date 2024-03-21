@@ -136,9 +136,18 @@ export const playControl = defineStore(
       setDocumentTitle(musicName.value + ' - ' + singerName.value)
     }
 
-    watch([volume, isMuted], (newV, oldV) => {
+    watch([volume, isMuted, isPlay], (newV, oldV) => {
       Music.setVolume(newV[0])
-      newV[1] != oldV[1] ? Music.setMuted() : ''
+      newV[1] != oldV[1]
+        ? //
+          Music.setMuted()
+        : ''
+      newV[2] != oldV[2]
+        ? //
+          newV[2]
+          ? Music.play(playUrl.value)
+          : Music.pause()
+        : ''
     })
 
     return {
