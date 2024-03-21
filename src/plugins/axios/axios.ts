@@ -58,7 +58,7 @@ export default class Axios {
         if (response.data.code == 302 && response?.data.msg == null) {
           ElMessage.warning('登录已过期，请重新登录~~')
           store.remove('cookie')
-          auth().$reset()
+          auth().isLogin = false
           router.push('/login')
         }
         return response
@@ -70,9 +70,10 @@ export default class Axios {
             if (auth().isLogin) {
               ElMessage.warning('登录已过期，请重新登录~~')
               store.remove('cookie')
-              auth().$reset()
+              auth().isLogin = false
             } else {
               ElMessage.warning('需要登录~~')
+
               router.push('/login')
             }
           }

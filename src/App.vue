@@ -21,12 +21,13 @@
 <script setup lang="ts">
 import { ColorModeConfig } from '#/config'
 import { storeToRefs } from 'pinia'
-import { main } from './stores'
+import { main, playControl } from './stores'
 import { getIsMobile } from '@/utils'
 
 const { config, isMobile } = storeToRefs(main())
 onMounted(() => {
   console.log('加载缓存...')
+  playControl().isPlay = false
   config.value.colorMode = ColorModeConfig.system
   function setColor(value: string) {
     if (value === 'system') {

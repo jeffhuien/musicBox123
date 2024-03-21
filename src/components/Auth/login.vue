@@ -24,7 +24,7 @@ function close() {
 }
 
 async function login() {
-  if (auth().user?.data) {
+  if (auth().isLogin) {
     ElMessage.success('已经登录过了1 ')
     clearInterval(timer)
     return
