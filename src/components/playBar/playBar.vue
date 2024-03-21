@@ -145,7 +145,9 @@ let leftBars = [
     name: '评论',
     ico: 'fa-regular fa-comment-dots',
     fun: {
-      click: function (e: Event) {},
+      click: function (e: Event) {
+        router.push('/comment/' + playId.value)
+      },
     },
   },
   {

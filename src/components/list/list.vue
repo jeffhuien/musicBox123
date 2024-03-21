@@ -119,7 +119,7 @@ if (listsSongs.value) {
       :class-name="'!bg-no'"
       :header-cell-class-name="'!bg-no !border-none'"
       :header-row-class-name="'!bg-no'"
-      @row-click="play">
+      @row-dblclick="play">
       <template v-if="!main().isMobile">
         <el-table-column
           label=""
@@ -129,7 +129,7 @@ if (listsSongs.value) {
           :fit="true"
           :class-name="'text-gray-400'"
           :show-overflow-tooltip="false" />
-        <el-table-column align="left" label="歌曲" min-width="40%">
+        <el-table-column align="left" label="歌曲" min-width="40%" @click="play">
           <template #default="scope">
             <div class="flex w-full justify-between">
               <span class="w-2/3 truncate">

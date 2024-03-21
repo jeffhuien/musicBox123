@@ -43,8 +43,13 @@ let data = defineProps<{
         <div
           class="relative group w-5 shrink-0 h-full flex justify-center items-center"
           :class="[item.name != '列表' ? 'max-md:hidden' : '']">
-          <button @blur.native.capture="item.fun?.blur" @click="item.fun?.click">
-            <i :class="[item.ico instanceof Array ? item.ico[0] : item.ico]"></i>
+          <button class="relative" @blur.native.capture="item.fun?.blur" @click="item.fun?.click">
+            <i class="" :class="[item.ico instanceof Array ? item.ico[0] : item.ico]"> </i>
+            <!-- <em
+              v-if="item.name == '评论' || item.name == '收藏'"
+              class="absolute -top-1 left-1 text-pink-600 text-xs scale-75"
+              >{{ '999' }}</em
+            > -->
             <span class="ml-1 max-sm:hidden">{{ item.name }}</span>
           </button>
         </div>
