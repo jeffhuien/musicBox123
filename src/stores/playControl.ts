@@ -15,6 +15,7 @@ export const playControl = defineStore(
     let musicName = ref<string>('快选择音乐播放吧~')
     let singerName = ref<string>('')
     let songImg = ref<string>('img/logo.png')
+    let songAl = ref<string>('')
     let playUrl = ref<string>('undefined')
     let playId = ref<number>(0)
     let isMuted = ref(false)
@@ -113,7 +114,7 @@ export const playControl = defineStore(
       playUrl.value = url.data[0].url
       songImg.value = song.al.picUrl
       musicName.value = song.name
-
+      songAl.value = song.al.name
       singerName.value = song.ar.length > 0 ? song.ar?.map((item: any) => item.name).join('、') : song.ar[0].name
       isPlay.value = true
       playId.value = song.id
@@ -157,6 +158,7 @@ export const playControl = defineStore(
       playCloudMusic,
       playMusic,
       playMusicById,
+      songAl,
     }
   },
 

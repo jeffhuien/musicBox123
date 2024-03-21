@@ -26,7 +26,7 @@ const router = createRouter({
     {
       path: '/comment/:id([0-9]*)',
       name: 'comment',
-      component: () => import('@/views/comment/index.vue'),
+      component: () => import('@/layout/comment/index.vue'),
     },
     {
       path: '/play',
