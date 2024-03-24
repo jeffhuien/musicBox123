@@ -66,7 +66,7 @@ onMounted(() => {
   scrollBar.value!.update = () => {
     console.log(1234)
   }
-  scrollBar.value!.wrapRef.addEventListener('keyup', (e) => {
+  scrollBar.value!.wrapRef!.addEventListener('keyup', (e) => {
     e.preventDefault()
   })
 })

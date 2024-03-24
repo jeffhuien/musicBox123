@@ -131,7 +131,11 @@ export const playControl = defineStore(
         }
       }
       currentTime.value = 0
-      await Music.play(playUrl.value)
+      try {
+        await Music.play(playUrl.value)
+      } catch (error) {
+        playMusicById(playId.value)
+      }
       duration.value = Music.getDuration()
       setDocumentTitle(musicName.value + ' - ' + singerName.value)
     }

@@ -11,7 +11,12 @@ class Music {
       this.audio.play()
     } else {
       this.audio.src = url
-      await this.audio.play()
+      try {
+        await this.audio.play()
+      } catch (error) {
+        console.log('retry~')
+        playControl().playMusicById(playControl().playId)
+      }
     }
     if (playControl().currentTime >= playControl().duration) playControl().currentTime = 0
     this.setCurrentTime(playControl().currentTime)

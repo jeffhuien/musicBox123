@@ -25,7 +25,8 @@ const main = defineStore(
     const isMobile = ref(false)
     const loginShow = ref(false)
 
-    return { isMobile, loginShow, menuClose, listClose, config }
+    let s = ref(0)
+    return { isMobile, loginShow, menuClose, listClose, config, s }
   },
   {
     persist: true,

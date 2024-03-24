@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import { Song } from '#/song/songInfo'
 import { CommonApi } from '@/Api/Common'
-import Tags from '@/components/common/tag.vue'
 import router from '@/router'
 import { playControl, playList } from '@/stores'
-console.log(router.currentRoute)
-
 const { playMusicById, playCloudMusic } = playControl()
 async function BarPlay(i: Song, index: number) {
   if (playList().isCloud) {
@@ -24,6 +21,9 @@ watch(
     lyric.value = await CommonApi.getLyric(newV)
   },
 )
+onMounted(async () => {
+  lyric.value = await CommonApi.getLyric(playControl().playId)
+})
 </script>
 
 <template>
@@ -49,7 +49,7 @@ watch(
                 </p>
                 <div class="shrink-0" v-if="!playList().isCloud">
                   <span v-if="i.fee === 1">
-                    <Tags :type="'vip'" />
+                    <Tag :type="'vip'" />
                   </span>
                   <!-- <span v-if="i.fee === 0">
                     <tags :type="'notSource'" />

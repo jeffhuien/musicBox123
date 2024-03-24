@@ -39,6 +39,7 @@ onMounted(async () => {
   res.value = await CommentApi.getSongComment(id.value)
 })
 let input = ref('0')
+let ActiveName = ref(0)
 </script>
 
 <template>
@@ -64,7 +65,7 @@ let input = ref('0')
 
       <div class="input flex flex-col gap-3 sticky top-0 mt-4 w-full">
         <span class="relative">
-          全部评论
+          评论
           <span class="absolute text-xs -top-1">{{ res?.total }}</span>
         </span>
         <div class="">
@@ -80,17 +81,29 @@ let input = ref('0')
 
     <el-scrollbar class="content xl:w-3/4 flex-1">
       <div class="space-y-2">
-        <h1 class="text-xl">精彩评论</h1>
-        <div
-          class="flex w-full gap-4 mb-2 items-center p-3 border-b dark:border-b-gray-50 dark:border-opacity-10"
-          v-for="(i, index) in res?.comments">
-          <ElAvatar :src="i.user.avatarUrl" :size="'default'" class=""></ElAvatar>
-          <div class="flex-1 flex-grow-2 flex flex-col gap-2">
-            <p class="text-xs dark:text-gray-600 text-gray-500">{{ i.user.nickname }}</p>
-            <p class="flex-1 line-clamp-2 text-sm">{{ i.content }}</p>
-          </div>
-          <p class="self-end float-right text-xs">{{ i.timeStr }}</p>
-        </div>
+        <el-collapse v-model="ActiveName">
+          <template v-for="(k, index) in [res.comments, res.hotComments]">
+            <el-collapse-item
+              class="[&>button]:text-xl [&>button]:text-sky-500 dark:[&>el-collapse-item__content]:!text-gray-700"
+              :title="index == 0 ? '精彩评论' : '全部评论'"
+              :name="index">
+              <div
+                class="flex w-full gap-4 mb-2 items-center p-3 border-b dark:!text-gray-600 text-gray-500 dark:border-b-gray-50 dark:border-opacity-10"
+                v-for="(i, index) in k">
+                <ElAvatar :src="i.user.avatarUrl" :size="'default'" class=""></ElAvatar>
+                <div class="flex-1 flex-grow-2 flex flex-col gap-2">
+                  <p class="text-xs">{{ i.user.nickname }}</p>
+                  <p class="flex-1 line-clamp-2 text-sm dark:!text-gray-500">{{ i.content }}</p>
+                </div>
+                <div class="inline-flex items-center gap-3 float-right text-xs">
+                  <div class="text-md fa-regular fa-thumbs-up"></div>
+                  <div class="text-md fa-regular fa-comment-dots"></div>
+                  <div>{{ i.timeStr }}</div>
+                </div>
+              </div>
+            </el-collapse-item>
+          </template>
+        </el-collapse>
       </div>
     </el-scrollbar>
   </div>
@@ -99,4 +112,8 @@ let input = ref('0')
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.a {
+  @apply text-xl;
+}
+</style>

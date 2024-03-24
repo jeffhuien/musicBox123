@@ -72,5 +72,18 @@ router.beforeEach((to, from) => {
     return from
   }
 })
+NProgress.configure({
+  easing: 'ease',
+  speed: 500,
+  showSpinner: false,
+  trickleSpeed: 200,
+  minimum: 0.3,
+})
+router.beforeEach((to, from) => {
+  NProgress.start()
+})
 
+router.afterEach((to, from) => {
+  NProgress.done()
+})
 export default router
