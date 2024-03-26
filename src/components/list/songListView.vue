@@ -45,7 +45,7 @@ function s({ scrollTop }: { scrollTop: number }) {
 </script>
 
 <template>
-  <ElScrollbar :height="'100%'" ref="scroll" @scroll="s">
+  <ElScrollbar tabindex="1" class="focus:outline-none" :height="'100%'" ref="scroll" @scroll="s">
     <div class="flex flex-col gap-3 w-full h-full p-2 pb-0 relative">
       <!-- show: {{ show }} -> f:{{ f }} -->
       <div class="top flex w-full" ref="top">

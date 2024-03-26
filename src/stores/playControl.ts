@@ -95,7 +95,7 @@ export const playControl = defineStore(
         await setStore(d, url, false)
       } catch (error) {
         playNext()
-        // throw new Error('无版权无法播放')
+        throw new Error('无版权无法播放')
       }
     }
     async function playMusicById(id: number) {
@@ -106,6 +106,7 @@ export const playControl = defineStore(
       try {
         await setStore(song, url)
       } catch (error) {
+        playNext()
         throw new Error('无版权无法播放')
       }
     }
@@ -119,18 +120,19 @@ export const playControl = defineStore(
       isPlay.value = true
       playId.value = song.id
 
-      if (msg) {
-        let a = song.fee.toString()
-        //无版权无法播放
-        if (url.data[0].url === null && song.fee === 0) {
-          ElMessage.info({ duration: 3000, message: fee['404'] })
-          throw new Error('无版权无法播放')
-        }
-        if (fee[a] && song.fee != 0) {
-          ElMessage.info({ duration: 3000, message: fee[a] })
-        }
-      }
+      // if (msg) {
+      //   let a = song.fee.toString()
+      //   //无版权无法播放
+      //   if (url.data[0].url === null && song.fee === 0) {
+      //     ElMessage.info({ duration: 3000, message: fee['404'] })
+      //     throw new Error('无版权无法播放')
+      //   }
+      //   if (fee[a] && song.fee != 0) {
+      //     ElMessage.info({ duration: 3000, message: fee[a] })
+      //   }
+      // }
       currentTime.value = 0
+
       try {
         await Music.play(playUrl.value)
       } catch (error) {
@@ -154,6 +156,11 @@ export const playControl = defineStore(
         : ''
     })
 
+    function BarPlay(i: s_info, index: number) {
+      playMusicById(i.id)
+      playIndex.value = index
+    }
+
     return {
       //
       duration,
@@ -172,6 +179,7 @@ export const playControl = defineStore(
       playMusic,
       playMusicById,
       songAl,
+      BarPlay,
     }
   },
 

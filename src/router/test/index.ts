@@ -4,17 +4,12 @@
  */
 
 import { RouteRecordRaw } from 'vue-router'
+import { autoRegister } from '../aotuRegister'
 
 export default [
   {
     name: 'test',
     path: '/test',
-    children: [
-      {
-        name: 'test1',
-        path: '1',
-        component: () => import('@/test/1.vue'),
-      },
-    ],
+    children: [...autoRegister(['@/test'])],
   },
 ] as RouteRecordRaw[]

@@ -112,8 +112,8 @@ import { storeToRefs } from 'pinia'
 let mp3 = Music
 let playListEl = ref<HTMLElement>()
 let scrollbar = ref()
-let { musicName, singerName, songImg, currentTime, isPlay, playUrl, duration, playId } = storeToRefs(playControl())
-let { playNext, playPrev, playMusicById, playCloudMusic } = playControl()
+let { musicName, singerName, songImg, currentTime, isPlay, duration, playId } = storeToRefs(playControl())
+let { playNext, playPrev, BarPlay } = playControl()
 let { playList1, playIndex, isCloud, name } = toRefs(playList())
 
 function setProgress(v: Arrayable<number>) {
@@ -224,15 +224,6 @@ onMounted(() => {
   playListEl.value?.classList.add('hidden')
   playListEl.value?.classList.remove('flex')
 })
-
-function BarPlay(i: Song, index: number) {
-  if (isCloud.value) {
-    playCloudMusic(i)
-  } else {
-    playMusicById(i.id)
-  }
-  playIndex.value = index
-}
 </script>
 
 <style scoped lang="scss">

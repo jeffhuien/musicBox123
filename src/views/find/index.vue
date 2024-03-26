@@ -1,7 +1,11 @@
 <template>
   <div class="flex w-full h-full flex-col flex-wrap">
     <div class="flex justify-center p-3">
-      <input type="text" v-model="uid" class="px-4 py-1 rounded-2xl border" placeholder="搜索用户id" />
+      <input
+        type="text"
+        v-model="uid"
+        class="px-4 py-1 rounded-2xl border outline-none dark:bg-gray-800"
+        placeholder="搜索用户id" />
       <button class="ml-2 px-4 py-1 rounded-2xl" @click="get(uid)">搜索</button>
     </div>
     <div class="text-sm">
@@ -11,30 +15,31 @@
           <span
             v-for="i in queryUserList().userList"
             @click="get(i.id)"
-            class="text-xs border border-sky-500 bg-white px-3 py-1 rounded-2xl">
+            class="text-xs border border-sky-500 bg-white dark:bg-gray-800 px-3 py-1 rounded-2xl">
             {{ i.ls[0].name.replace('喜欢的音乐', '') }}
             <i @click.stop="queryUserList().remove(i.id)" class="ml-2 fa-solid fa-xmark opacity-60"></i>
           </span>
         </div>
       </div>
 
-      <div class="text-xs flex gap-3 flex-wrap w-full md:justify-between pr-5 border-b">
+      <div
+        class="text-xs flex gap-3 flex-wrap w-full md:justify-between pr-5 pb-3 border-b border-gray-300 dark:border-gray-600">
         <div
           class="mb-2"
           v-for="(i, index) in userLists?.playlist"
           :index="index"
           @click="getListSongs(i.id.toString())">
-          <span class="relative text-xs border mb-3 border-sky-500 bg-white px-3 py-1 rounded-md">
+          <span class="relative text-xs border mb-3 border-sky-500 bg-white dark:bg-gray-800 px-3 py-1 rounded-md">
             {{ i.name }}
             <span
-              class="absolute rounded-full bg-red-500 w-6 h-6 scale-75 flex justify-center items-center -top-3 text-white -right-2">
+              class="absolute rounded-full bg-red-500 dark:bg-gray-500 w-6 h-6 scale-75 flex justify-center items-center -top-3 text-white -right-2">
               {{ i.trackCount }}
             </span>
           </span>
         </div>
       </div>
     </div>
-    <div class="flex-1 !overflow-hidden bg-sky-700" v-if="listsSongs">
+    <div class="flex-1 !overflow-hidden" v-if="listsSongs">
       <list class="h-full" :lists-songs="(listsSongs?.songs as unknown  as Song[])"></list>
     </div>
   </div>

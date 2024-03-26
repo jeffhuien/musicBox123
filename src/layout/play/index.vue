@@ -1,17 +1,9 @@
 <script setup lang="ts">
 import { Song } from '#/song/songInfo'
 import { CommonApi } from '@/Api/Common'
-import router from '@/router'
 import { playControl, playList } from '@/stores'
-const { playMusicById, playCloudMusic } = playControl()
-async function BarPlay(i: Song, index: number) {
-  if (playList().isCloud) {
-    playCloudMusic(i)
-  } else {
-    playMusicById(i.id)
-  }
-  playList().playIndex = index
-}
+const { BarPlay } = playControl()
+
 let closeV = ref(false)
 let lyric = ref()
 lyric.value = await CommonApi.getLyric(playControl().playId)
@@ -34,7 +26,7 @@ onMounted(async () => {
           <div class="flex-1 overflow-hidden" v-if="playList().playList1">
             <el-scrollbar height="100%" ref="scrollbar">
               <div
-                class="w-full flex items-center justify-between p-1 px-4 rounded-sm hover:bg-gray-200"
+                class="w-full flex items-center justify-between p-1 px-4 rounded-sm hover:bg-gray-200 dark:hover:bg-gray-700"
                 v-for="(i, index) in playList().playList1">
                 <p
                   @click="BarPlay(i as unknown as Song, index)"
@@ -71,7 +63,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="flex-1">
-        <lyricView :lrcStr="lyric.lrc.lyric" />
+        <lyricView :lrcStr="lyric?.lrc?.lyric" />
       </div>
     </div>
     <div class="">

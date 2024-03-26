@@ -4,9 +4,12 @@
       <router-view v-slot="{ Component }">
         <transition
           mode="out-in"
-          :enter-active-class="
-            $route.meta.enter ? 'animate__animated ' + $route.meta.enter : 'animate__animated animate__fadeIn'
-          ">
+          :enter-active-class="`animate__animated ${
+            $route.meta.enter && $route.matched.length == 1
+              ? // 针对play页面这种需要动画的根路由，matched.length == 1 表示是根路由
+                $route.meta.enter
+              : 'animate__fadeIn'
+          }`">
           <keep-alive>
             <component :is="Component" />
           </keep-alive>
@@ -28,15 +31,20 @@ const { config, isMobile } = storeToRefs(main())
 onMounted(() => {
   console.log('加载缓存...')
   playControl().isPlay = false
-  config.value.colorMode = ColorModeConfig.system
+
+  window.matchMedia('(prefers-color-scheme: dark)') ?? false
+    ? //
+      false
+    : (config.value.colorMode = ColorModeConfig.system)
+  let dom = document.documentElement
   function setColor(value: string) {
     if (value === 'system') {
-      document.documentElement.classList.value = ''
+      dom.classList.value = ''
       window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? document.documentElement.classList.add('dark')
-        : document.documentElement.classList.remove('dark')
+        ? dom.classList.add('dark')
+        : dom.classList.remove('dark')
     } else {
-      document.documentElement.classList.value = value
+      dom.classList.value = value
     }
   }
   setColor(config.value.colorMode)

@@ -3,7 +3,6 @@ import { ColorModeConfig } from '#/config'
 import { auth, main } from '@/stores'
 import { logOut } from '@/utils'
 import { ElMessageBox } from 'element-plus'
-import { ca } from 'element-plus/es/locale'
 function LogOut() {
   ElMessageBox.confirm('确认要注销登录吗？', {
     confirmButtonText: '是',

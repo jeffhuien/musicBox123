@@ -5,6 +5,7 @@ import { ElScrollbar } from 'element-plus'
 const props = defineProps<{
   lrcStr: string
 }>()
+
 function toLrc(lrcStr: string) {
   let lrc: string[] | { time: number; words: string }[] = lrcStr
     .split('\n')
@@ -50,7 +51,8 @@ let data = ref<
     time: number
     words: string
   }[]
->(toLrc(lrcStr.value))
+>([])
+props.lrcStr ? (data.value = toLrc(lrcStr.value)) : (data.value = [])
 
 let ls = ref<HTMLDivElement>()
 let scrollBar = ref<InstanceType<typeof ElScrollbar>>()
@@ -62,19 +64,19 @@ onMounted(() => {
   n.value = ls.value?.parentElement?.parentElement?.offsetHeight
     ? Math.floor(ls.value?.parentElement?.parentElement?.offsetHeight / h.value / 2)
     : 0
-
-  scrollBar.value!.update = () => {
-    console.log(1234)
-  }
-  scrollBar.value!.wrapRef!.addEventListener('keyup', (e) => {
-    e.preventDefault()
+  //BUG 无法识别手动滚动
+  scrollBar.value?.wrapRef!.addEventListener('keypress', (e) => {
+    console.log(e.key)
+    console.log(e)
+    // e.preventDefault()
   })
 })
 
 onUpdated(() => {
-  data.value = toLrc(lrcStr.value)
+  props.lrcStr ? (data.value = toLrc(lrcStr.value)) : false
 })
 
+//FIXME:这里需要重构
 function set(index: number) {
   if (
     data.value[index].time <= playControl().currentTime &&
@@ -83,11 +85,11 @@ function set(index: number) {
     if (index != 0) ls.value?.children.item(index - 1)?.classList.remove('active')
     if (index > n.value) {
       // scrollBar.value?.setScrollTop(h.value * (index - n.value))
+      // ls.value ? (ls.value!.style.transform = `translateY(-${h.value * (index - n.value)}px)`) : ''
       scrollBar.value?.scrollTo({
         top: h.value * (index - n.value), // y 坐标
         behavior: 'smooth', // 可选值：smooth、instant、auto
       })
-      // ls.value ? (ls.value!.style.transform = `translateY(-${h.value * (index - n.value)}px)`) : ''
     }
     return true
   }
@@ -97,11 +99,18 @@ function set(index: number) {
 </script>
 
 <template>
-  <div class="select-none w-full h-full p-10 text-sm text-center transition-all">
-    <ElScrollbar :always="false" v-if="props.lrcStr" ref="scrollBar" view-class="transition-all ease-in-out">
-      <div class="transition-all ease-linear h-full" ref="ls">
+  <div class="relative select-none w-full h-full p-10 text-sm text-center">
+    <ElScrollbar
+      tabindex="10"
+      class="focus:outline-none"
+      ref="scrollBar"
+      :always="false"
+      v-if="props.lrcStr"
+      view-class="h-full "
+      wrap-class="transition-all ease-linear duration-[400ms]">
+      <div class="h-full" ref="ls">
         <p
-          class="py-2 transition-all ease-linear"
+          class="py-2 transition-all ease-linear duration-[400ms]"
           :class="set(index) ? 'active' : ''"
           v-for="(item, index) in data"
           :key="index">
@@ -109,12 +118,12 @@ function set(index: number) {
         </p>
       </div>
     </ElScrollbar>
-    <p v-else>暂无歌词</p>
+    <p v-else class="text-sky-600 w-full absolute top-1/2 -translate-y-1/2 text-center text-sm">暂无歌词</p>
   </div>
 </template>
 
 <style scoped lang="scss">
 .active {
-  @apply text-pink-400 italic text-2xl;
+  @apply text-pink-400 text-2xl;
 }
 </style>
