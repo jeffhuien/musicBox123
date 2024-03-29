@@ -3,10 +3,7 @@ import { RecommendListType, banner } from '#/index'
 import { CommonApi } from '@/Api/Common'
 
 const banner = ref<banner>()
-banner.value = await CommonApi.getIndexInfo()
-
 const list = ref<RecommendListType>()
-list.value = await CommonApi.getLists()
 
 async function change(e: Event) {
   list.value = undefined
@@ -15,12 +12,18 @@ async function change(e: Event) {
   list.value = await CommonApi.getLists()
   target.classList.remove('animate-spin')
 }
+
+onBeforeMount(async () => {
+  console.log('be')
+  banner.value = await CommonApi.getIndexInfo()
+  list.value = await CommonApi.getLists()
+})
 </script>
 
 <template>
   <el-scrollbar class="h-full p-2">
     <div class="swiper max-sm:hidden p-3">
-      <el-carousel type="card" height="200px" :autoplay="true" :interval="2000" :indicator-position="''">
+      <el-carousel type="card" height="200px" :autoplay="true" :interval="2000">
         <el-carousel-item v-for="(item, index) in banner?.banners" :key="index">
           <div class="relative w-full h-full">
             <el-image :src="item.imageUrl" fit="contain" class="rounded-lg h-full" />
@@ -39,10 +42,10 @@ async function change(e: Event) {
       </h1>
       <el-skeleton
         class="w-full h-full flex gap-3 flex-wrap justify-between"
-        :loading="list?.result.length ? false : true"
+        :loading="list ? false : true"
         animated
         :count="20"
-        :throttle="2000">
+        :throttle="5000">
         <template #default>
           <div
             class="grid xl:grid-cols-6 md:grid-cols-5 max-md:grid-cols-4 gap-3 max-xl:grid-cols-5 max-sm:grid-cols-3">

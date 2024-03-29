@@ -142,7 +142,7 @@ export const playControl = defineStore(
       setDocumentTitle(musicName.value + ' - ' + singerName.value)
     }
 
-    watch([volume, isMuted, isPlay], (newV, oldV) => {
+    watch([volume, isMuted, isPlay], async (newV, oldV) => {
       Music.setVolume(newV[0])
       newV[1] != oldV[1]
         ? //
@@ -151,7 +151,7 @@ export const playControl = defineStore(
       newV[2] != oldV[2]
         ? //
           newV[2]
-          ? Music.play(playUrl.value)
+          ? await Music.play(playUrl.value)
           : Music.pause()
         : ''
     })

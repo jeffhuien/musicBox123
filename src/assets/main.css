@@ -5,8 +5,7 @@
 
 body {
   @apply transition ease-in-out duration-500  h-screen w-screen flex  xl:justify-center items-center box-content;
-  /* @apply select-none; */
-
+  @apply select-none;
   @apply relative;
 }
 

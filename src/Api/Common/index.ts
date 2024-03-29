@@ -1,4 +1,4 @@
-import { RecommendListType, banner, historyListType } from '#/index'
+import { RecommendListType, banner, historyListType, lyricType } from '#/index'
 import Axios from '@/plugins/axios/axios'
 import { store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
@@ -42,9 +42,7 @@ class Common extends Axios {
   }
 
   public async getLyric(id: number) {
-    return await this.request<{
-      lrc: { lyric: string }
-    }>({
+    return await this.request<lyricType>({
       url: '/lyric',
       params: {
         id,

@@ -189,15 +189,7 @@ let rightBars = [
   },
 ] as bars[]
 
-//全局键盘事件
-//BUG 时好时坏
-document.addEventListener('keyup', async (e: KeyboardEvent) => {
-  if (e.key == ' ') {
-    await play()
-  }
-})
-
-async function play() {
+function play() {
   isPlay.value = !isPlay.value
   // if (isPlay.value) mp3.pause()
   // else {

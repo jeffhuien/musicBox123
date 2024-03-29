@@ -8,6 +8,7 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import setupPlugins from './plugins'
+import '@/utils/shortCut'
 const app = createApp(App)
 
 setupPlugins(app)

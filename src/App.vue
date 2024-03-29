@@ -1,5 +1,5 @@
 <template>
-  <div class="transition-all duration-700 w-full h-full dark:bg-gray-800 dark:text-gray-400">
+  <div class="outline-none transition-all duration-700 w-full h-full dark:bg-gray-800 dark:text-gray-400">
     <Suspense>
       <router-view v-slot="{ Component }">
         <transition
@@ -26,7 +26,6 @@ import { ColorModeConfig } from '#/config'
 import { storeToRefs } from 'pinia'
 import { main, playControl } from './stores'
 import { getIsMobile } from '@/utils'
-
 const { config, isMobile } = storeToRefs(main())
 onMounted(() => {
   console.log('加载缓存...')

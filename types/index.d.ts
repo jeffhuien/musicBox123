@@ -97,3 +97,12 @@ export interface historyListType {
     }[]
   }
 }
+
+export interface lyricType {
+  lrc: { lyric: string }
+}
+
+export interface lyricContentType {
+  time: number
+  words: string
+}

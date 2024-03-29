@@ -1,21 +1,8 @@
 <script setup lang="ts">
 import { Song } from '#/song/songInfo'
-import { CommonApi } from '@/Api/Common'
 import { playControl, playList } from '@/stores'
 const { BarPlay } = playControl()
-
 let closeV = ref(false)
-let lyric = ref()
-lyric.value = await CommonApi.getLyric(playControl().playId)
-watch(
-  () => playControl().playId,
-  async (newV: number) => {
-    lyric.value = await CommonApi.getLyric(newV)
-  },
-)
-onMounted(async () => {
-  lyric.value = await CommonApi.getLyric(playControl().playId)
-})
 </script>
 
 <template>
@@ -63,7 +50,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="flex-1">
-        <lyricView :lrcStr="lyric?.lrc?.lyric" />
+        <lyricView />
       </div>
     </div>
     <div class="">

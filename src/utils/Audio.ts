@@ -23,7 +23,7 @@ class Music {
     playControl().isPlay = true
   }
 
-  pause(): void {
+  pause() {
     this.audio.pause()
     playControl().isPlay = false
   }

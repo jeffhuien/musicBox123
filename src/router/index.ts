@@ -81,7 +81,6 @@ NProgress.configure({
 })
 router.beforeEach((to, from) => {
   NProgress.start()
-  console.log(to)
 })
 
 router.afterEach((to, from) => {
