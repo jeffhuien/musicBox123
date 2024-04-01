@@ -1,7 +1,7 @@
 /**
  * Request
  */
-export interface UserList {
+export interface UserListReqType {
   code: number
   more: boolean
   playlist: Playlist[]

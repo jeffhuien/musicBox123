@@ -9,8 +9,8 @@
     <div class="md:w-1/3">
       <mSearch class="" />
     </div>
-    <div class="md:w-1/3 flex pl-10 max-sm:hidden">
-      <setting-btn></setting-btn>
+    <div class="md:w-1/3 flex max-md:pl-10">
+      <setting-btn class="max-md:hidden"></setting-btn>
       <Auth></Auth>
     </div>
   </div>

@@ -3,6 +3,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer {
+  .scrollbar-hidden {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 body {
   @apply transition ease-in-out duration-500  h-screen w-screen flex  xl:justify-center items-center box-content;
   @apply select-none;

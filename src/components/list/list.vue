@@ -49,7 +49,6 @@ function _check() {
 
 function play(row: Song) {
   function _set(i: Song | CloudSongDataType) {
-    console.log(i.name, i.dt)
     let time = formatTime(i.dt, 'ms')
     return {
       id: i.id,
@@ -89,10 +88,11 @@ function play(row: Song) {
 }
 
 function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
+  let bg = '!bg-no dark:hover:!bg-gray-700 hover:!bg-gray-50 dark:hover:text-gray-400'
   if (rowIndex == playIndex.value && row.id == playControl().playId) {
-    return '!text-sky-500 !border-pink-200 !rounded-xl'
+    return '!text-sky-500 ' + bg
   }
-  return ''
+  return bg
 }
 
 defineExpose({
@@ -114,7 +114,7 @@ if (listsSongs.value) {
       :flexible="true"
       :show-overflow-tooltip="true"
       :tooltip-options="{ effect: 'light', showArrow: false, offset: -60, popperClass: '!border-red-200' }"
-      :row-class-name="(setStyle, '!bg-no  dark:hover:!bg-gray-700 hover:!bg-gray-50 dark:hover:text-gray-400')"
+      :row-class-name="setStyle"
       :cell-class-name="' !border-none  '"
       :class-name="'!bg-no'"
       :header-cell-class-name="'!bg-no !border-none'"
@@ -129,7 +129,7 @@ if (listsSongs.value) {
           :fit="true"
           :class-name="'text-gray-400'"
           :show-overflow-tooltip="false" />
-        <el-table-column align="left" label="歌曲" min-width="40%" @click="play">
+        <el-table-column align="left" :label="`歌曲( ${listsSongs.length} )`" min-width="40%" @click="play">
           <template #default="scope">
             <div class="flex w-full justify-between">
               <span class="w-2/3 truncate">

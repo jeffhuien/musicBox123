@@ -10,10 +10,10 @@
             <div class="flex w-full h-full gap-3 relative">
               <div
                 class="bg-white dark:bg-gray-800 shrink-0 h-full transition-all w-52 duration-700 z-50"
-                :class="[menuClose && main().isMobile ? '!w-0' : '', main().isMobile ? 'max-sm:absolute ' : '']">
+                :class="[menuClose && main().isMobile ? '!w-0' : '', main().isMobile ? 'max-md:absolute ' : '']">
                 <el-scrollbar class="relative w-full md:min-w-[12rem] h-full shrink-0 shadow-lg rounded-xl">
                   <left-menu />
-                  <song-list-menu v-if="data" :list="(data as listsType[])" />
+                  <song-list-menu />
                 </el-scrollbar>
                 <i
                   class="fa-solid absolute top-1/4 left-full py-3 px-1 rounded-e-md bg-black bg-opacity-40 text-white z-50 text-sm -translate-y-1"
@@ -48,29 +48,10 @@
 </template>
 
 <script setup lang="ts">
-import { listsType } from '#/index'
-import { ListApi } from '@/Api/List'
-import { auth, main, queryUserList } from '@/stores'
-import { storeToRefs } from 'pinia'
-let { userList, cur } = toRefs(queryUserList())
+import { main } from '@/stores'
 const { menuClose } = toRefs(main())
 
 // BUG 非实时更新
-let data = ref<listsType[] | boolean>()
-async function setData(user: Ref<any>) {
-  let uId = user.value.data.profile.userId.toString()
-  let t = await ListApi.getList(uId)
-  queryUserList().add(uId, t)
-  queryUserList().cur = 0
-  data.value = userList.value[cur.value].ls
-}
-
-let { user } = storeToRefs(auth())
-if (user.value?.data) setData(user)
-
-watch(user, async () => {
-  setData(user)
-})
 </script>
 
 <style scoped lang="scss">

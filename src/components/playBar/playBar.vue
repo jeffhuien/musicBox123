@@ -191,19 +191,6 @@ let rightBars = [
 
 function play() {
   isPlay.value = !isPlay.value
-  // if (isPlay.value) mp3.pause()
-  // else {
-  //   try {
-  //     await mp3.play(playUrl.value)
-  //   } catch (error) {
-  //     // let t = await SongApi.getSongUrl(playId.value)
-  //     let t = currentTime.value
-  //     playMusicById(playId.value)
-  //     // await mp3.play(t.data[0].url)
-  //     // playUrl.value = t.data[0].url
-  //     mp3.setCurrentTime(t)
-  //   }
-  // }
 }
 
 function go() {

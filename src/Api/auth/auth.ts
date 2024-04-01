@@ -1,4 +1,4 @@
-import { UserList } from '#/List/userList'
+import { UserListReqType } from '#/List/userList'
 import { CloudSongType } from '#/song/cloudSong'
 import Axios from '@/plugins/axios/axios'
 import { auth } from '@/stores'
@@ -44,7 +44,7 @@ class Auth extends Axios {
     if (!uid) {
       uid = auth().user?.data.account.id.toString()
     }
-    return await this.request<UserList>({
+    return await this.request<UserListReqType>({
       url: '/playlist',
       params: {
         uid,

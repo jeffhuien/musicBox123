@@ -1,5 +1,5 @@
 import loading from './loading'
-import queryUserList from './queryUserList'
+import UserList from './UserList'
 import searchHistory from './searchHistory'
 import playList from './playList'
 import auth from './auth'
@@ -32,4 +32,4 @@ const main = defineStore(
   },
 )
 
-export { main, loading, playList, playControl, searchHistory, queryUserList, auth }
+export { main, loading, playList, playControl, searchHistory, UserList, auth }

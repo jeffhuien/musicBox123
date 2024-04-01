@@ -6,13 +6,10 @@ import router from '@/router'
 import { searchHistory } from '@/stores'
 import { random } from 'lodash'
 
-// let searchKeyWords = inject('searchKeyWords', ref<string>())
-let searchKeyWords = ref<string>()
 let keyword = ref('')
 let data = ref<searchSuggest>()
 let show = ref(false)
 let ls = ref<Hot>({} as unknown as Hot)
-let currentRoute = useRouter().currentRoute.value
 async function search(keywords: string) {
   show.value = !show.value
   data.value = await SearchApi.Suggest(keywords)
@@ -20,15 +17,9 @@ async function search(keywords: string) {
 
 async function enterSearch(keywords: string) {
   searchHistory().add(keywords)
-  if (currentRoute.name !== 'search') {
-    searchKeyWords.value = keywords
-    router.push(`/search?keywords=${keywords}`)
-    return
-  }
-  searchKeyWords.value = keywords
+  router.push(`/search?keywords=${keywords}`)
 }
 
-if (!ls.value.code) ls.value = await SearchApi.Hot()
 async function getFocus() {
   show.value = true
   if (!ls.value.code) ls.value = await SearchApi.Hot()
@@ -53,9 +44,16 @@ function randomText() {
   }
   return t
 }
-Text.value = randomText()
-timer = setInterval(() => (Text.value = randomText()), 3000)
 
+onMounted(async () => {
+  if (!ls.value.code) ls.value = await SearchApi.Hot()
+  Text.value = randomText()
+  timer = setInterval(() => (Text.value = randomText()), 3000)
+})
+
+onUnmounted(() => {
+  clearInterval(timer!)
+})
 //TODO 搜索建议关键词匹配
 //TODO 搜索无建议时央视
 </script>
@@ -67,17 +65,17 @@ timer = setInterval(() => (Text.value = randomText()), 3000)
       type="text"
       class="dark:bg-gray-800 transition-all duration-700 w-52 focus:w-64 rounded-3xl border caret-pink-500 pl-8 py-2 max-sm:py-1 text-xs text-gray-600 focus:outline-sky-200 hover:border-lime-300 outline-none"
       v-model="keyword"
+      :placeholder="Text"
       @input="search(keyword)"
-      @keyup.stop=""
       @focus="getFocus"
       @blur="lostFocus"
-      :placeholder="Text"
-      @keyup.enter="enterSearch(keyword)" />
+      @keydown.stop=""
+      @keyup.enter="enterSearch(keyword ? keyword : Text)" />
     <div
       v-show="show"
-      class="max-sm:scale-90 suggest min-h-[13rem] flex overflow-hidden absolute top-[120%] max-sm:top-2 max-sm:-left-2 z-20 text-sm w-72 bg-white rounded-md shadow-lg">
+      class="flex max-sm:scale-90 suggest min-h-[13rem] overflow-hidden absolute top-[120%] max-sm:top-2 max-sm:-left-2 z-20 text-sm w-72 bg-white dark:bg-gray-800 rounded-md shadow-lg">
       <div v-if="data?.result" class="h-full w-full">
-        <div v-if="data.result.albums" class="flex flex-col gap-2 p-2 h-full border bg-white">
+        <div v-if="data.result.albums" class="flex flex-col gap-2 p-2 h-full border dark:bg-gray-800 bg-white">
           <div class="flex p-1 border-b">
             <h2 class="self-center w-2/12 flex-shrink-0 text-gray-500 text-center">单曲</h2>
             <div class="flex-1 w-10/12">
@@ -105,15 +103,19 @@ timer = setInterval(() => (Text.value = randomText()), 3000)
       </div>
 
       <div v-else class="w-full">
-        <div class="[&_h2]:mb-2 suggest flex flex-col gap-2 p-2 !min-h-52 border bg-white rounded-md shadow-lg">
+        <div
+          class="[&_h2]:mb-2 suggest flex flex-col gap-2 p-2 !min-h-52 border bg-white dark:bg-gray-800 rounded-md shadow-lg">
           <div class="">
-            <h2 class="">搜索历史</h2>
-            <div class="flex gap-2 flex-wrap">
+            <h2 class="">
+              <span class="">搜索历史</span>
+              <span class="block relative -top-3 w-10 h-3 bg-pink-500/75"> </span>
+            </h2>
+            <div class="flex gap-2 flex-wrap justify-normal">
               <span
                 v-for="i in searchHistory().searchHistory"
                 @click="enterSearch(i)"
-                class="text-xs border border-sky-500 bg-white px-3 py-1 rounded-2xl">
-                {{ i }} <i @click.stop="searchHistory().remove(i)" class="fa-solid fa-xmark opacity-60"></i>
+                class="text-xs border border-sky-500 bg-white dark:bg-gray-800 px-3 py-1 rounded-md max-w-28 truncate dark:hover:bg-slate-500 hover:bg-gray-100 hover:text-sky-500">
+                {{ i }}
               </span>
             </div>
           </div>

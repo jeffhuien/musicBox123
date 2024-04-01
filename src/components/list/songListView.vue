@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { Playlist } from '#/List/ListDetail'
 import { Song } from '#/song/songInfo'
-import { auth, main } from '@/stores'
+import { auth, main, UserList } from '@/stores'
+import { random } from 'lodash'
+
+const { set, get, remove } = UserList()
 const props = defineProps<{
   data: Song[]
   info: Playlist
@@ -9,45 +12,46 @@ const props = defineProps<{
 }>()
 
 const { data, info, name } = toRefs(props)
-let ls = ref()
 let scroll = ref()
 let top = ref<HTMLElement>()
-let f = ref(false)
 let show = ref(true)
+let ls = ref()
 
-// watch(props, (n, o) => {
-//   ElMessage.info(info.value.name)
-// })
-onUpdated(() => {
-  ElMessage.info(info.value.name)
-})
 function playAll() {
   ls.value.play(data.value![0])
 }
 
-async function collect() {
+async function collect(t: number) {
+  UserList().update = random(0, 10000)
   if (!auth().isLogin) return ElMessage.warning('请先登录')
   const { ListApi } = await import('@/Api/List')
-  await ListApi.collect(1, info.value!.id.toString())
-  ElMessage.success('收藏成功')
-}
-
-function s({ scrollTop }: { scrollTop: number }) {
-  if (scrollTop > top.value!.offsetHeight && !f.value) {
-    f.value = true
-    show.value = false
+  try {
+    await ListApi.collect(t, info.value!.id.toString())
+  } catch (error: any) {
+    if (error.response.status === 501) return ElMessage.success('已经收藏过了')
+    return ElMessage.error('收藏失败')
   }
-  if (scrollTop < top.value!.offsetHeight && f.value) {
-    f.value = false
-    show.value = true
+  if (t === 2) {
+    ElMessage.success('取消收藏了')
+    remove(info.value!.id.toString())
+  } else {
+    ElMessage.success('收藏了')
+    set({
+      id: info.value.id.toString(),
+      count: info.value.trackCount,
+      name: info.value.name,
+      img: info.value.coverImgUrl,
+    })
   }
 }
+onUpdated(() => {
+  ElMessage.info(info.value.name)
+})
 </script>
 
 <template>
-  <ElScrollbar tabindex="1" class="focus:outline-none" :height="'100%'" ref="scroll" @scroll="s">
+  <ElScrollbar tabindex="1" class="focus:outline-none" :height="'100%'" ref="scroll">
     <div class="flex flex-col gap-3 w-full h-full p-2 pb-0 relative">
-      <!-- show: {{ show }} -> f:{{ f }} -->
       <div class="top flex w-full" ref="top">
         <div class="w-36 h-36 max-sm:w-32 max-sm:h-32 shrink-0 mr-6">
           <div class="relative">
@@ -77,9 +81,7 @@ function s({ scrollTop }: { scrollTop: number }) {
           <div class="">
             <div v-if="info?.tags.length" class="flex gap-2 items-center">
               <span class="opacity-50">标签：</span>
-              <span v-for="i in info.tags" class="p-1 rounded-md text-white bg-teal-500">
-                {{ i }}
-              </span>
+              <span v-for="i in info.tags" class="p-1 rounded-md text-emerald-500 italic"> #{{ i }} </span>
             </div>
             <div v-else class="opacity-50">标签：未添加标签</div>
           </div>
@@ -88,13 +90,10 @@ function s({ scrollTop }: { scrollTop: number }) {
       <template v-if="show">
         <div class="flex justify-between p-4 shadow-sm rounded-md border max-sm:hidden">
           <div class="">
-            <Buttons :play-all="playAll" :collect="collect" />
+            <Buttons :play-all="playAll" @collect="collect" :isCollect="get(info.id.toString())" />
           </div>
           <div class="">right</div>
         </div>
-        <!-- <div class="w-full text-xs bg-red-50 rounded-sm border">
-          <p class="p-2 text-pink-400">含歌曲{{ data.length }}首,其中VIP歌曲33首</p>
-        </div> -->
       </template>
 
       <div
@@ -109,7 +108,7 @@ function s({ scrollTop }: { scrollTop: number }) {
           </h1>
         </div>
         <div class="shrink-0">
-          <Buttons :play-all="playAll" :collect="collect" />
+          <Buttons :play-all="playAll" :isCollect="get(info.id.toString())" />
         </div>
       </div>
 

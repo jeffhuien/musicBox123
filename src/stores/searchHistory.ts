@@ -8,7 +8,7 @@ export default defineStore(
 
     // 添加搜索历史
     function add(keyword: string) {
-      if (!searchHistory.value.includes(keyword)) {
+      if (!searchHistory.value.includes(keyword) && keyword != '') {
         searchHistory.value.unshift(keyword)
       }
     }

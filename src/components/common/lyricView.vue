@@ -100,8 +100,4 @@ function set(index: number, head: boolean = false) {
 .active {
   @apply text-pink-400 text-2xl;
 }
-.scrollbar-hidden {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
 </style>

@@ -5,4 +5,3 @@ window.onkeydown = (e) => {
     playControl().isPlay = !playControl().isPlay
   }
 }
-console.log(12)

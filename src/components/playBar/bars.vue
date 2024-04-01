@@ -20,7 +20,7 @@ let data = defineProps<{
           </button>
 
           <div
-            class="hidden -translate-x-1/2 py-3 left-1/2 group-hover:flex flex-col justify-center gap-2 shadow-xl rounded-md items-center border w-14 !h-32 bg-white z-20 absolute bottom-10">
+            class="hidden -translate-x-1/2 py-3 left-1/2 group-hover:flex flex-col justify-center gap-2 shadow-xl rounded-md items-center border w-14 !h-32 bg-white dark:bg-gray-800 dark:border-gray-600 z-20 absolute bottom-10">
             <div class="flex-1">
               <ElSlider
                 class="!h-full"

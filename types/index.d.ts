@@ -25,12 +25,12 @@ export interface provideData {
   searchData: ListSongs | undefined
 }
 
-export interface userListType {
-  id: string //uid
-  ls: listsType[]
+export interface FindUserType {
+  id: string
+  list: UserListType[]
 }
 
-export interface listsType {
+export interface UserListType {
   //uLists
   name: string
   id: string

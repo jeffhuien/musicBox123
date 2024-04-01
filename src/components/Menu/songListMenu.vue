@@ -1,10 +1,25 @@
 <script setup lang="ts">
-import { listsType } from '#/index'
+import { UserListType } from '#/index'
+import { ListApi } from '@/Api'
+import { auth, UserList } from '@/stores'
+import { storeToRefs } from 'pinia'
 
-let props = defineProps<{ list: listsType[] }>()
-const {
-  value: { list },
-} = toRef(props)
+const { list } = storeToRefs(UserList())
+let uid = ref('')
+async function setUserListData(uid: string) {
+  let data = await ListApi.getList(uid)
+  let t = data.playlist.map((I) => {
+    return { name: I.name, id: I.id.toString(), img: I.coverImgUrl, count: I.trackCount } as UserListType
+  })
+  return t
+}
+
+onMounted(async () => {
+  if (auth().isLogin) {
+    uid.value = auth().user!.data.account.id.toString()
+    list.value = await setUserListData(uid.value)
+  }
+})
 </script>
 
 <template>
@@ -18,7 +33,7 @@ const {
         :index="index">
         <!-- <i :class="k.ico" class="text-lg mr-2 w-7"></i> -->
         <div class="flex text-xs w-full">
-          <img :src="k.img" class="w-7 mr-2 rounded-sm" alt="" />
+          <img :src="k.img" class="w-7 h-7 mr-2 rounded-sm" alt="" />
           <div class="flex flex-col flex-1 truncate">
             <span class="overflow-hidden w-full truncate">
               {{ k.name }}

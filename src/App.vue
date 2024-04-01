@@ -28,14 +28,14 @@ import { main, playControl } from './stores'
 import { getIsMobile } from '@/utils'
 const { config, isMobile } = storeToRefs(main())
 onMounted(() => {
-  console.log('加载缓存...')
+  let dom = document.documentElement
   playControl().isPlay = false
 
   window.matchMedia('(prefers-color-scheme: dark)') ?? false
     ? //
       false
     : (config.value.colorMode = ColorModeConfig.system)
-  let dom = document.documentElement
+
   function setColor(value: string) {
     if (value === 'system') {
       dom.classList.value = ''
@@ -47,6 +47,7 @@ onMounted(() => {
     }
   }
   setColor(config.value.colorMode)
+
   watch(config.value, (newVal) => {
     setColor(newVal.colorMode)
   })
