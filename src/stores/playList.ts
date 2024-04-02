@@ -12,14 +12,13 @@ export default defineStore(
   'playList',
   () => {
     // 播放列表
-    let playList1 = ref<playListType[]>()
+    let playList1 = ref<playListType[]>([])
     let isCloud = ref(false)
     let name = ref('未指定名称的列表')
     // 当前播放的歌曲
-    let playIndex = ref(1)
+    let playIndex = ref(0)
     // 当前播放模式
-    let playMode = ref<'loop' | 'as'>('loop')
-
+    let playMode = ref<'Loop' | 'Random' | 'SingleLoop'>('Loop')
     let historyPlayList = ref<any>()
 
     return {

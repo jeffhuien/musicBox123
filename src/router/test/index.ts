@@ -4,7 +4,7 @@
  */
 
 import { RouteRecordRaw } from 'vue-router'
-import { autoRegister } from '../aotuRegister'
+import { autoRegister } from '../autoRegister'
 
 export default [
   {

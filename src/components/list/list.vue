@@ -54,7 +54,7 @@ function play(row: Song) {
       id: i.id,
       name: i.name,
       fee: i.fee,
-      time: time ?? '未知',
+      time: time ?? 'unknow',
       singerName: i.ar ? (i.ar?.length > 1 ? i.ar.map((item: any) => item.name).join('、') : i.ar[0].name) : 'Error',
     }
   }
@@ -77,7 +77,7 @@ function play(row: Song) {
         name.value == listName.value
       )
     ) {
-      playList1.value = undefined
+      playList1.value = []
       playList1.value = listsSongs.value?.map((i) => {
         return _set(i)
       })
@@ -89,7 +89,8 @@ function play(row: Song) {
 
 function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
   let bg = '!bg-no dark:hover:!bg-gray-700 hover:!bg-gray-50 dark:hover:text-gray-400'
-  if (rowIndex == playIndex.value && row.id == playControl().playId) {
+  if (row.id == playControl().playId) {
+    playIndex.value = rowIndex
     return '!text-sky-500 ' + bg
   }
   return bg
@@ -109,7 +110,7 @@ if (listsSongs.value) {
     <el-table
       height="100%"
       width="100%"
-      class="h-full"
+      class="h-full !border-none"
       :data="listsSongs"
       :flexible="true"
       :show-overflow-tooltip="true"
@@ -225,8 +226,4 @@ if (listsSongs.value) {
   </template>
 </template>
 
-<style scoped lang="scss">
-:deep(.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell) {
-  background-color: #ffffff00 !important;
-}
-</style>
+<style scoped lang="scss"></style>

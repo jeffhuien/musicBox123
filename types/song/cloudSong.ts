@@ -1,12 +1,14 @@
 interface CloudSongType {
-  data: {
-    simpleSong: CloudSongDataType
-    fileSize: number
-  }[]
+  data: CloudSongsData[]
   count: number //共计歌曲
   size: string //已用容量（B字节）
   maxSize: string //共计容量
   code: number
+}
+
+interface CloudSongsData {
+  simpleSong: CloudSongDataType
+  fileSize: number
 }
 
 interface CloudSongDataType {
@@ -29,4 +31,4 @@ interface CloudSongDataType {
   [property: string]: any
 }
 
-export type { CloudSongType, CloudSongDataType }
+export type { CloudSongType, CloudSongDataType, CloudSongsData }

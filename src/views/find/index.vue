@@ -9,8 +9,8 @@
       <button class="ml-2 px-4 py-1 rounded-2xl" @click="get(uid)">搜索</button>
     </div>
     <div
-      class="scrollbar-hidden p-2 text-sm border-b border-b-gray-700 h-1/3 overflow-y-scroll overflow-x-hidden w-full">
-      <div class="py-2 mb-5 border-b dark:border-b-gray-600">
+      class="scrollbar-hidden p-2 text-sm border-b border-b-gray-200 dark:border-b-gray-600 h-1/3 overflow-y-scroll overflow-x-hidden w-full">
+      <div class="py-2 mb-5">
         <h2 class="mb-2 text-xs opacity-50">搜索历史</h2>
         <div class="flex flex-wrap gap-3">
           <span

@@ -112,9 +112,9 @@ import { storeToRefs } from 'pinia'
 let mp3 = Music
 let playListEl = ref<HTMLElement>()
 let scrollbar = ref()
-let { musicName, singerName, songImg, currentTime, isPlay, duration, playId } = storeToRefs(playControl())
-let { playNext, playPrev, BarPlay } = playControl()
-let { playList1, playIndex, isCloud, name } = toRefs(playList())
+let { musicName, singerName, songImg, currentTime, isPlay, duration, playId, playUrl } = storeToRefs(playControl())
+let { playNext, playPrev, BarPlay, playMusicById } = playControl()
+let { playList1, playIndex, isCloud, name, playMode } = toRefs(playList())
 
 function setProgress(v: Arrayable<number>) {
   mp3.setCurrentTime(Array.isArray(v) ? v[0] : v)
@@ -125,65 +125,89 @@ mp3.addEventListener('timeupdate', () => {
 })
 //播放完成事件
 mp3.addEventListener('ended', () => {
-  playNext()
+  if (playMode.value === 'Loop') {
+    playNext()
+  } else if (playMode.value === 'Random') {
+    let index = Math.floor(Math.random() * playList1.value.length)
+    playMusicById(playList1.value[index].id)
+  } else if (playMode.value === 'SingleLoop') {
+    currentTime.value = 0
+    mp3.play(playUrl.value)
+  }
 })
 
 let leftBars = [
   {
     name: '收藏',
-    ico: ['fa-regular fa-heart', 'fa-solid'],
-    fun: {
-      click: function (e: Event) {
-        let ico = ['fa-regular fa-heart', 'fa-solid']
-        let target = e.target as HTMLElement
-        target.classList.toggle(ico[1])
-        target.style.color = '#ff0000'
+    data: {
+      ico: ['fa-regular fa-heart', 'fa-solid'],
+      fun: {
+        click: function (e: Event) {
+          let ico = ['fa-regular fa-heart', 'fa-solid']
+          let target = e.target as HTMLElement
+          target.classList.toggle(ico[1])
+          target.style.color = '#ff0000'
+        },
       },
     },
   },
   {
     name: '评论',
-    ico: 'fa-regular fa-comment-dots',
-    fun: {
-      click: function (e: Event) {
-        router.push('/comment/' + playId.value)
+    data: {
+      ico: 'fa-regular fa-comment-dots',
+      fun: {
+        click: function (e: Event) {
+          router.push('/comment/' + playId.value)
+        },
       },
     },
   },
   {
     name: '下载',
-    ico: 'fa-solid fa-download',
+    data: {
+      ico: 'fa-solid fa-download',
+    },
   },
 ] as bars[]
 
 let rightBars = [
   {
     name: '音量',
-    ico: ['fa-solid fa-volume-high', 'fa-volume-xmark'], //大中无
-    fun: {
-      click: function (e: Event & { target: HTMLElement }) {
-        let ico = ['fa-volume-high', 'fa-volume-xmark'] //大中无
-        // e.target.classList.toggle(ico[1])
-        playControl().isMuted = !playControl().isMuted
+    data: {
+      ico: ['fa-solid fa-volume-high', 'fa-volume-xmark'], //大中无
+      fun: {
+        click: function (e: Event & { target: HTMLElement }) {
+          playControl().isMuted = !playControl().isMuted
+        },
       },
     },
   },
+
   {
     name: '模式',
-    ico: 'fa-solid fa-repeat',
-    fun: function (e: Event & { target: HTMLElement }) {},
+    data: {
+      ico: ['fa-solid fa-repeat', 'fa-shuffle'],
+      fun: {
+        function(e: Event & { target: HTMLElement }) {
+          let ico = ['fa-solid fa-repeat', 'fa-shuffle']
+        },
+      },
+    },
   },
+
   {
     name: '列表',
     // id: 'playListEl',
-    ico: 'fa-solid fa-list-ol',
-    fun: {
-      click: function (e: Event & { target: HTMLElement }) {
-        playListEl.value?.classList.toggle('hidden')
-        main().listClose = !main().listClose
-      },
-      blur: function (e: Event & { target: HTMLElement }) {
-        main().listClose = true
+    data: {
+      ico: 'fa-solid fa-list-ol',
+      fun: {
+        click: function (e: Event & { target: HTMLElement }) {
+          playListEl.value?.classList.toggle('hidden')
+          main().listClose = !main().listClose
+        },
+        blur: function (e: Event & { target: HTMLElement }) {
+          main().listClose = true
+        },
       },
     },
   },

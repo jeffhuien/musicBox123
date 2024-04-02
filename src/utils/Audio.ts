@@ -1,5 +1,6 @@
-import { playControl } from '@/stores'
-
+import { playControl, playList } from '@/stores'
+import { ElMessageBox } from 'element-plus'
+let times = 5
 class Music {
   private audio: HTMLAudioElement
   constructor() {
@@ -14,8 +15,22 @@ class Music {
       try {
         await this.audio.play()
       } catch (error) {
-        console.log('retry~')
-        playControl().playMusicById(playControl().playId)
+        if (times > 0) {
+          console.log('retry~')
+          playControl().playMusicById(playControl().playId)
+          times--
+        } else {
+          console.log('play error~')
+          if (playList().playMode != 'SingleLoop') {
+            playControl().playNext()
+          } else {
+            // window.location.reload()
+            ElMessageBox.alert('播放失败，刷新试试吧~', '提示', {
+              confirmButtonText: '确定',
+            })
+          }
+          times = 5
+        }
       }
     }
     if (playControl().currentTime >= playControl().duration) playControl().currentTime = 0

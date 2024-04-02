@@ -1,6 +1,6 @@
 import { getPlayUrl } from '#/song/get-url'
 import { Song as s_info } from '#/song/songInfo'
-import { Music, fee, setDocumentTitle } from '@/utils'
+import { Music, setDocumentTitle } from '@/utils'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import playList from './playList'
@@ -19,16 +19,24 @@ export const playControl = defineStore(
     let playUrl = ref<string>('undefined')
     let playId = ref<number>(0)
     let isMuted = ref(false)
-    let { playList1, playIndex, isCloud } = toRefs(playList())
+    let { playList1, playIndex, isCloud, playMode } = toRefs(playList())
 
     async function playNext() {
+      if (playMode.value === 'Random') {
+        let index = Math.floor(Math.random() * playList1.value.length)
+        playMusicById(playList1.value[index].id)
+        playIndex.value = index
+        return
+      }
       // 下一首
       let nextId = 0
       if (playList1.value?.length) {
         if (playIndex.value != playList1.value.length - 1) {
+          // 判断是否是最后一首
           nextId = playList1.value[playIndex.value + 1].id
           playIndex.value++
         } else {
+          //是最后一首
           nextId = playList1.value[0].id
           playIndex.value = 0
         }
@@ -46,6 +54,13 @@ export const playControl = defineStore(
       }
     }
     async function playPrev() {
+      if (playMode.value === 'Random') {
+        let index = Math.floor(Math.random() * playList1.value.length)
+        playMusicById(playList1.value[index].id)
+        playIndex.value = index
+        return
+      }
+
       // 上一首
       let prevId = 0
       if (playList1.value?.length) {
@@ -119,18 +134,6 @@ export const playControl = defineStore(
       singerName.value = song.ar.length > 0 ? song.ar?.map((item: any) => item.name).join('、') : song.ar[0].name
       isPlay.value = true
       playId.value = song.id
-
-      // if (msg) {
-      //   let a = song.fee.toString()
-      //   //无版权无法播放
-      //   if (url.data[0].url === null && song.fee === 0) {
-      //     ElMessage.info({ duration: 3000, message: fee['404'] })
-      //     throw new Error('无版权无法播放')
-      //   }
-      //   if (fee[a] && song.fee != 0) {
-      //     ElMessage.info({ duration: 3000, message: fee[a] })
-      //   }
-      // }
       currentTime.value = 0
 
       try {

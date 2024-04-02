@@ -3,6 +3,7 @@ import Music from './Audio'
 import { fee } from './doc'
 import env from './env'
 import store from './store'
+
 // import { playMusic, playMusicById } from '@/utils/play'
 
 /**
@@ -71,3 +72,5 @@ export {
   setDocumentTitle,
   logOut,
 }
+
+export * from './buttonBar'

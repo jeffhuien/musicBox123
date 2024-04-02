@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { bars } from '#/index'
-import { playControl } from '@/stores'
+import { playControl, playList } from '@/stores'
 
 let data = defineProps<{
   data: bars[]
@@ -10,13 +10,13 @@ let data = defineProps<{
 <template>
   <div class="flex gap-6 h-full items-center">
     <template v-for="(item, index) in data.data" :key="index">
+      <!-- // -->
       <template v-if="item.name == '音量'">
         <div class="relative max-md:hidden group w-full h-full flex justify-center items-center">
-          <button @click="item.fun?.click" @blur="item.fun?.blur">
+          <button @click="item.data.fun?.click" @blur="item.data.fun?.blur">
             <i
               class="fa-solid w-5 shrink-0"
-              :class="[playControl().isMuted || playControl().volume == 0 ? item.ico[1] : item.ico[0]]"></i>
-            <span class="ml-1 max-sm:hidden">{{ item.name }}</span>
+              :class="[playControl().isMuted || playControl().volume == 0 ? item.data.ico[1] : item.data.ico[0]]"></i>
           </button>
 
           <div
@@ -39,18 +39,50 @@ let data = defineProps<{
         </div>
       </template>
 
+      <template v-else-if="item.name == '模式'">
+        <div class="relative max-md:hidden group w-full h-full flex justify-center items-center">
+          <button @click="item.data.fun?.click" @blur="item.data.fun?.blur">
+            <i
+              class="fa-solid w-5 shrink-0"
+              :class="[playControl().isMuted || playControl().volume == 0 ? item.data.ico[1] : item.data.ico[0]]"></i>
+          </button>
+
+          <div
+            class="-translate-x-1/2 py-3 left-1/2 group-hover:flex hidden flex-col justify-between gap-2 shadow-xl rounded-md items-center border w-24 !h-32 bg-white dark:bg-gray-800 dark:border-gray-600 z-20 absolute bottom-10">
+            <div class="flex-1 flex flex-col items-center gap-3 justify-between">
+              <div
+                :class="[playList().playMode == 'Loop' ? 'active' : '']"
+                class="flex items-center gap-2 hover:bg-gray-300 dark:hover:bg-gray-700 p-1 rounded-md"
+                @click="playList().playMode = 'Loop'">
+                <i class="fa-solid" :class="item.data.ico[0]"></i>
+                <span>循环播放</span>
+              </div>
+
+              <div
+                :class="playList().playMode == 'Random' ? 'active' : ''"
+                class="flex items-center gap-2 hover:bg-gray-300 dark:hover:bg-gray-700 p-1 rounded-md"
+                @click="playList().playMode = 'Random'">
+                <i class="fa-solid" :class="item.data.ico[1]"></i>
+                <span>随机播放</span>
+              </div>
+              <div
+                :class="playList().playMode == 'SingleLoop' ? 'active' : ''"
+                class="flex items-center gap-2 hover:bg-gray-300 dark:hover:bg-gray-700 p-1 rounded-md"
+                @click="playList().playMode = 'SingleLoop'">
+                <img src="/public/img/ico/repeat-1.svg" class="w-4" alt="" />
+                <span>单曲循环</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
       <template v-else>
         <div
           class="relative group w-5 shrink-0 h-full flex justify-center items-center"
           :class="[item.name != '列表' ? 'max-md:hidden' : '']">
-          <button class="relative" @blur.native.capture="item.fun?.blur" @click="item.fun?.click">
-            <i class="" :class="[item.ico instanceof Array ? item.ico[0] : item.ico]"> </i>
-            <!-- <em
-              v-if="item.name == '评论' || item.name == '收藏'"
-              class="absolute -top-1 left-1 text-pink-600 text-xs scale-75"
-              >{{ '999' }}</em
-            > -->
-            <span class="ml-1 max-sm:hidden">{{ item.name }}</span>
+          <button class="relative" @blur.native.capture="item.data.fun?.blur" @click="item.data.fun?.click">
+            <i class="" :class="[item.data.ico instanceof Array ? item.data.ico[0] : item.data.ico]"> </i>
           </button>
         </div>
       </template>
@@ -68,5 +100,8 @@ button {
   &:hover span {
     opacity: 1;
   }
+}
+.active {
+  @apply dark:bg-gray-700 bg-sky-400 text-white;
 }
 </style>

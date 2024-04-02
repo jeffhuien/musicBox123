@@ -3,12 +3,14 @@ import { Song, songInfo } from './song/songInfo'
 
 export interface bars {
   name: string
-  ico: string[] | string
-  id?: string
-  fun: {
-    click?: Function
-    change?: Function
-    blur?: Function
+  data: {
+    ico: string[] | string
+    id?: string
+    fun: {
+      click?: Function
+      change?: Function
+      blur?: Function
+    }
   }
 }
 

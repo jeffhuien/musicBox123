@@ -44,6 +44,7 @@ onMounted(async () => {
     ? Math.floor(ls.value?.parentElement?.parentElement?.offsetHeight / h.value / 2)
     : 0
   //BUG 无法识别手动滚动
+  //BUG 暂时失效
 
   // nodeLs.value = ls.value?.childNodes
   // nodeLs.value.p

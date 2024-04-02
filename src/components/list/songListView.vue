@@ -2,7 +2,9 @@
 import { Playlist } from '#/List/ListDetail'
 import { Song } from '#/song/songInfo'
 import { auth, main, UserList } from '@/stores'
-import { random } from 'lodash'
+import _ from 'lodash'
+
+import { searchSongList, sortSongList } from '@/utils'
 
 const { set, get, remove } = UserList()
 const props = defineProps<{
@@ -16,13 +18,15 @@ let scroll = ref()
 let top = ref<HTMLElement>()
 let show = ref(true)
 let ls = ref()
+let copy = ref<Song[]>([])
+copy.value = _.cloneDeep(data.value)
 
 function playAll() {
   ls.value.play(data.value![0])
 }
 
 async function collect(t: number) {
-  UserList().update = random(0, 10000)
+  UserList().update = _.random(0, 10000)
   if (!auth().isLogin) return ElMessage.warning('请先登录')
   const { ListApi } = await import('@/Api/List')
   try {
@@ -47,6 +51,16 @@ async function collect(t: number) {
 onUpdated(() => {
   ElMessage.info(info.value.name)
 })
+
+let asc = true // true: asc升序
+function sort(t: string) {
+  sortSongList(copy, t, data, asc)
+  asc = !asc
+}
+
+function search(w: string) {
+  return searchSongList(copy, w, data)
+}
 </script>
 
 <template>
@@ -88,17 +102,19 @@ onUpdated(() => {
         </div>
       </div>
       <template v-if="show">
-        <div class="flex justify-between p-4 shadow-sm rounded-md border max-sm:hidden">
-          <div class="">
-            <Buttons :play-all="playAll" @collect="collect" :isCollect="get(info.id.toString())" />
-          </div>
-          <div class="">right</div>
+        <div class="py-4 max-sm:hidden">
+          <Buttons
+            @search="search"
+            @playAll="playAll"
+            @collect="collect"
+            @sort="sort"
+            :Collect="{ isCollect: get(info.id.toString()) }" />
         </div>
       </template>
 
       <div
         v-if="!show && !main().isMobile"
-        class="w-full p-2 rounded-b-xl flex flex-col justify-between gap-2 sticky top-0 z-50 truncate bg-white border dark:border-none shadow-lg dark:bg-gray-600 mb-4 animate__animated animate__slideInDown">
+        class="w-full p-2 rounded-b-xl flex flex-col justify-between gap-2 sticky top-0 z-50 truncate bg-white dark:bg-gray-600 mb-4 animate__animated animate__slideInDown">
         <div class="flex gap-2 items-center">
           <div class="relative w-12 h-12">
             <el-image :src="info?.coverImgUrl || '/img/logo.png'" class="w-full h-full rounded-md" />
@@ -108,18 +124,18 @@ onUpdated(() => {
           </h1>
         </div>
         <div class="shrink-0">
-          <Buttons :play-all="playAll" :isCollect="get(info.id.toString())" />
+          <Buttons
+            @search="search"
+            @playAll="playAll"
+            @collect="collect"
+            @sort="sort"
+            :Collect="{ isCollect: get(info.id.toString()) }" />
         </div>
       </div>
 
       <!-- <div class="flex-1 !overflow-hidden !rounded-xl"> -->
       <div class="h-full animate__animated animate__fadeIn">
-        <list
-          :lists-songs="(data as unknown as  Song[])"
-          class="rounded-xl"
-          :list-name="info?.name"
-          ref="ls"
-          v-if="data" />
+        <list :lists-songs="copy" class="" :list-name="info?.name" ref="ls" v-if="data" />
         <Loading v-else class="">loading</Loading>
       </div>
       <!-- </div> -->
@@ -128,7 +144,15 @@ onUpdated(() => {
 </template>
 
 <style scoped lang="scss">
-:deep(.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell) {
+// :deep(.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell) {
+//   background-color: #ffffff00 !important;
+// }
+:deep(
+    .el-table--border .el-table__inner-wrapper::after,
+    .el-table--border::after,
+    .el-table--border::before,
+    .el-table__inner-wrapper::before
+  ) {
   background-color: #ffffff00 !important;
 }
 </style>
