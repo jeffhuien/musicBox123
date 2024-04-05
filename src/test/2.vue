@@ -1,20 +1,25 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+let a = ref<string>('')
 
-let a = ref<HTMLElement>()
+function s(t: string) {
+  if (!f.value) console.log(t)
+}
 
-onMounted(() => {
-  console.log(a.value)
-  a.value?.addEventListener('keydown', (e) => {
-    console.log(e.key)
-    e.preventDefault()
-  })
-})
+let f = ref<boolean>(false)
+function start() {
+  f.value = true
+}
+
+function end() {
+  f.value = false
+  s(a.value)
+}
 </script>
 
 <template>
-  <div tabindex="1" ref="a" class="focus:outline-none h-screen w-1/2 bg-gray-700 overflow-y-scroll">
-    <div class="" v-for="i in 100">1234</div>
+  <div class="p-5 border bg-red-500">
+    {{ a }}
+    <input @compositionstart="start" @compositionend="end" type="text " class="border" v-model="a" @input="s(a)" />
   </div>
 </template>
 

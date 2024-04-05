@@ -6,7 +6,7 @@ import router from '@/router'
 import { searchHistory } from '@/stores'
 import { random } from 'lodash'
 
-let keyword = ref('')
+let keyword = ref<string>('')
 let data = ref<searchSuggest>()
 let show = ref(false)
 let ls = ref<Hot>({} as unknown as Hot)
@@ -15,10 +15,24 @@ async function search(keywords: string) {
 
   data.value.result.songs.forEach((item) => {
     // 正则匹配item.name 与keyword,匹配到的字符使用span标签包裹
-    return (item.name = item.name.replace(new RegExp(keywords, 'g'), (match) => {
-      return `<span class='text-sky-500'>${match}</span>` //为什么没有被渲染
+    return (item.name = item.name.replace(new RegExp(keywords, 'gi'), (match) => {
+      return `<span class='text-sky-500'>${match}</span>`
     }))
   })
+}
+
+let f = ref<boolean>(false)
+function start() {
+  f.value = true
+}
+
+function end() {
+  f.value = false
+  search(keyword.value)
+}
+
+function s() {
+  if (!f.value) search(keyword.value)
 }
 
 async function enterSearch(keywords: string) {
@@ -70,16 +84,20 @@ onUnmounted(() => {
       class="dark:bg-gray-800 transition-all duration-700 w-52 focus:w-64 rounded-3xl border caret-pink-500 pl-8 py-2 max-sm:py-1 text-xs text-gray-600 focus:outline-sky-200 hover:border-lime-300 outline-none"
       v-model="keyword"
       :placeholder="Text"
-      @input="search(keyword)"
+      @compositionstart="start"
+      @compositionend="end"
+      @input="s"
       @focus="getFocus"
       @blur="lostFocus"
       @keydown.stop=""
       @keyup.enter="enterSearch(keyword ? keyword : Text)" />
     <div
       v-show="show"
-      class="flex max-sm:scale-90 suggest min-h-[15rem] absolute top-[120%] max-sm:top-2 max-sm:-left-2 z-20 w-72 bg-white dark:bg-gray-800 rounded-md shadow-lg">
+      class="overflow-hidden z-[51] flex max-sm:scale-90 suggest min-h-[15rem] absolute top-[120%] max-sm:top-2 max-sm:-left-2 w-72 bg-white dark:bg-gray-800 rounded-md shadow-lg">
       <div v-if="data?.result" class="h-full w-full absolute">
-        <div v-if="data.result.albums" class="flex flex-col gap-2 p-2 h-full border dark:bg-gray-800 bg-white">
+        <div
+          v-if="data.result.albums"
+          class="flex flex-col gap-2 p-2 h-full border dark:border-gray-700 dark:bg-gray-800 bg-white">
           <div class="flex p-1 border-b">
             <h2 class="self-center w-2/12 flex-shrink-0 text-gray-500 text-center">单曲</h2>
             <div class="flex-1 w-10/12">
@@ -109,12 +127,14 @@ onUnmounted(() => {
 
       <div v-else class="w-full">
         <div
-          class="[&_h2]:mb-2 suggest flex flex-col gap-2 p-2 !min-h-52 border bg-white dark:bg-gray-800 rounded-md shadow-lg">
+          class="suggest flex flex-col gap-2 p-2 !min-h-52 border dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md shadow-lg">
           <div class="">
-            <h2 class="">
-              <span class="">搜索历史</span>
-              <span class="block relative -top-3 w-10 h-3 bg-pink-500/75"> </span>
-            </h2>
+            <div class="mb-2">
+              <span class="relative">
+                <span class="relative z-10"> 搜索历史 </span>
+                <span class="block absolute top-2 z-0 w-full h-2 bg-pink-500/75"> </span>
+              </span>
+            </div>
             <div class="flex gap-2 flex-wrap justify-normal">
               <span
                 v-for="i in searchHistory().searchHistory"
@@ -125,14 +145,16 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <div class="flex flex-col relative">
-            <h2 class="">
-              <span class="">热搜</span>
-              <span class="block relative -top-3 w-10 h-3 bg-pink-500/75"> </span>
-            </h2>
+          <div class="flex flex-col">
+            <div class="mb-2">
+              <span class="relative">
+                <span class="relative z-10"> 热搜 </span>
+                <span class="block absolute top-2 z-0 w-full h-2 bg-pink-500/75"> </span>
+              </span>
+            </div>
             <ul class="text-gray-500 list-decimal translate-x-5" v-if="ls.code">
               <li
-                class="text-xs hover:bg-gray-100 px-2 py-1 rounded-2xl"
+                class="text-xs hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded-2xl"
                 v-for="(i, index) in ls.result.hots"
                 :index="index"
                 @click="enterSearch(i.first)">
