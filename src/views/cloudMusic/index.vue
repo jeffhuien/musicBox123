@@ -1,38 +1,76 @@
 <script setup lang="ts">
+import _ from 'lodash'
 import { CloudSongDataType, CloudSongType } from '#/song/cloudSong'
 import { AuthApi } from '@/Api/Auth'
-import buttons from '@/components/common/buttons.vue'
-import { searchSongList, sortSongList } from '@/utils'
+import { sortSongList } from '@/utils'
 
-let data = ref<CloudSongType>({} as CloudSongType)
-data.value = await AuthApi.getCloud(100)
-
-let copy = ref<CloudSongDataType[]>([])
 let ls = ref()
+let data = ref<CloudSongType>({} as CloudSongType)
+let f = ref<CloudSongDataType[]>([])
+let copy = ref<CloudSongDataType[]>([])
+let page = reactive({ lim: 20, offset: 1 })
+let asc = true // true: asc升序
+const format = (percentage: number) => (percentage === 100 ? 'Full' : `${percentage.toFixed(3)}%`)
+const loading = ref(false)
+let k = ref(false)
+const disabled = computed(() => loading.value || noMore.value || k.value)
 
-function playAll() {
-  ls.value.play(data.value.data[0].simpleSong)
-}
-
-let f: CloudSongDataType[] = data.value.data.map<CloudSongDataType>((x: any) => {
+data.value = await AuthApi.getCloud(page.lim, 0)
+const noMore = computed(() => data.value.count <= f.value.length || k.value == true)
+f.value = data.value.data.map<CloudSongDataType>((x: any) => {
   let t = x.simpleSong
   t.fileSize = x.fileSize
   return t
 })
 
-copy = ref<CloudSongDataType[]>(f)
 let c = (parseInt(data.value.size) / 1000000000).toFixed(2)
 let t = (parseInt(data.value.maxSize) / 1000000000).toFixed(2)
-const format = (percentage: number) => (percentage === 100 ? 'Full' : `${percentage.toFixed(3)}%`)
+function playAll() {
+  ls.value.play(data.value.data[0].simpleSong)
+}
 
-let asc = true // true: asc升序
+copy = ref<CloudSongDataType[]>(_.cloneDeep(f.value))
+
+/**
+ *
+ * @param t 排序依据
+ */
 function sort(t: string) {
-  sortSongList(copy, t, ref(f), asc)
+  sortSongList(f, t, copy, asc)
   asc = !asc
 }
 
+/**
+ *
+ * @param w 搜索的关键字
+ */
 function search(w: string) {
-  return searchSongList(copy, w, ref(f))
+  if (w != '') {
+    k.value = true
+    f.value = f.value.filter((x) => {
+      return x.name.toLowerCase().includes(w.toLowerCase())
+    })
+  } else {
+    f.value = copy.value
+    k.value = false
+  }
+}
+
+async function load() {
+  if (!noMore.value && !loading.value) {
+    loading.value = true
+    setTimeout(async () => {
+      let t = await AuthApi.getCloud(page.lim, page.offset++ * page.lim)
+      data.value.data.push(...t.data)
+      f.value = data.value.data.map<CloudSongDataType>((x: any) => {
+        let t = x.simpleSong
+        t.fileSize = x.fileSize
+        return t
+      })
+      copy.value = _.cloneDeep(f.value)
+      loading.value = false
+    }, 2000)
+  }
 }
 </script>
 
@@ -53,7 +91,16 @@ function search(w: string) {
     </div>
 
     <div class="flex-1 overflow-hidden" tabindex="1">
-      <list :lists-songs="copy" :noTag="true" :list-name="'我的云盘'" :cloud="true" ref="ls"></list>
+      <list
+        v-infinite-scroll="load"
+        :infinite-scroll-disabled="disabled"
+        :lists-songs="f"
+        :noTag="true"
+        :list-name="'我的云盘'"
+        :cloud="true"
+        ref="ls"></list>
+      <p v-if="loading">Loading...</p>
+      <p v-if="noMore">No more</p>
     </div>
   </div>
 </template>

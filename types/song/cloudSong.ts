@@ -4,6 +4,7 @@ interface CloudSongType {
   size: string //已用容量（B字节）
   maxSize: string //共计容量
   code: number
+  [property: string]: any
 }
 
 interface CloudSongsData {

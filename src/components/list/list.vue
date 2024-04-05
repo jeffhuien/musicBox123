@@ -4,6 +4,7 @@ import { Song } from '#/song/songInfo'
 import { SongApi } from '@/Api/song'
 import { main, playControl, playList } from '@/stores'
 import { formatTime } from '@/utils'
+import { info } from 'console'
 
 let { playList1, playIndex, isCloud, name } = toRefs(playList())
 let { playCloudMusic, playMusic } = playControl()
@@ -220,9 +221,7 @@ if (listsSongs.value) {
   </template>
 
   <template v-else>
-    <div class="w-full h-full flex justify-center items-center">
-      <ElEmpty description="加载失败" />
-    </div>
+    <div class="w-full h-full flex justify-center items-center">unmpty description="加载失败" /></div>
   </template>
 </template>
 

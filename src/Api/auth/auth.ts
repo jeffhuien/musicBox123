@@ -10,9 +10,12 @@ class Auth extends Axios {
     super(config)
   }
 
-  public async getInfo() {
+  public async getInfo(id: string) {
     return this.request<any>({
-      url: `/level`,
+      url: `/detail`,
+      params: {
+        uid: id,
+      },
       data: {
         cookie: store.get('cookie'),
       },
@@ -27,12 +30,13 @@ class Auth extends Axios {
       },
     })
   }
-  public async getCloud(lim?: string | number, off?: string | number) {
+
+  public async getCloud(lim?: number, off?: number) {
     return this.request<CloudSongType>({
       url: '/cloud',
       params: {
-        // limit: lim ? lim : '',
-        // offset: off ? off : '',
+        limit: lim ? lim : '',
+        offset: off ? off : '',
       },
       data: {
         cookie: store.get('cookie'),
@@ -41,13 +45,16 @@ class Auth extends Axios {
   }
 
   public async getList(uid?: string) {
-    if (!uid) {
-      uid = auth().user?.data.account.id.toString()
-    }
+    // if (!uid) {
+    //   uid = auth().user?.data.account.id.toString()
+    // }
     return await this.request<UserListReqType>({
       url: '/playlist',
       params: {
         uid,
+      },
+      data: {
+        cookie: store.get('cookie'),
       },
     })
   }

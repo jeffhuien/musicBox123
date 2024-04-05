@@ -55,4 +55,7 @@ declare module 'vue' {
     TimeText: typeof import('./../src/components/playBar/timeText.vue')['default']
     Top: typeof import('./../src/components/top/index.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
+  }
 }

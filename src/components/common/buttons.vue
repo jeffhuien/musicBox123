@@ -48,6 +48,7 @@ let searchValue = ref<string>('')
           type="text"
           placeholder="搜索"
           @input="$emit('search', searchValue)"
+          @keydown.stop=""
           v-model="searchValue"
           class="transition-all duration-700 w-20 focus:w-40 rounded-3xl border caret-pink-500 pl-4 pr-8 py-1 max-sm:py-1 text-xs text-gray-600 focus:outline-sky-200 hover:border-lime-300 outline-none" />
         <i class="fa-solid fa-magnifying-glass absolute top-[20%] right-2 opacity-50"></i>

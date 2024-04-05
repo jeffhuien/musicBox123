@@ -1,5 +1,5 @@
 interface Account {
-  id: number
+  id: string
   userName: string
   type: number
   status: number
