@@ -8,7 +8,7 @@ let data = defineProps<{
 </script>
 
 <template>
-  <div class="flex gap-6 h-full items-center">
+  <div class="flex gap-6 h-full items-center [&_button]:w-8">
     <template v-for="(item, index) in data.data" :key="index">
       <!-- // -->
       <template v-if="item.name == '音量'">
@@ -43,8 +43,10 @@ let data = defineProps<{
         <div class="relative max-md:hidden group w-full h-full flex justify-center items-center">
           <button @click="item.data.fun?.click" @blur="item.data.fun?.blur">
             <i
+              v-if="playList().playMode != 'SingleLoop'"
               class="fa-solid w-5 shrink-0"
-              :class="[playControl().isMuted || playControl().volume == 0 ? item.data.ico[1] : item.data.ico[0]]"></i>
+              :class="[playList().playMode != 'Loop' ? item.data.ico[1] : item.data.ico[0]]"></i>
+            <img src="/public/img/ico/repeat-1.svg" class="m-auto w-5 shrink-0" v-else alt="" />
           </button>
 
           <div
