@@ -3,6 +3,7 @@ const props = defineProps<{
   Collect?: {
     isCollect: boolean
   }
+  own: boolean
   Upload?: boolean
   Download?: boolean
 }>()
@@ -28,7 +29,7 @@ let searchValue = ref<string>('')
         播放全部
       </el-button>
       <el-button
-        v-if="props.Collect"
+        v-if="!props.own"
         :type="'primary'"
         class="!bg-red-500"
         @click="$emit('collect', f), (f = f == 1 ? 2 : 1)">
@@ -37,7 +38,11 @@ let searchValue = ref<string>('')
         <span v-else> 取消收藏 </span>
       </el-button>
 
-      <el-button v-if="props.Upload" :type="'primary'" class="!bg-blue-500" @click="$emit('upload')">
+      <el-button
+        v-if="props.Upload"
+        :type="'primary'"
+        class="!bg-blue-500"
+        @click="$emit('upload')">
         <i class="fa-solid fa-cloud-arrow-up mr-2"></i>
         上传
       </el-button>
@@ -59,13 +64,19 @@ let searchValue = ref<string>('')
           <span>排序</span>
           <div
             class="absolute hidden group-hover:flex border flex-col bg-white w-32 dark:bg-gray-700 text-left px-5 right-0 rounded-md p-2">
-            <p class="w-full p-2 rounded-md dark:hover:bg-gray-600 hover:bg-gray-200" @click="$emit('sort', 'default')">
+            <p
+              class="w-full p-2 rounded-md dark:hover:bg-gray-600 hover:bg-gray-200"
+              @click="$emit('sort', 'default')">
               默认排序
             </p>
-            <p class="w-full p-2 rounded-md dark:hover:bg-gray-600 hover:bg-gray-200" @click="$emit('sort', 'time')">
+            <p
+              class="w-full p-2 rounded-md dark:hover:bg-gray-600 hover:bg-gray-200"
+              @click="$emit('sort', 'time')">
               按时间排序
             </p>
-            <p class="w-full p-2 rounded-md dark:hover:bg-gray-600 hover:bg-gray-200" @click="$emit('sort', 'name')">
+            <p
+              class="w-full p-2 rounded-md dark:hover:bg-gray-600 hover:bg-gray-200"
+              @click="$emit('sort', 'name')">
               按名称排序
             </p>
           </div>

@@ -9,7 +9,13 @@ let uid = ref('')
 async function setUserListData(uid: string) {
   let data = await ListApi.getList(uid)
   let t = data.playlist.map((I) => {
-    return { name: I.name, id: I.id.toString(), img: I.coverImgUrl, count: I.trackCount } as UserListType
+    return {
+      name: I.name,
+      id: I.id.toString(),
+      img: I.coverImgUrl,
+      count: I.trackCount,
+      own: I.creator.nickname == auth().user?.data.profile.nickname ? true : false,
+    } as UserListType
   })
   return t
 }
@@ -29,7 +35,27 @@ onMounted(async () => {
       <router-link
         :to="{ name: `song.list`, params: { id: k.id } }"
         class="flex items-center"
-        v-for="(k, index) in list"
+        v-for="(k, index) in list.filter((I) => I.own)"
+        :index="index">
+        <!-- <i :class="k.ico" class="text-lg mr-2 w-7"></i> -->
+        <div class="flex text-xs w-full">
+          <img :src="k.img" class="w-7 h-7 mr-2 rounded-sm" alt="" />
+          <div class="flex flex-col flex-1 truncate">
+            <span class="overflow-hidden w-full truncate">
+              {{ k.name }}
+            </span>
+            <span class="opacity-50"> {{ k.count }}首 </span>
+          </div>
+        </div>
+      </router-link>
+    </div>
+    <!-- // -->
+    <h1 class="dark:text-white">收藏歌单</h1>
+    <div class="item-block">
+      <router-link
+        :to="{ name: `song.list`, params: { id: k.id } }"
+        class="flex items-center"
+        v-for="(k, index) in list.filter((I) => !I.own)"
         :index="index">
         <!-- <i :class="k.ico" class="text-lg mr-2 w-7"></i> -->
         <div class="flex text-xs w-full">

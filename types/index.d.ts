@@ -38,6 +38,7 @@ export interface UserListType {
   id: string
   img: string
   count: number
+  own?: boolean
 }
 
 export interface banner {

@@ -69,21 +69,33 @@ function search(w: string) {
       <div class="top flex w-full" ref="top">
         <div class="w-36 h-36 max-sm:w-32 max-sm:h-32 shrink-0 mr-6">
           <div class="relative">
-            <el-image :src="info?.coverImgUrl || '/img/logo.png'" class="w-full h-full rounded-md" />
+            <el-image
+              :src="info?.coverImgUrl || '/img/logo.png'"
+              class="w-full h-full rounded-md" />
             <span
               v-if="info?.playCount"
               class="text-xs absolute bottom-3 right-1 text-white bg-black bg-opacity-50 px-2 py-[2px] rounded-full">
               <i class="fa-solid fa-play text-white mr-[2px]"> </i>
               {{
-                info ? (info.playCount > 10000 ? (info.playCount / 10000).toFixed(2) + '万' : info.playCount) : ''
+                info
+                  ? info.playCount > 10000
+                    ? (info.playCount / 10000).toFixed(2) + '万'
+                    : info.playCount
+                  : ''
               }}</span
             >
           </div>
         </div>
         <div class="text-xs flex flex-col justify-between truncate">
-          <h1 class="text-2xl max-sm:text-sm opacity-70 font-bold">{{ name ? name : info?.name }}</h1>
-          <div class="flex items-center gap-3" @click="$router.push('/user/' + info?.creator.userId)">
-            <ElAvatar :src="info?.creator.avatarUrl || '/img/logo.png'" size="default"></ElAvatar>
+          <h1 class="text-2xl max-sm:text-sm opacity-70 font-bold">{{
+            name ? name : info?.name
+          }}</h1>
+          <div
+            class="flex items-center gap-3"
+            @click="$router.push('/user/' + info?.creator.userId)">
+            <ElAvatar
+              :src="info?.creator.avatarUrl || '/img/logo.png'"
+              size="default"></ElAvatar>
             {{ info?.creator.nickname || 'yuayua' }}
           </div>
           <div class="opacity-50 text-justify truncate">
@@ -95,7 +107,9 @@ function search(w: string) {
           <div class="">
             <div v-if="info?.tags.length" class="flex gap-2 items-center">
               <span class="opacity-50">标签：</span>
-              <span v-for="i in info.tags" class="p-1 rounded-md text-emerald-500 italic"> #{{ i }} </span>
+              <span v-for="i in info.tags" class="p-1 rounded-md text-emerald-500 italic">
+                #{{ i }}
+              </span>
             </div>
             <div v-else class="opacity-50">标签：未添加标签</div>
           </div>
@@ -108,6 +122,7 @@ function search(w: string) {
             @playAll="playAll"
             @collect="collect"
             @sort="sort"
+            :own="props.info.creator.userId === auth().user?.data.profile.userId"
             :Collect="{ isCollect: get(info.id.toString()) }" />
         </div>
       </template>
@@ -117,9 +132,13 @@ function search(w: string) {
         class="w-full p-2 rounded-b-xl flex flex-col justify-between gap-2 sticky top-0 z-50 truncate bg-white dark:bg-gray-600 mb-4 animate__animated animate__slideInDown">
         <div class="flex gap-2 items-center">
           <div class="relative w-12 h-12">
-            <el-image :src="info?.coverImgUrl || '/img/logo.png'" class="w-full h-full rounded-md" />
+            <el-image
+              :src="info?.coverImgUrl || '/img/logo.png'"
+              class="w-full h-full rounded-md" />
           </div>
-          <h1 :class="[show ? 'text-2xl' : 'text-xl truncate']" class="max-sm:text-sm opacity-70 font-bold">
+          <h1
+            :class="[show ? 'text-2xl' : 'text-xl truncate']"
+            class="max-sm:text-sm opacity-70 font-bold">
             {{ name ? name : info?.name }}
           </h1>
         </div>
@@ -129,6 +148,7 @@ function search(w: string) {
             @playAll="playAll"
             @collect="collect"
             @sort="sort"
+            :own="props.info.creator.userId === auth().user?.data.profile.userId"
             :Collect="{ isCollect: get(info.id.toString()) }" />
         </div>
       </div>
