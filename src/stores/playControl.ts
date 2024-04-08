@@ -25,7 +25,6 @@ export const playControl = defineStore(
       if (playMode.value === 'Random') {
         let index = Math.floor(Math.random() * playList1.value.length)
         playMusicById(playList1.value[index].id)
-        playIndex.value = index
         return
       }
       // 下一首
@@ -34,11 +33,9 @@ export const playControl = defineStore(
         if (playIndex.value != playList1.value.length - 1) {
           // 判断是否是最后一首
           nextId = playList1.value[playIndex.value + 1].id
-          playIndex.value++
         } else {
           //是最后一首
           nextId = playList1.value[0].id
-          playIndex.value = 0
         }
         try {
           // const { playMusicById } = await import('@/utils/play')
@@ -57,7 +54,6 @@ export const playControl = defineStore(
       if (playMode.value === 'Random') {
         let index = Math.floor(Math.random() * playList1.value.length)
         playMusicById(playList1.value[index].id)
-        playIndex.value = index
         return
       }
 
@@ -66,10 +62,8 @@ export const playControl = defineStore(
       if (playList1.value?.length) {
         if (playIndex.value != 0) {
           prevId = playList1.value[playIndex.value - 1].id
-          playIndex.value--
         } else {
           prevId = playList1.value[playList1.value.length - 1].id
-          playIndex.value = playList1.value.length
         }
         try {
           if (isCloud) {
@@ -131,7 +125,10 @@ export const playControl = defineStore(
       songImg.value = song.al.picUrl
       musicName.value = song.name
       songAl.value = song.al.name
-      singerName.value = song.ar.length > 0 ? song.ar?.map((item: any) => item.name).join('、') : song.ar[0].name
+      singerName.value =
+        song.ar.length > 0
+          ? song.ar?.map((item: any) => item.name).join('、')
+          : song.ar[0].name
       isPlay.value = true
       playId.value = song.id
       currentTime.value = 0
@@ -161,7 +158,6 @@ export const playControl = defineStore(
 
     function BarPlay(i: s_info, index: number) {
       playMusicById(i.id)
-      playIndex.value = index
     }
 
     return {

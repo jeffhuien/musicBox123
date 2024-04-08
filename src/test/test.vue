@@ -6,6 +6,10 @@
     <p v-if="loading">Loading...</p>
     <p v-if="noMore">No more</p>
   </div>
+
+  <div class="border">
+    <list><p>1234</p></list>
+  </div>
 </template>
 
 <script lang="ts" setup>

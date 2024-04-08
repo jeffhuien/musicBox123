@@ -4,7 +4,6 @@ import { Song } from '#/song/songInfo'
 import { SongApi } from '@/Api/song'
 import { main, playControl, playList } from '@/stores'
 import { formatTime } from '@/utils'
-import { info } from 'console'
 
 let { playList1, playIndex, isCloud, name } = toRefs(playList())
 let { playCloudMusic, playMusic } = playControl()
@@ -56,7 +55,11 @@ function play(row: Song) {
       name: i.name,
       fee: i.fee,
       time: time ?? 'unknow',
-      singerName: i.ar ? (i.ar?.length > 1 ? i.ar.map((item: any) => item.name).join('、') : i.ar[0].name) : 'Error',
+      singerName: i.ar
+        ? i.ar?.length > 1
+          ? i.ar.map((item: any) => item.name).join('、')
+          : i.ar[0].name
+        : 'Error',
     }
   }
   if (!cloud.value) {
@@ -85,13 +88,13 @@ function play(row: Song) {
     }
   }
   if (listName.value) name.value = listName.value
-  playIndex.value = playList1.value.findIndex((i) => i.id == row.id, 0)
+  // playIndex.value = playList1.value.findIndex((i) => i.id == playControl().playId, 0)
 }
 
 function setStyle({ row, rowIndex }: { row: Song; rowIndex: number }) {
   let bg = '!bg-no dark:hover:!bg-gray-700 hover:!bg-gray-50 dark:hover:text-gray-400'
   if (row.id == playControl().playId) {
-    playIndex.value = rowIndex
+    // playIndex.value = rowIndex
     return '!text-sky-500 ' + bg
   }
   return bg
@@ -115,7 +118,12 @@ if (listsSongs.value) {
       :data="listsSongs"
       :flexible="true"
       :show-overflow-tooltip="true"
-      :tooltip-options="{ effect: 'light', showArrow: false, offset: -60, popperClass: '!border-red-200' }"
+      :tooltip-options="{
+        effect: 'light',
+        showArrow: false,
+        offset: -60,
+        popperClass: '!border-red-200',
+      }"
       :row-class-name="setStyle"
       :cell-class-name="' !border-none  '"
       :class-name="'!bg-no'"
@@ -131,7 +139,11 @@ if (listsSongs.value) {
           :fit="true"
           :class-name="'text-gray-400'"
           :show-overflow-tooltip="false" />
-        <el-table-column align="left" :label="`歌曲( ${listsSongs.length} )`" min-width="40%" @click="play">
+        <el-table-column
+          align="left"
+          :label="`歌曲( ${listsSongs.length} )`"
+          min-width="40%"
+          @click="play">
           <template #default="scope">
             <div class="flex w-full justify-between">
               <span class="w-2/3 truncate">
@@ -169,8 +181,14 @@ if (listsSongs.value) {
             {{ formatTime(scope.row.dt, 'ms') }}
           </template>
         </el-table-column>
-        <el-table-column label="大小" :hidden-sm-and-down="true" min-width="10%" v-if="cloud">
-          <template #default="scope"> {{ (scope.row.fileSize / 1000000).toFixed(1) }}M </template>
+        <el-table-column
+          label="大小"
+          :hidden-sm-and-down="true"
+          min-width="10%"
+          v-if="cloud">
+          <template #default="scope">
+            {{ (scope.row.fileSize / 1000000).toFixed(1) }}M
+          </template>
         </el-table-column>
       </template>
 
@@ -215,13 +233,9 @@ if (listsSongs.value) {
       </template>
 
       <template #empty>
-        <el-empty description="什么也没有找到"> </el-empty>
+        <el-empty description="什么也没有"> </el-empty>
       </template>
     </el-table>
-  </template>
-
-  <template v-else>
-    <div class="w-full h-full flex justify-center items-center">unmpty description="加载失败" /></div>
   </template>
 </template>
 
