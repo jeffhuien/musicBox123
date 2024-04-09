@@ -10,7 +10,8 @@ let f = ref<CloudSongDataType[]>([])
 let copy = ref<CloudSongDataType[]>([])
 let page = reactive({ lim: 20, offset: 1 })
 let asc = true // true: asc升序
-const format = (percentage: number) => (percentage === 100 ? 'Full' : `${percentage.toFixed(3)}%`)
+const format = (percentage: number) =>
+  percentage === 100 ? 'Full' : `${percentage.toFixed(3)}%`
 const loading = ref(false)
 let k = ref(false)
 const disabled = computed(() => loading.value || noMore.value || k.value)
@@ -82,12 +83,20 @@ async function load() {
         <span class="text-xs max-sm:block opacity-50"> {{ c }}G/ {{ t }}G </span>
       </div>
       <div class="w-2/5">
-        <el-progress :style="'text-xs'" :percentage="parseFloat(c) / parseFloat(t)" :format="format" />
+        <el-progress
+          :style="'text-xs'"
+          :percentage="parseFloat(c) / parseFloat(t)"
+          :format="format" />
       </div>
     </div>
 
     <div class="mr-5 flex justify-between mb-3">
-      <buttons @play-all="playAll" @sort="sort" @search="search" :Upload="true"></buttons>
+      <buttons
+        :own="true"
+        @play-all="playAll"
+        @sort="sort"
+        @search="search"
+        :Upload="true"></buttons>
     </div>
 
     <div class="flex-1 overflow-hidden" tabindex="1">

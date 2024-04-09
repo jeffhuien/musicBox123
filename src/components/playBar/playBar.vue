@@ -2,7 +2,8 @@
   <div
     class="text-gray-500 playBar p-1 w-full h-full relative lg:justify-between flex-nowrap !bg-opacity-100 z-50 flex items-center">
     <!-- 进度条 -->
-    <div class="playBar-progress group !bg-pink-600 w-full hover:cursor-pointer absolute -top-[0.07rem] left-0">
+    <div
+      class="playBar-progress group !bg-pink-600 w-full hover:cursor-pointer absolute -top-[0.07rem] left-0">
       <el-slider
         :model-value="currentTime"
         :max="duration"
@@ -19,33 +20,56 @@
           :src="songImg"
           :style="[isPlay == false ? 'animation-play-state: paused' : '']" />
       </div>
-      <div class="md:ml-2 flex items-center justify-between max-sm:w-[50vw] lg:w-[20vw] overflow-hidden">
-        <div class="flex shrink-0 flex-1 bars ml-1 flex-col justify-center items-start relative !w-full">
+      <div
+        class="md:ml-2 flex items-center justify-between max-sm:w-[50vw] lg:w-[20vw] overflow-hidden">
+        <div
+          class="flex shrink-0 flex-1 bars ml-1 flex-col justify-center items-start relative !w-full">
           <template class="" v-if="main().isMobile">
-            <songNameMobile :musicName="musicName" :singerName="singerName"></songNameMobile>
+            <songNameMobile
+              :musicName="musicName"
+              :singerName="singerName"></songNameMobile>
           </template>
           <template class="" v-else>
-            <RunHouse class="text-sm" :data="[musicName, singerName].join(' - ')"></RunHouse>
-            <Bars class="text-sm mt-[.5rem] w-full max-sm:!hidden" :data="leftBars"></Bars>
+            <RunHouse
+              class="text-sm"
+              :data="[musicName, singerName].join(' - ')"></RunHouse>
+            <Bars class="text-sm mt-[.5rem] w-full max-sm:!hidden" :data="leftBars">
+              <div
+                class="relative group w-5 shrink-0 h-full flex justify-center items-center">
+                <button class="relative" @click="setLike">
+                  <i
+                    class="fa-regular fa-heart text-red-500"
+                    :class="[like ? 'fa-solid' : '']">
+                  </i>
+                </button>
+              </div>
+            </Bars>
           </template>
         </div>
       </div>
     </div>
     <!-- <!== 控制条 ==> -->
-    <div class="flex justify-center flex-1 relative shrink-0 lg:w-1/3 w-1/4 max-sm:!justify-end max-sm:pr-12">
-      <div class="flex justify-center items-center gap-8 text-xl text-sky-300 dark:text-gray-500">
+    <div
+      class="flex justify-center flex-1 relative shrink-0 lg:w-1/3 w-1/4 max-sm:!justify-end max-sm:pr-12">
+      <div
+        class="flex justify-center items-center gap-8 text-xl text-sky-300 dark:text-gray-500">
         <i class="fa-solid fa-backward-step max-md:hidden" @click="playPrev"></i>
         <i
           class="fa-solid shrink-0 text-4xl w-5 max-sm:text-2xl"
           :class="[isPlay ? 'fa-pause' : 'fa-play ']"
           @click="play"></i>
         <i class="fa-solid fa-forward-step max-md:hidden" @click="playNext"></i>
+
+        {{ like }}
       </div>
     </div>
 
     <div class="lg:w-1/3 items-center justify-end flex h-full">
       <div class="mr-10 left-0 max-md:!hidden">
-        <timeText class="text-xs opacity-90" :CurTime="currentTime" :totalTime="duration" />
+        <timeText
+          class="text-xs opacity-90"
+          :CurTime="currentTime"
+          :totalTime="duration" />
       </div>
       <Bars class="text-sm mr-6" :data="rightBars"></Bars>
       <!-- <Bars class="text-sm mr-6 hidden max-md:block" :data="[rightBars[rightBars.length - 1]]"></Bars> -->
@@ -93,7 +117,9 @@
         </el-scrollbar>
       </div>
 
-      <div class="w-full h-full flex justify-center items-center static text-sm text-gray-400" v-else>
+      <div
+        class="w-full h-full flex justify-center items-center static text-sm text-gray-400"
+        v-else>
         <el-empty :description="'列表内没有音乐哦'"> </el-empty>
       </div>
     </div>
@@ -103,8 +129,9 @@
 <script lang="ts" setup>
 import { bars } from '#/index'
 import { Song } from '#/song/songInfo'
+import { CommonApi } from '@/Api'
 import router from '@/router'
-import { main, playControl, playList } from '@/stores'
+import { auth, main, playControl, playList } from '@/stores'
 import { Music, formatTime } from '@/utils'
 import { Arrayable } from 'element-plus/es/utils/typescript'
 import { storeToRefs } from 'pinia'
@@ -112,7 +139,8 @@ import { storeToRefs } from 'pinia'
 let mp3 = Music
 let playListEl = ref<HTMLElement>()
 let scrollbar = ref()
-let { musicName, singerName, songImg, currentTime, isPlay, duration, playId, playUrl } = storeToRefs(playControl())
+let { musicName, singerName, songImg, currentTime, isPlay, duration, playId, playUrl } =
+  storeToRefs(playControl())
 let { playNext, playPrev, BarPlay, playMusicById } = playControl()
 let { playList1, playIndex, isCloud, name, playMode } = toRefs(playList())
 
@@ -136,21 +164,34 @@ mp3.addEventListener('ended', () => {
   }
 })
 
+let like = computed(() => auth().likeIds.includes(playId.value))
+
+async function setLike(e: Event) {
+  let ico = ['fa-regular fa-heart', 'fa-solid']
+  let target = e.target as HTMLElement
+
+  if (like.value) {
+    await CommonApi.like(playId.value, false)
+    auth().likeIds.splice(auth().likeIds.indexOf(playId.value), 1)
+    // target.style.color = '#fcfcfc'
+  } else {
+    await CommonApi.like(playId.value, true)
+    auth().likeIds.push(playId.value)
+  }
+  target.classList.toggle(ico[1])
+  // target.style.color = '#ff0000'
+}
+
 let leftBars = [
-  {
-    name: '收藏',
-    data: {
-      ico: ['fa-regular fa-heart', 'fa-solid'],
-      fun: {
-        click: function (e: Event) {
-          let ico = ['fa-regular fa-heart', 'fa-solid']
-          let target = e.target as HTMLElement
-          target.classList.toggle(ico[1])
-          target.style.color = '#ff0000'
-        },
-      },
-    },
-  },
+  // {
+  //   name: '收藏',
+  //   data: {
+  //     init: like.value,
+  //     ico: ['fa-regular fa-heart', 'fa-solid'],
+  //     fun: {
+  //       click:
+  //   },
+  // },
   {
     name: '评论',
     data: {

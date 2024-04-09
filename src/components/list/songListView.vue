@@ -71,7 +71,7 @@ function search(w: string) {
           <div class="relative">
             <el-image
               :src="info?.coverImgUrl || '/img/logo.png'"
-              class="w-full h-full rounded-md" />
+              class="w-full h-full rounded-md shadow-md" />
             <span
               v-if="info?.playCount"
               class="text-xs absolute bottom-3 right-1 text-white bg-black bg-opacity-50 px-2 py-[2px] rounded-full">

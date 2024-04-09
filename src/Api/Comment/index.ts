@@ -2,7 +2,7 @@ import { MusicComment } from '#/Comment/MusicComment'
 import { SongListComment } from '#/Comment/SongListComment'
 
 import Axios from '@/plugins/axios/axios'
-import { env, store } from '@/utils'
+import { store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class Comment extends Axios {
@@ -19,12 +19,27 @@ class Comment extends Axios {
     })
   }
 
-  public async getSongComment(id: string) {
+  public async getSongComment(id: string, lim?: string, off?: string) {
     return await this.request<MusicComment>({
       url: '/music',
       params: {
         id,
-        limit: 100,
+        limit: lim ? lim : '',
+        offset: off ? off : '',
+      },
+    })
+  }
+
+  public async CommitComment(id: string, content: string) {
+    return await this.request<any>({
+      url: '/music',
+      method: 'post',
+      params: {
+        id,
+        content,
+      },
+      data: {
+        cookie: store.get('cookie'),
       },
     })
   }

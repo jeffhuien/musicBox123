@@ -1,49 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { CommonApi, SongApi } from '@/Api'
+import { auth } from '@/stores'
+let uid = auth().user?.data.profile.userId.toString()!
+let res = await CommonApi.likelist(uid)
+</script>
 
 <template>
-  <table class="w-80 m-auto mt-10">
-    <tbody class="w-full bg-pink-400 aa">
-      <tr>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-      </tr>
-      <tr>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-      </tr>
-      <tr>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-      </tr>
-      <tr>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-        <td>qq</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="">
+    {{ res }}
+  </div>
 </template>
 
-<style scoped lang="scss">
-.aa {
-  tr {
-    // height: 50px;
-    border: 1px solid #0ff;
-    @apply mb-8;
-    td {
-      @apply p-4  bg-black first:rounded-l-md;
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>

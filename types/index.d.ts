@@ -11,6 +11,7 @@ export interface bars {
       change?: Function
       blur?: Function
     }
+    [key: string]: any
   }
 }
 

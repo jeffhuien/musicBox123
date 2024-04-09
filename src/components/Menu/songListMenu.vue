@@ -17,6 +17,7 @@ async function setUserListData(uid: string) {
       own: I.creator.nickname == auth().user?.data.profile.nickname ? true : false,
     } as UserListType
   })
+  t.splice(0, 1)
   return t
 }
 

@@ -9,14 +9,21 @@ let data = defineProps<{
 
 <template>
   <div class="flex gap-6 h-full items-center [&_button]:w-8">
+    <slot />
+
     <template v-for="(item, index) in data.data" :key="index">
       <!-- // -->
       <template v-if="item.name == '音量'">
-        <div class="relative max-md:hidden group w-full h-full flex justify-center items-center">
+        <div
+          class="relative max-md:hidden group w-full h-full flex justify-center items-center">
           <button @click="item.data.fun?.click" @blur="item.data.fun?.blur">
             <i
               class="fa-solid w-5 shrink-0"
-              :class="[playControl().isMuted || playControl().volume == 0 ? item.data.ico[1] : item.data.ico[0]]"></i>
+              :class="[
+                playControl().isMuted || playControl().volume == 0
+                  ? item.data.ico[1]
+                  : item.data.ico[0],
+              ]"></i>
           </button>
 
           <div
@@ -33,20 +40,29 @@ let data = defineProps<{
                 :max="1" />
             </div>
             <span class="text-xs dark:text-gray-400"
-              >{{ playControl().isMuted ? 0 : (playControl().volume * 100).toFixed(0) }}%</span
+              >{{
+                playControl().isMuted ? 0 : (playControl().volume * 100).toFixed(0)
+              }}%</span
             >
           </div>
         </div>
       </template>
 
       <template v-else-if="item.name == '模式'">
-        <div class="relative max-md:hidden group w-full h-full flex justify-center items-center">
+        <div
+          class="relative max-md:hidden group w-full h-full flex justify-center items-center">
           <button @click="item.data.fun?.click" @blur="item.data.fun?.blur">
             <i
               v-if="playList().playMode != 'SingleLoop'"
               class="fa-solid w-5 shrink-0"
-              :class="[playList().playMode != 'Loop' ? item.data.ico[1] : item.data.ico[0]]"></i>
-            <img src="/public/img/ico/repeat-1.svg" class="m-auto w-5 shrink-0" v-else alt="" />
+              :class="[
+                playList().playMode != 'Loop' ? item.data.ico[1] : item.data.ico[0],
+              ]"></i>
+            <img
+              src="/public/img/ico/repeat-1.svg"
+              class="m-auto w-5 shrink-0"
+              v-else
+              alt="" />
           </button>
 
           <div
@@ -83,8 +99,16 @@ let data = defineProps<{
         <div
           class="relative group w-5 shrink-0 h-full flex justify-center items-center"
           :class="[item.name != '列表' ? 'max-md:hidden' : '']">
-          <button class="relative" @blur.native.capture="item.data.fun?.blur" @click="item.data.fun?.click">
-            <i class="" :class="[item.data.ico instanceof Array ? item.data.ico[0] : item.data.ico]"> </i>
+          <button
+            class="relative"
+            @blur.native.capture="item.data.fun?.blur"
+            @click="item.data.fun?.click">
+            <i
+              class=""
+              :class="[
+                item.data.ico instanceof Array ? item.data.ico[0] : item.data.ico,
+              ]">
+            </i>
           </button>
         </div>
       </template>
