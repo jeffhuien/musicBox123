@@ -7,6 +7,7 @@ import _ from 'lodash'
 import { searchSongList, sortSongList } from '@/utils'
 
 const { set, get, remove } = UserList()
+
 const props = defineProps<{
   data: Song[]
   info: Playlist
@@ -14,6 +15,8 @@ const props = defineProps<{
 }>()
 
 const { data, info, name } = toRefs(props)
+const IsCollect = computed(() => get(info.value.id.toString()))
+
 let scroll = ref()
 let top = ref<HTMLElement>()
 let show = ref(true)
@@ -122,8 +125,8 @@ function search(w: string) {
             @playAll="playAll"
             @collect="collect"
             @sort="sort"
-            :own="props.info.creator.userId === auth().user?.data.profile.userId"
-            :Collect="{ isCollect: get(info.id.toString()) }" />
+            :own="props.info.creator.userId === auth().UID"
+            :Collect="{ isCollect: IsCollect }" />
         </div>
       </template>
 

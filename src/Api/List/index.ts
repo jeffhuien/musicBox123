@@ -48,11 +48,14 @@ class List extends Axios {
       },
     })
   }
+  // TODO 分页获取
   public async getListSongs(id: string) {
     return await this.request<ListSongs>({
       url: '/track/all',
       params: {
         id,
+        limit: 60,
+        offset: 0,
       },
     })
   }

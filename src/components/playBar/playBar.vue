@@ -59,8 +59,6 @@
           :class="[isPlay ? 'fa-pause' : 'fa-play ']"
           @click="play"></i>
         <i class="fa-solid fa-forward-step max-md:hidden" @click="playNext"></i>
-
-        {{ like }}
       </div>
     </div>
 

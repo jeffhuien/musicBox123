@@ -10,8 +10,12 @@
             <div class="flex w-full h-full gap-3 relative">
               <div
                 class="bg-white dark:bg-gray-800 shrink-0 h-full transition-all w-52 duration-700 z-50"
-                :class="[menuClose && main().isMobile ? '!w-0' : '', main().isMobile ? 'max-md:absolute ' : '']">
-                <el-scrollbar class="relative w-full md:min-w-[12rem] h-full shrink-0 shadow-lg rounded-xl">
+                :class="[
+                  menuClose && main().isMobile ? '!w-0' : '',
+                  main().isMobile ? 'max-md:absolute ' : '',
+                ]">
+                <el-scrollbar
+                  class="relative w-full md:min-w-[12rem] h-full shrink-0 shadow-lg rounded-xl">
                   <left-menu />
                   <song-list-menu />
                 </el-scrollbar>
@@ -28,7 +32,9 @@
                   <transition
                     appear
                     :enter-active-class="
-                      $route.meta.enter ? 'animate__animated ' + $route.meta.enter : 'animate__animated animate__fadeIn'
+                      $route.meta.enter
+                        ? 'animate__animated ' + $route.meta.enter
+                        : 'animate__animated animate__fadeIn'
                     ">
                     <keep-alive>
                       <component :is="Component" />
@@ -50,8 +56,6 @@
 <script setup lang="ts">
 import { main } from '@/stores'
 const { menuClose } = toRefs(main())
-
-// BUG 非实时更新
 </script>
 
 <style scoped lang="scss">

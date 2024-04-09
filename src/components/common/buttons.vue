@@ -17,7 +17,7 @@ const emit = defineEmits<{
   (e: 'sort', t: string): void
 }>()
 
-let f = ref<1 | 2>(props?.Collect ? 2 : 1)
+let f = computed(() => (props?.Collect?.isCollect ? 2 : 1))
 let searchValue = ref<string>('')
 </script>
 
@@ -32,9 +32,9 @@ let searchValue = ref<string>('')
         v-if="!props.own"
         :type="'primary'"
         class="!bg-red-500"
-        @click="$emit('collect', f), (f = f == 1 ? 2 : 1)">
+        @click="$emit('collect', f)">
         <i class="fa-solid fa-heart mr-2"></i>
-        <span v-if="!props?.Collect || f == 1"> 收藏 </span>
+        <span v-if="f == 1"> 收藏 </span>
         <span v-else> 取消收藏 </span>
       </el-button>
 
