@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import router from '@/router'
 
-let id = ref('0')
-id.value = router.currentRoute.value.params.id as string
+let id = ref(0)
+id.value = parseInt(router.currentRoute.value.params.id as string, 10)
 
 watch(router.currentRoute, (n) => {
   if (n.name != 'comment') return
-  id.value = n.params.id as string
-  ElMessage(id.value)
+  id.value = parseInt(n.params.id as string, 10)
+  ElMessage(id.value.toString())
 })
 </script>
 

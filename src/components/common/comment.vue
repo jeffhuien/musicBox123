@@ -5,7 +5,7 @@ import { playControl } from '@/stores'
 import loading from '../Loading/loading.vue'
 const { musicName, singerName, songImg, songAl } = playControl()
 const props = defineProps<{
-  id: string
+  id: number
 }>()
 
 type CommentType = {
@@ -38,7 +38,18 @@ watch(id, async (n) => {
 onMounted(async () => {
   res.value = await CommentApi.getSongComment(id.value)
 })
-let input = ref('0')
+
+const send = async () => {
+  let res = await CommentApi.sendComment({
+    t: 1,
+    type: 0,
+    id: id.value,
+    content: input.value,
+  })
+  ElMessage.success(res.message)
+}
+
+let input = ref<string>('')
 let ActiveName = ref(0)
 </script>
 
@@ -69,12 +80,15 @@ let ActiveName = ref(0)
           <span class="absolute text-xs -top-1">{{ res?.total }}</span>
         </span>
         <div class="">
-          <textarea
+          <input
             name=""
             id=""
             class="overflow-hidden w-full rounded-xl text-sm focus:outline-sky-300 bg-gray-100 dark:bg-gray-700 p-3 outline-none"
-            placeholder="发表你的精彩吧~"
-            :rows="1"></textarea>
+            placeholder="发表你的精彩吧~ ___回车发送"
+            :rows="1"
+            v-model="input"
+            @keydown.enter="send"
+            type="text" />
         </div>
       </div>
     </div>
@@ -89,11 +103,14 @@ let ActiveName = ref(0)
               :name="index">
               <div
                 class="flex w-full gap-4 mb-2 items-center p-3 border-b dark:!text-gray-600 text-gray-500 dark:border-b-gray-50 dark:border-opacity-10"
-                v-for="(i, index) in k">
+                v-for="(i, index) in k"
+                :index="index">
                 <ElAvatar :src="i.user.avatarUrl" :size="'default'" class=""></ElAvatar>
                 <div class="flex-1 flex-grow-2 flex flex-col gap-2">
                   <p class="text-xs">{{ i.user.nickname }}</p>
-                  <p class="flex-1 line-clamp-2 text-sm dark:!text-gray-500">{{ i.content }}</p>
+                  <p class="flex-1 line-clamp-2 text-sm dark:!text-gray-500">{{
+                    i.content
+                  }}</p>
                 </div>
                 <div class="inline-flex items-center gap-3 float-right text-xs">
                   <div class="text-md fa-regular fa-thumbs-up"></div>
