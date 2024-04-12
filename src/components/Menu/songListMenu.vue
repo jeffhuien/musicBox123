@@ -17,7 +17,7 @@ async function setUserListData(uid: string) {
       own: I.creator.nickname == auth().user?.data.profile.nickname ? true : false,
     } as UserListType
   })
-  t.splice(0, 1)
+  // t.splice(0, 1)
   return t
 }
 
@@ -36,7 +36,7 @@ onMounted(async () => {
       <router-link
         :to="{ name: `song.list`, params: { id: k.id } }"
         class="flex items-center"
-        v-for="(k, index) in list.filter((I) => I.own)"
+        v-for="(k, index) in list.filter((I, index) => I.own && index != 0)"
         :index="index">
         <!-- <i :class="k.ico" class="text-lg mr-2 w-7"></i> -->
         <div class="flex text-xs w-full">

@@ -13,9 +13,6 @@ class Common extends Axios {
   public async getBannerImg() {
     return await this.request<bannerType>({
       url: '/banner?type=0',
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
@@ -25,9 +22,6 @@ class Common extends Axios {
       url: '/personalized',
       params: {
         limit: 30,
-      },
-      data: {
-        cookie: store.get('cookie'),
       },
     })
   }
@@ -58,9 +52,6 @@ class Common extends Axios {
   public async getHistoryList() {
     return await this.request<historyListType>({
       url: '/record/recent/song',
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
@@ -85,13 +76,10 @@ class Common extends Axios {
   public async like(id: number, like?: boolean) {
     return this.request<{ success: boolean }>({
       url: '/like',
-      method: 'post',
+
       params: {
         id,
         like,
-      },
-      data: {
-        coolie: auth().isLogin ? store.get('cookie') : '',
       },
     })
   }
@@ -100,12 +88,27 @@ class Common extends Axios {
   public async likelist(id: number) {
     return this.request<{ ids: [] }>({
       url: '/likelist',
-      method: 'post',
+
       params: {
         uid: id,
       },
+    })
+  }
+
+  public async singerList(uid: number) {
+    return this.request({
+      url: '/user/follows',
+      params: {
+        uid,
+      },
+    })
+  }
+
+  public async mvList() {
+    return this.request<{ data: [] }>({
+      url: '/mv/sublist',
       data: {
-        coolie: auth().isLogin ? store.get('cookie') : '',
+        cookie: store.get('cookie'),
       },
     })
   }
@@ -114,7 +117,9 @@ class Common extends Axios {
 const CommonApi = new Common({
   baseURL: 'api/',
   method: 'post',
-  maxRate: 123,
+  data: {
+    cookie: store.get('cookie'),
+  },
 })
 
 export { CommonApi }

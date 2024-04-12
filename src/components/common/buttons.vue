@@ -3,7 +3,7 @@ const props = defineProps<{
   Collect?: {
     isCollect: boolean
   }
-  own: boolean
+  own?: boolean
   Upload?: boolean
   Download?: boolean
 }>()

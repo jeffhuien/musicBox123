@@ -3,17 +3,14 @@ import { Playlist } from '#/List/ListDetail'
 import { Song } from '#/song/songInfo'
 import { auth, main, UserList } from '@/stores'
 import _ from 'lodash'
-
 import { searchSongList, sortSongList } from '@/utils'
 
 const { set, get, remove } = UserList()
-
 const props = defineProps<{
   data: Song[]
   info: Playlist
   name?: string
 }>()
-
 const { data, info, name } = toRefs(props)
 const IsCollect = computed(() => get(info.value.id.toString()))
 
@@ -151,7 +148,7 @@ function search(w: string) {
             @playAll="playAll"
             @collect="collect"
             @sort="sort"
-            :own="props.info.creator.userId === auth().user?.data.profile.userId"
+            :own="props.info.creator.userId === auth().UID"
             :Collect="{ isCollect: get(info.id.toString()) }" />
         </div>
       </div>
@@ -167,9 +164,6 @@ function search(w: string) {
 </template>
 
 <style scoped lang="scss">
-// :deep(.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell) {
-//   background-color: #ffffff00 !important;
-// }
 :deep(
     .el-table--border .el-table__inner-wrapper::after,
     .el-table--border::after,
