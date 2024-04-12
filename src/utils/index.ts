@@ -1,4 +1,3 @@
-import { auth } from '@/stores'
 import Music from './Audio'
 import { fee } from './doc'
 import env from './env'
@@ -24,8 +23,12 @@ function formatTime(time: number, type: 'ms' | 'min' = 'min') {
 
 //获取设备尺寸
 function getDeviceSize() {
-  const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-  const height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+  const width =
+    window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+  const height =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.body.clientHeight
   return { width, height }
 }
 //获取设备尺寸，是移动设备就返回true
@@ -53,13 +56,6 @@ function setDocumentTitle(title: string) {
   }
 }
 
-function logOut() {
-  auth().user = undefined
-  auth().isLogin = false
-  auth().level = 0
-  store.remove('cookie')
-}
-
 export {
   //
   Music,
@@ -68,9 +64,8 @@ export {
   formatTime,
   getDeviceSize,
   getIsMobile,
-  store,
   setDocumentTitle,
-  logOut,
+  store,
 }
 
 export * from './buttonBar'

@@ -1,20 +1,27 @@
 <script setup lang="ts">
 import { ColorModeConfig } from '#/config'
-import { auth, main } from '@/stores'
-import { logOut } from '@/utils'
-import { ElMessageBox } from 'element-plus'
-function LogOut() {
-  ElMessageBox.confirm('确认要注销登录吗？', {
-    confirmButtonText: '是',
-    cancelButtonText: '否',
-    type: 'warning',
-  }).then(() => {
-    logOut()
-    ElMessage({
-      type: 'success',
-      message: 'bye bye~',
+import { loginApi } from '@/Api'
+import { UserList, auth, main } from '@/stores'
+import { store } from '@/utils'
+async function LogOut() {
+  try {
+    await ElMessageBox.confirm('确认要注销登录吗？', {
+      confirmButtonText: '是',
+      cancelButtonText: '否',
+      type: 'warning',
     })
-  })
+    // 注销成功后的操作
+    auth().user = undefined
+    auth().isLogin = false
+    auth().level = 0
+    UserList().list = []
+    store.remove('cookie')
+    ElMessage.success('bye bye~')
+    await loginApi.logout()
+  } catch (error) {
+    // 处理取消注销或其他错误
+    console.error('注销失败：', error)
+  }
 }
 
 const props = defineProps({
@@ -30,7 +37,9 @@ const props = defineProps({
     <a class="group relative flex items-center [&>span]:hover:inline-block">
       <i
         class="fa-solid text-lg mr-2 w-7"
-        :class="[main().config.colorMode === ColorModeConfig.dark ? 'fa-moon' : 'fa-sun']">
+        :class="[
+          main().config.colorMode === ColorModeConfig.dark ? 'fa-moon' : 'fa-sun',
+        ]">
       </i>
 
       <div
@@ -56,23 +65,48 @@ const props = defineProps({
       </div>
       <!-- <span :class="[props.pc ? 'absolute border rounded-md hidden border-red-300  p-1 top-14' : '']"> 设置 </span> -->
     </a>
-    <a v-if="!auth().isLogin" @click=";(main().loginShow = true), $router.push('/login')" class="flex items-center">
+    <a
+      v-if="!auth().isLogin"
+      @click=";(main().loginShow = true), $router.push('/login')"
+      class="flex items-center">
       <i class="fa-solid fa-user text-lg mr-2 w-7 [&>span]:hover:inline-block"></i>
-      <span :class="[props.pc ? 'absolute border rounded-md hidden border-red-300  p-1 top-14' : '']"> 登录 </span>
+      <span
+        :class="[
+          props.pc ? 'absolute border rounded-md hidden border-red-300  p-1 top-14' : '',
+        ]">
+        登录
+      </span>
     </a>
 
     <a v-else @click="LogOut" class="flex items-center [&>span]:hover:inline-block">
       <i class="fa-solid fa-right-from-bracket text-lg mr-2 w-7"></i>
-      <span :class="[props.pc ? 'absolute border rounded-md hidden border-red-300  p-1 top-14' : '']"> 注销 </span>
+      <span
+        :class="[
+          props.pc ? 'absolute border rounded-md hidden border-red-300  p-1 top-14' : '',
+        ]">
+        注销
+      </span>
     </a>
 
     <a @click="$router.go(0)" class="flex items-center [&>span]:hover:inline-block">
       <i class="fa-solid fa-refresh text-lg mr-2 w-7"></i>
-      <span :class="[props.pc ? 'absolute border rounded-md hidden border-red-300  p-1 top-14' : '']"> 更新版本 </span>
+      <span
+        :class="[
+          props.pc ? 'absolute border rounded-md hidden border-red-300  p-1 top-14' : '',
+        ]">
+        更新版本
+      </span>
     </a>
-    <a @click="$router.push({ name: 'setting' })" class="flex items-center [&>span]:hover:inline-block">
+    <a
+      @click="$router.push({ name: 'setting' })"
+      class="flex items-center [&>span]:hover:inline-block">
       <i class="fa-solid fa-gear text-lg mr-2 w-7"></i>
-      <span :class="[props.pc ? 'absolute border rounded-md hidden border-red-300  p-1 top-14' : '']"> 设置 </span>
+      <span
+        :class="[
+          props.pc ? 'absolute border rounded-md hidden border-red-300  p-1 top-14' : '',
+        ]">
+        设置
+      </span>
     </a>
   </div>
 </template>

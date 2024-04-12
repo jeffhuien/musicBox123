@@ -1,7 +1,6 @@
 import { UserListReqType } from '#/List/userList'
 import { CloudSongType } from '#/song/cloudSong'
 import Axios from '@/plugins/axios/axios'
-import { auth } from '@/stores'
 import { env, store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
@@ -10,14 +9,11 @@ class Auth extends Axios {
     super(config)
   }
 
-  public async getInfo(id: string) {
+  public async getInfo(id: number) {
     return this.request<any>({
       url: `/detail`,
       params: {
         uid: id,
-      },
-      data: {
-        cookie: store.get('cookie'),
       },
     })
   }
@@ -25,9 +21,6 @@ class Auth extends Axios {
   public async getLevel() {
     return this.request<any>({
       url: `/level`,
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
@@ -38,23 +31,14 @@ class Auth extends Axios {
         limit: lim ? lim : '',
         offset: off ? off : '',
       },
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
   public async getList(uid?: string) {
-    // if (!uid) {
-    //   uid = auth().user?.data.account.id.toString()
-    // }
     return await this.request<UserListReqType>({
       url: '/playlist',
       params: {
         uid,
-      },
-      data: {
-        cookie: store.get('cookie'),
       },
     })
   }
@@ -66,6 +50,47 @@ class Auth extends Axios {
       params: {
         id,
       },
+    })
+  }
+}
+
+class Login extends Axios {
+  constructor(config: AxiosRequestConfig) {
+    super(config)
+  }
+
+  public async checkStatus(key: string) {
+    return await this.request<any>({
+      url: `/qr/check?key=${key}&timestamp=${Date.now()}`,
+    })
+  }
+
+  public async getLoginStatus(cookie: string | null = '') {
+    return await this.request<any>({
+      url: `/status?timestamp=${Date.now()}`,
+      data: {
+        cookie,
+      },
+    })
+  }
+
+  public async login() {
+    const { data } = await this.request<any>({
+      url: `/qr/key?timestamp=${Date.now()}`,
+    })
+    let key = data.unikey
+    const res2 = await this.request<{
+      code: number
+      data: { qrimg: string; qrurl: string }
+    }>({
+      url: `/qr/create?key=${key}&qrimg=true&timestamp=${Date.now()}`,
+    }) //返回二维码
+    return { key, res2 }
+  }
+
+  public async logout() {
+    return await this.request<any>({
+      baseURL: 'api/logout',
       data: {
         cookie: store.get('cookie'),
       },
@@ -73,17 +98,14 @@ class Auth extends Axios {
   }
 }
 
-const AuthApi = new Auth({
+export const loginApi = new Login({
+  baseURL: 'api/login',
+  method: 'post',
+})
+export const AuthApi = new Auth({
   baseURL: '/api/user',
   method: 'post',
-  // headers: {
-  //   'Content-Type': 'application/json',
-  //   'X-Requested-With': 'XMLHttpRequest',
-  //   // 'X-CSRFToken': localStorage.getItem('cookie'),
-  //   // Authorization: localStorage.getItem('cookie'),
-  // },
   data: {
     cookie: store.get('cookie'),
   },
 })
-export { AuthApi }

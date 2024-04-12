@@ -4,7 +4,7 @@ import Axios from '@/plugins/axios/axios'
 import { main } from '@/stores'
 import { env } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
-const Song = class extends Axios {
+class Song extends Axios {
   constructor(config: AxiosRequestConfig) {
     super(config)
   }

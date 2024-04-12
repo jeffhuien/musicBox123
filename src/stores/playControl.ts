@@ -98,7 +98,7 @@ export const playControl = defineStore(
         const { SongApi } = await import('@/Api/song')
         d = (await SongApi.getSongDetail(Id)).songs[0]
       }
-      const { AuthApi } = await import('@/Api/Auth')
+      const { AuthApi } = await import('@/Api/User')
       let url = await AuthApi.getPlayUrl(Id)
       try {
         await setStore(d, url, false)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import _ from 'lodash'
 import { CloudSongDataType, CloudSongType } from '#/song/cloudSong'
-import { AuthApi } from '@/Api/Auth'
+import { AuthApi } from '@/Api/User'
 import { sortSongList } from '@/utils'
 
 let ls = ref()

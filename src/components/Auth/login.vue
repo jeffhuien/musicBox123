@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AuthApi, loginApi } from '@/Api/Auth'
+import { AuthApi, loginApi } from '@/Api/User'
 import router from '@/router'
 import { auth, main } from '@/stores'
 import { store } from '@/utils'
@@ -47,9 +47,9 @@ async function login() {
         main().loginShow = false
         let userInfo = await loginApi.getLoginStatus(statusRes.cookie)
         store.set('cookie', statusRes.cookie)
-        let level = await AuthApi.getInfo()
         auth().setAuthInfo(userInfo)
-        auth().level = level.data.level
+        let level = await AuthApi.getInfo(auth().UID!)
+        auth().level = level.level
         auth().$persist()
         router.go(-1)
         clearInterval(timer)
@@ -77,10 +77,16 @@ onBeforeRouteLeave(() => {
     :class="[!main().loginShow ? 'animate__zoomOut' : 'animate__zoomIn']"
     ref="loginEl">
     <div class="bg-white shadow-lg p-32 max-sm:p-12 border rounded-lg relative">
-      <i class="fa-solid fa-xmark absolute top-2 right-3 text-xl hover:text-sky-400" @click="close"></i>
+      <i
+        class="fa-solid fa-xmark absolute top-2 right-3 text-xl hover:text-sky-400"
+        @click="close"></i>
       <div class="flex flex-col justify-center items-center gap-3">
-        <el-image class="w-52 h-52 max-sm:w-36 max-sm:h-36 bg-black" :src="loginImg"></el-image>
-        <span class="text-xs opacity-60"> {{ log ? '授权成功' : '使用网易云扫码登录' }}</span>
+        <el-image
+          class="w-52 h-52 max-sm:w-36 max-sm:h-36 bg-black"
+          :src="loginImg"></el-image>
+        <span class="text-xs opacity-60">
+          {{ log ? '授权成功' : '使用网易云扫码登录' }}</span
+        >
       </div>
     </div>
   </div>
