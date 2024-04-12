@@ -1,4 +1,4 @@
-import { RecommendListType, banner, historyListType, lyricType } from '#/index'
+import { RecommendListType, bannerType, historyListType, lyricType } from '#/index'
 import Axios from '@/plugins/axios/axios'
 import { auth } from '@/stores'
 import { store } from '@/utils'
@@ -9,9 +9,9 @@ class Common extends Axios {
     super(config)
   }
 
-  //首页信息
-  public async getIndexInfo() {
-    return await this.request<banner>({
+  //首页轮播图
+  public async getBannerImg() {
+    return await this.request<bannerType>({
       url: '/banner?type=0',
       data: {
         cookie: store.get('cookie'),
@@ -19,7 +19,7 @@ class Common extends Axios {
     })
   }
 
-  /**首页信息*/
+  /**推荐歌单*/
   public async getLists(limit = 30) {
     return await this.request<RecommendListType>({
       url: '/personalized',
@@ -31,8 +31,30 @@ class Common extends Axios {
       },
     })
   }
+  /**精品歌单*/
+  public async getHighQualityList(before?: string, limit = 10) {
+    return await this.request<RecommendListType>({
+      url: '/top/playlist/highquality',
+      params: {
+        before: before ? before : '',
+        limit,
+      },
+    })
+  }
+  /**网友热碟*/
+  public async getHOTList() {
+    return await this.request<any>({
+      url: '/top/playlist?limit=10&order=new',
+    })
+  }
+  /**新歌速递*/
+  public async getNEWSong() {
+    return await this.request<any>({
+      url: '/personalized/newsong',
+    })
+  }
 
-  /**首页信息*/
+  /**历史播放*/
   public async getHistoryList() {
     return await this.request<historyListType>({
       url: '/record/recent/song',

@@ -42,7 +42,7 @@ export interface UserListType {
   own?: boolean
 }
 
-export interface banner {
+export interface bannerType {
   banners: {
     imageUrl: string
     targetId: number

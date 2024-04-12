@@ -68,7 +68,7 @@ onMounted(async () => {
   scrollBar?.value?.addEventListener('scrollend', (e) => {
     let t = scrollBar.value!.scrollTop
     let s = t - r.value
-    if (s > h.value) {
+    if (s > 2 * h.value) {
       wheel()
     } else {
     }
