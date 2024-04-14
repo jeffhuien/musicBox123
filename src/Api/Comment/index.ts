@@ -70,6 +70,17 @@ class Comment extends Axios {
       },
     })
   }
+
+  public async getComment(id: number, limit?: string, offset?: string) {
+    return this.request<any>({
+      url: '/mv',
+      params: {
+        id,
+        limit: limit ? limit : '',
+        offset: offset ? offset : '',
+      },
+    })
+  }
 }
 const CommentApi = new Comment({
   baseURL: 'api/comment',

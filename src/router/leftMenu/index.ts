@@ -18,11 +18,11 @@ export default [
     component: () => import('@/views/iLike/index.vue'),
   },
   {
-    name: 'mv',
-    path: '/mv',
+    name: 'video',
+    path: '/video',
     meta: { enter: 'animate__fadeInRight' },
 
-    component: () => import('@/views/mv/index.vue'),
+    component: () => import('@/views/video/index.vue'),
   },
   {
     name: 'find',

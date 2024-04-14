@@ -20,6 +20,21 @@ const router = createRouter({
           name: 'search',
           component: () => import('@/layout/search/index.vue'),
         },
+        {
+          path: '/singer/:id([0-9]*)',
+          name: 'singer',
+          component: () => import('@/views/singer/index.vue'),
+        },
+        {
+          path: '/al/:id([0-9]*)',
+          name: 'al',
+          component: () => import('@/views/al/index.vue'),
+        },
+        {
+          path: '/mv/:id([0-9]*)',
+          name: 'mv',
+          component: () => import('@/views/mv/index.vue'),
+        },
       ],
       redirect: 'recommend',
     },

@@ -6,10 +6,6 @@ import { auth } from '@/stores'
 export default class Axios {
   protected instance
   constructor(config: AxiosRequestConfig) {
-    // if (config?.baseURL || config.baseURL === '') {
-    //   config.baseURL = env.VITE_API_URL + config.baseURL
-    // }
-    // if (!config.baseURL) config['baseURL'] = env.VITE_API_URL
     this.instance = axios.create(config) //初始化axios
     this.interceptors() //拦截器
   }
@@ -36,6 +32,12 @@ export default class Axios {
     // 添加请求拦截器
     this.instance.interceptors.request.use(
       function (config) {
+        // if (config.url?.includes('cloud')) {
+        //   // 将 Cookie 添加到请求的 data 字段中
+        //   config.data = config.data || {}
+        //   config.data['cookie'] = store.get('cookie')
+        //   console.log(config)
+        // }
         // 在发送请求之前做些什么
         return config
       },
@@ -64,7 +66,6 @@ export default class Axios {
         return response
       },
       function (error) {
-        // console.log(instance.defaults)
         try {
           if (error.response.data.code == 301 && error.response.data.msg == '需要登录') {
             if (auth().isLogin) {

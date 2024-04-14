@@ -31,6 +31,9 @@ class Auth extends Axios {
         limit: lim ? lim : '',
         offset: off ? off : '',
       },
+      data: {
+        cookie: store.get('cookie'),
+      },
     })
   }
 

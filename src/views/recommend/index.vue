@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { bannerType } from '#/index'
 import { CommonApi } from '@/Api/Common'
+import Card from '@/components/common/card.vue'
 import { playControl } from '@/stores'
 const { playMusicById } = playControl()
 
@@ -53,37 +54,17 @@ onBeforeMount(async () => {
         <template #default>
           <div
             class="grid items-center justify-center xl:grid-cols-5 md:grid-cols-5 max-md:grid-cols-4 gap-3 max-xl:grid-cols-5 max-sm:grid-cols-3">
-            <el-card
-              class="w-2/3 m-auto !border-none !shadow-none relative group transition-all !bg-no hover:-translate-y-4"
+            <!--  -->
+            <Card
               v-for="(i, d) in list?.playlists"
-              :body-class="'!p-0 '"
-              :index="d">
-              <div
-                class="dark:bg-gray-800 bg-white dark:text-white"
-                @click="$router.push('/list/' + i.id?.toString())">
-                <div class="relative flex justify-center items-center">
-                  <el-image lazy class="w-42 h-42 !rounded-lg" :src="i.coverImgUrl" />
-                  <i
-                    class="fa-regular fa-play-circle text-5xl text-white absolute hidden group-hover:block" />
-                </div>
-                <div class="relative py-2">
-                  <!-- text-xs w-full max-sm:scale-75 max-sm:w-full max-sm:px-1 max-sm:-right-2 -top-6 right-2 text-white bg-black  py-[2px] rounded-full -->
-                  <div
-                    class="text-xs text-white max-sm:scale-[70%] bg-black bg-opacity-50 absolute -top-6 right-0 rounded-full px-2">
-                    <i class="fa-solid fa-play text-white mr-[2px]"></i>
-                    <span v-if="i.playCount < 1000000000">
-                      {{ (i.playCount / 10000).toFixed(2) }}万
-                    </span>
-                    <span v-else> {{ (i.playCount / 1000000000).toFixed(2) }}亿 </span>
-                  </div>
-                  <div
-                    class="text-sm max-sm:text-xs line-clamp-2 overflow-hidden hover:text-sky-500 hover:cursor-pointer">
-                    {{ i.name }}
-                  </div>
-                </div>
-              </div>
-            </el-card>
+              :index="d"
+              to="list"
+              :id="i.id"
+              :content="i.name"
+              :img="i.coverImgUrl"
+              :count="i.playCount"></Card>
           </div>
+
           <!-- <Loading v-else class="">loading</Loading> -->
         </template>
 

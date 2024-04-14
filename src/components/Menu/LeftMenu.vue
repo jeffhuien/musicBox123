@@ -8,7 +8,7 @@ const menus = ref<menu[]>([
     item: [
       { ico: 'fa-solid fa-meteor', name: '推荐', toName: RouteNames.recommend },
       { ico: 'fa-brands fa-app-store-ios', name: '乐库', toName: RouteNames.musicStore },
-      { ico: 'fa-brands fa-youtube', name: '视频', toName: RouteNames.mv },
+      { ico: 'fa-brands fa-youtube', name: '视频', toName: RouteNames.video },
       { ico: 'fa-solid fa-search', name: '找人', toName: RouteNames.find },
     ],
   },
@@ -17,7 +17,11 @@ const menus = ref<menu[]>([
     item: [
       { ico: 'fa-regular fa-heart', name: '我喜欢', toName: RouteNames.iLike },
       { ico: 'fa-solid fa-cloud', name: '音乐网盘', toName: RouteNames.cloudMusic },
-      { ico: 'fa-solid fa-clock-rotate-left', name: '最近播放', toName: RouteNames.historyPlay },
+      {
+        ico: 'fa-solid fa-clock-rotate-left',
+        name: '最近播放',
+        toName: RouteNames.historyPlay,
+      },
     ],
   },
 ])
@@ -28,7 +32,11 @@ const menus = ref<menu[]>([
     <Setting-btn v-if="main().isMobile"></Setting-btn>
     <div class="item-block" v-for="(i, index) in menus" :index="index">
       <h1 class="dark:text-white">{{ i.name }}</h1>
-      <router-link :to="{ name: k.toName }" class="flex items-center" v-for="(k, index) in i.item" :index="index">
+      <router-link
+        :to="{ name: k.toName }"
+        class="flex items-center"
+        v-for="(k, index) in i.item"
+        :index="index">
         <i :class="k.ico" class="text-lg mr-2 w-7"></i>
         {{ k.name }}
       </router-link>

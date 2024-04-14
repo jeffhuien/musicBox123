@@ -3,6 +3,7 @@ enum RouteNames {
   musicStore = 'musicStore',
   iLike = 'iLike',
   mv = 'mv',
+  video = 'video',
   home = 'home',
   play = 'play',
   search = 'search',

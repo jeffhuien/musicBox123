@@ -1,6 +1,5 @@
 import { RecommendListType, bannerType, historyListType, lyricType } from '#/index'
 import Axios from '@/plugins/axios/axios'
-import { auth } from '@/stores'
 import { store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
@@ -52,6 +51,9 @@ class Common extends Axios {
   public async getHistoryList() {
     return await this.request<historyListType>({
       url: '/record/recent/song',
+      data: {
+        cookie: store.get('cookie'),
+      },
     })
   }
 
@@ -76,10 +78,12 @@ class Common extends Axios {
   public async like(id: number, like?: boolean) {
     return this.request<{ success: boolean }>({
       url: '/like',
-
       params: {
         id,
         like,
+      },
+      data: {
+        cookie: store.get('cookie'),
       },
     })
   }
@@ -88,30 +92,169 @@ class Common extends Axios {
   public async likelist(id: number) {
     return this.request<{ ids: [] }>({
       url: '/likelist',
-
       params: {
         uid: id,
+      },
+      data: {
+        cookie: store.get('cookie'),
       },
     })
   }
 
-  public async singerList(uid: number) {
-    return this.request({
+  public async followsList(uid: number) {
+    return this.request<any>({
       url: '/user/follows',
       params: {
         uid,
+      },
+      data: {
+        cookie: store.get('cookie'),
       },
     })
   }
 
   public async mvList() {
-    return this.request<{ data: [] }>({
+    return this.request<any>({
       url: '/mv/sublist',
       data: {
         cookie: store.get('cookie'),
       },
     })
   }
+
+  public async singerList() {
+    return this.request<any>({
+      url: '/artist/sublist',
+      params: {},
+      data: {
+        cookie: store.get('cookie'),
+      },
+    })
+  }
+  public async singerSongs(id: number) {
+    return this.request<any>({
+      url: '/artists',
+      params: {
+        id,
+      },
+    })
+  }
+  public async singerAL(id: number) {
+    return this.request<any>({
+      url: '/artist/album',
+      params: {
+        id,
+      },
+    })
+  }
+  public async singerDesc(id: number) {
+    return this.request<any>({
+      url: '/artist/desc',
+      params: {
+        id,
+      },
+    })
+  }
+  public async singerDetail(id: number) {
+    return this.request<any>({
+      url: '/artist/detail',
+      params: {
+        id,
+      },
+    })
+  }
+
+  public async singerFens(id: number) {
+    return this.request<any>({
+      url: '/artist/follow/count',
+      params: {
+        id,
+      },
+      data: {
+        cookie: store.get('cookie'),
+      },
+    })
+  }
+
+  public async singerMV(id: number) {
+    return this.request<any>({
+      url: '/artist/mv',
+      params: {
+        id,
+      },
+    })
+  }
+
+  /**
+   * 关注用户
+   * @param id
+   * @param t 1收藏 2取消
+   * @returns
+   */
+  public async followUser(id: number, t: number) {
+    return this.request<any>({
+      url: '/follow',
+      params: {
+        id,
+        t,
+      },
+    })
+  }
+  /**
+   * 关注歌手
+   * @param id
+   * @param t
+   * @returns
+   */
+  public async followSinger(id: number, t: number) {
+    return this.request<any>({
+      url: '/artist/sub',
+      params: {
+        id,
+        t,
+      },
+    })
+  }
+  /**
+   * 收藏mv
+   * @param mvid
+   * @param t 1收藏 2取消
+   * @returns
+   */
+  public async collectMV(mvid: number, t: number) {
+    return this.request<any>({
+      url: '/mv/sub',
+      params: {
+        mvid,
+        t,
+      },
+    })
+  }
+
+  public async DetailMV(mvid: number) {
+    return this.request<any>({
+      url: '/mv/detail',
+      params: {
+        mvid,
+      },
+    })
+  }
+  /**
+   * MV地址
+   * @param id
+   * @param r 分辨率
+   * @returns
+   */
+  public async PlayMV(id: number, r: number) {
+    return this.request<any>({
+      url: '/mv/url',
+      params: {
+        id,
+        r,
+      },
+    })
+  }
+  // /end/
 }
 
 const CommonApi = new Common({
