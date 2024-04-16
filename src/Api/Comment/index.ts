@@ -37,20 +37,6 @@ class Comment extends Axios {
     })
   }
 
-  public async CommitComment(id: number, content: string) {
-    return await this.request<any>({
-      url: '/music',
-      method: 'post',
-      params: {
-        id,
-        content,
-      },
-      data: {
-        cookie: store.get('cookie'),
-      },
-    })
-  }
-
   /**
    *
    * @param t 1 发送, 2 回复

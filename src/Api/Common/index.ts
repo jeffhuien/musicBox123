@@ -113,9 +113,12 @@ class Common extends Axios {
     })
   }
 
-  public async mvList() {
+  public async mvList(page?: { offset: number; limit: number }) {
     return this.request<any>({
       url: '/mv/sublist',
+      params: {
+        ...page,
+      },
       data: {
         cookie: store.get('cookie'),
       },
@@ -131,19 +134,21 @@ class Common extends Axios {
       },
     })
   }
-  public async singerSongs(id: number) {
+  public async singerSongs(id: number, page?: { limit: number; offset: number }) {
     return this.request<any>({
-      url: '/artists',
+      url: '/artist/songs',
       params: {
         id,
+        ...page,
       },
     })
   }
-  public async singerAL(id: number) {
+  public async singerAL(id: number, page?: { limit: number; offset: number }) {
     return this.request<any>({
       url: '/artist/album',
       params: {
         id,
+        ...page,
       },
     })
   }
@@ -176,11 +181,12 @@ class Common extends Axios {
     })
   }
 
-  public async singerMV(id: number) {
+  public async singerMV(id: number, page?: { limit: number; offset?: number }) {
     return this.request<any>({
       url: '/artist/mv',
       params: {
         id,
+        ...page,
       },
     })
   }
@@ -215,45 +221,7 @@ class Common extends Axios {
       },
     })
   }
-  /**
-   * 收藏mv
-   * @param mvid
-   * @param t 1收藏 2取消
-   * @returns
-   */
-  public async collectMV(mvid: number, t: number) {
-    return this.request<any>({
-      url: '/mv/sub',
-      params: {
-        mvid,
-        t,
-      },
-    })
-  }
 
-  public async DetailMV(mvid: number) {
-    return this.request<any>({
-      url: '/mv/detail',
-      params: {
-        mvid,
-      },
-    })
-  }
-  /**
-   * MV地址
-   * @param id
-   * @param r 分辨率
-   * @returns
-   */
-  public async PlayMV(id: number, r: number) {
-    return this.request<any>({
-      url: '/mv/url',
-      params: {
-        id,
-        r,
-      },
-    })
-  }
   // /end/
 }
 

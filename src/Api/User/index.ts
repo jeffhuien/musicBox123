@@ -24,12 +24,11 @@ class Auth extends Axios {
     })
   }
 
-  public async getCloud(lim?: number, off?: number) {
+  public async getCloud(page: { limit: number; offset: number }) {
     return this.request<CloudSongType>({
       url: '/cloud',
       params: {
-        limit: lim ? lim : '',
-        offset: off ? off : '',
+        ...page,
       },
       data: {
         cookie: store.get('cookie'),

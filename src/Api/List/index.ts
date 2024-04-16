@@ -20,11 +20,15 @@ class List extends Axios {
       },
     })
   }
-  public async getList(uid: string) {
+  public async getList(
+    uid: string,
+    page: { limit: number; offset: number } = { limit: 3, offset: 0 },
+  ) {
     return await this.request<UserListReqType>({
-      baseURL: env.VITE_API_URL + '/user/playlist',
+      baseURL: 'api/user/playlist',
       params: {
         uid,
+        ...page,
       },
     })
   }
@@ -48,14 +52,14 @@ class List extends Axios {
       },
     })
   }
+
   // TODO 分页获取
-  public async getListSongs(id: string) {
+  public async getListSongs(id: string, page?: { limit: number; offset: number }) {
     return await this.request<ListSongs>({
       url: '/track/all',
       params: {
         id,
-        limit: 60,
-        offset: 0,
+        ...page,
       },
     })
   }
