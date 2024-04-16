@@ -19,21 +19,54 @@ type singerData = {
 
 let data = ref<singerData>({} as singerData)
 let activeName = ref('songs')
+let songPage = reactive({ limit: 50, offset: 1 })
+let mvPage = reactive({ limit: 20, offset: 1 })
+
+let SongNoMore = computed(
+  () =>
+    (data.value?.singerSong?.songs.length >=
+      data.value?.singerSong?.total * 1) as boolean,
+)
+
+let MvNoMore = computed(
+  () => (data.value?.singerMV?.mvs.length >= data.value?.singerMV?.total * 1) as boolean,
+)
+const SongLoadMore = async (): Promise<void> => {
+  if (!SongNoMore.value) {
+    let t = await CommonApi.singerSongs(parseInt(singerID.value), {
+      limit: songPage.limit,
+      offset: songPage.offset++ * songPage.limit,
+    })
+    data.value.singerSong.songs.push(...t?.songs)
+  }
+}
+const MvLoadMore = async () => {
+  if (!MvNoMore.value) {
+    let t = await CommonApi.singerMV(parseInt(singerID.value), {
+      limit: mvPage.limit,
+      offset: mvPage.offset++ * mvPage.limit,
+    })
+    data.value.singerMV.mvs.push(...t?.mvs)
+  }
+}
+
 const getData = async (id: number) => {
   // data.value = {} as singerData
   // data.value.singerAlbum = await CommonApi.singerAL(id)
   let t = await CommonApi.singerDetail(id)
+  songPage.offset = 0
   data.value = {
     singerImg: t.data?.artist.avatar,
     singerName: t.data?.artist.name,
     mvCount: t.data?.artist.mvSize,
     songCount: t.data?.artist.musicSize,
     alCount: t.data?.artist.albumSize,
-    singerSong: await CommonApi.singerSongs(id),
+    singerSong: await CommonApi.singerSongs(id, songPage),
   }
   data.value.singerDesc = await CommonApi.singerDetail(id)
   data.value.singerFens = await CommonApi.singerFens(id)
   isFollow.value = data.value?.singerFens?.data?.isFollow
+  songPage.offset = 1
 }
 
 const handleClick = async (tab: TabsPaneContext, event: Event) => {
@@ -44,6 +77,7 @@ const handleClick = async (tab: TabsPaneContext, event: Event) => {
     data.value.singerMV = await CommonApi.singerMV(parseInt(singerID.value))
   }
 }
+
 watchEffect(() => {
   if (!singerID.value) return
   data.value = {} as singerData
@@ -63,10 +97,9 @@ const followSinger = async (t: number) => {
 <template>
   <div class="w-full h-full flex flex-col p-5 pb-0" v-if="data.singerImg">
     <div class="head flex w-full gap-10 h-1/4 overflow-hidden">
-      <el-avatar
-        class="shrink-0"
-        :size="200"
-        :src="data.singerImg + '?param=300y300'"></el-avatar>
+      <img
+        class="shrink-0 max-sm:size-32 size-52 rounded-full m-auto"
+        :src="data.singerImg + '?param=300y300'" />
       <div class="flex justify-between gap-4 w-full">
         <div class="flex justify-center flex-col gap-5">
           <h1 class="text-2xl">{{ data.singerName }}</h1>
@@ -103,7 +136,13 @@ const followSinger = async (t: number) => {
           class="h-full w-full"
           name="songs"
           :label="'歌曲 ' + data?.songCount">
-          <List :lists-songs="data.singerSong?.hotSongs"></List>
+          <ScrollLoad
+            :page="songPage"
+            :more="SongNoMore"
+            @loadMore="SongLoadMore"
+            class="h-full">
+            <List :lists-songs="data.singerSong?.songs"></List>
+          </ScrollLoad>
         </el-tab-pane>
         <el-tab-pane class="h-full w-full" name="al" :label="'专辑 ' + data?.alCount">
           <ElScrollbar>
@@ -114,28 +153,32 @@ const followSinger = async (t: number) => {
                 :index="d"
                 to="al"
                 :id="i.id"
-                :content="i.name"
+                :name="i.name"
                 :img="i.blurPicUrl"></Card>
             </div>
           </ElScrollbar>
         </el-tab-pane>
         <el-tab-pane name="mv" :label="'MV ' + data?.mvCount" class="w-full h-full">
-          <ElScrollbar>
-            <div class="" v-if="data.mvCount">
-              <div class="grid xl:grid-cols-4 grid-cols-3 gap-3 max-sm:grid-cols-2 p-5">
-                <Card
-                  v-for="(i, d) in data.singerMV?.mvs"
-                  :index="d"
-                  to="mv"
-                  :id="i.id"
-                  :content="i.name"
-                  :img="i.imgurl"
-                  :count="i.playCount"
-                  :typ="2"></Card>
+          <ScrollLoad @load-more="MvLoadMore" :more="MvNoMore" :page="mvPage">
+            <ElScrollbar>
+              <div class="" v-if="data.mvCount">
+                <div class="grid xl:grid-cols-4 grid-cols-3 gap-3 max-sm:grid-cols-2 p-5">
+                  <Card
+                    v-for="(i, d) in data.singerMV?.mvs"
+                    :index="d"
+                    to="mv"
+                    :id="i.id"
+                    :name="i.name"
+                    :singer="i.artistName"
+                    :img="i.imgurl"
+                    :count="i.playCount"
+                    :duration="i.duration"
+                    :typ="2"></Card>
+                </div>
               </div>
-            </div>
-            <el-empty v-else description="什么都没有~"></el-empty>
-          </ElScrollbar>
+              <el-empty v-else description="什么都没有~"></el-empty>
+            </ElScrollbar>
+          </ScrollLoad>
         </el-tab-pane>
       </el-tabs>
     </div>

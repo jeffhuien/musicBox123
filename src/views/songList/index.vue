@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ListDetail, Playlist } from '#/List/ListDetail'
-import { Song } from '#/song/songInfo'
 import { ListApi } from '@/Api/List'
 import { useRoute, useRouter } from 'vue-router'
 
 let Id = ref<string>(useRoute().params.id as string)
-let data = ref<Song[] | undefined>(undefined)
+let data = ref<any>()
 let Detail = ref<ListDetail>()
 let info = ref<Playlist>()
 
@@ -18,18 +17,43 @@ watch(useRoute(), async (newValue) => {
 
 async function setData() {
   Detail.value = await ListApi.getListDetail(Id.value)
+  total.value = Detail.value?.playlist?.trackCount ?? 0
   info.value = Detail.value?.playlist
-  data.value = (await ListApi.getListSongs(Id.value)).songs as unknown as Song[]
+  let t = await ListApi.getListSongs(Id.value, {
+    limit: page.limit,
+    offset: 0,
+  })
+  data.value = t
 }
 
+const noMore = computed(() => data.value?.songs.length >= total.value)
+let page = reactive({ limit: 20, offset: 1 })
+let total = ref(0)
+const loadMore = async () => {
+  let t = await ListApi.getListSongs(Id.value, {
+    limit: page.limit,
+    offset: page.offset++ * page.limit,
+  })
+  data.value.songs.push(...t.songs)
+}
 onBeforeMount(async () => {
   Id ? setData() : useRouter().push({ name: '404' })
 })
 </script>
 
 <template>
-  <SongListView :data="data!" :info="info!" v-if="data" />
-  <Loading v-else>loading...</Loading>
+  <ScrollLoad :more="noMore" :page="page" @load-more="loadMore">
+    <ElScrollbar>
+      <SongListView
+        v-if="data"
+        :data="data?.songs"
+        :info="info!"
+        :more="noMore"
+        :page="page"
+        @load-more="loadMore" />
+      <Loading v-else>loading...</Loading>
+    </ElScrollbar>
+  </ScrollLoad>
 </template>
 
 <style scoped lang="scss">

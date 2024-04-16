@@ -8,16 +8,23 @@ let ls = ref()
 let data = ref<CloudSongType>({} as CloudSongType)
 let f = ref<CloudSongDataType[]>([])
 let copy = ref<CloudSongDataType[]>([])
-let page = reactive({ lim: 20, offset: 1 })
+let page = reactive({ limit: 22, offset: 1 })
 let asc = true // true: asc升序
+let Total = ref(0)
+let k = ref(false)
+
 const format = (percentage: number) =>
   percentage === 100 ? 'Full' : `${percentage.toFixed(3)}%`
-const loading = ref(false)
-let k = ref(false)
-const disabled = computed(() => loading.value || noMore.value || k.value)
 
-data.value = await AuthApi.getCloud(page.lim, 0)
-const noMore = computed(() => data.value.count <= f.value.length || k.value == true)
+const loading = ref(false)
+
+data.value = await AuthApi.getCloud({
+  limit: page.limit,
+  offset: 0,
+})
+Total.value = data.value.count
+
+const noMore = computed(() => data.value?.data.length >= Total.value || k.value)
 f.value = data.value.data.map<CloudSongDataType>((x: any) => {
   let t = x.simpleSong
   t.fileSize = x.fileSize
@@ -58,20 +65,18 @@ function search(w: string) {
 }
 
 async function load() {
-  if (!noMore.value && !loading.value) {
-    loading.value = true
-    setTimeout(async () => {
-      let t = await AuthApi.getCloud(page.lim, page.offset++ * page.lim)
-      data.value.data.push(...t.data)
-      f.value = data.value.data.map<CloudSongDataType>((x: any) => {
-        let t = x.simpleSong
-        t.fileSize = x.fileSize
-        return t
-      })
-      copy.value = _.cloneDeep(f.value)
-      loading.value = false
-    }, 2000)
-  }
+  let t = await AuthApi.getCloud({
+    limit: page.limit,
+    offset: page.offset++ * page.limit,
+  })
+  data.value.hasMore = t.hasMore
+  data.value.data.push(...t.data)
+  f.value = data.value.data.map<CloudSongDataType>((x: any) => {
+    let t = x.simpleSong
+    t.fileSize = x.fileSize
+    return t
+  })
+  copy.value = _.cloneDeep(f.value)
 }
 </script>
 
@@ -100,16 +105,16 @@ async function load() {
     </div>
 
     <div class="flex-1 overflow-hidden" tabindex="1">
-      <list
-        v-infinite-scroll="load"
-        :infinite-scroll-disabled="disabled"
-        :lists-songs="f"
-        :noTag="true"
-        :list-name="'我的云盘'"
-        :cloud="true"
-        ref="ls"></list>
-      <p v-if="loading">Loading...</p>
-      <p v-if="noMore">No more</p>
+      <scroll-load :page="page" :more="noMore" @load-more="load">
+        <list
+          :lists-songs="f"
+          :noTag="true"
+          :list-name="'我的云盘'"
+          :cloud="true"
+          ref="ls"></list>
+        <p v-if="loading">Loading...</p>
+        <p v-if="noMore">No more</p>
+      </scroll-load>
     </div>
   </div>
 </template>

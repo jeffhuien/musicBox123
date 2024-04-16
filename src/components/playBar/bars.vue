@@ -58,11 +58,7 @@ let data = defineProps<{
               :class="[
                 playList().playMode != 'Loop' ? item.data.ico[1] : item.data.ico[0],
               ]"></i>
-            <img
-              src="/public/img/ico/repeat-1.svg"
-              class="m-auto w-5 shrink-0"
-              v-else
-              alt="" />
+            <img src="/img/ico/repeat-1.svg" class="m-auto w-5 shrink-0" v-else alt="" />
           </button>
 
           <div
@@ -87,7 +83,7 @@ let data = defineProps<{
                 :class="playList().playMode == 'SingleLoop' ? 'active' : ''"
                 class="flex items-center gap-2 hover:bg-gray-300 dark:hover:bg-gray-700 p-1 rounded-md"
                 @click="playList().playMode = 'SingleLoop'">
-                <img src="/public/img/ico/repeat-1.svg" class="w-4" alt="" />
+                <img src="/img/ico/repeat-1.svg" class="w-4" alt="" />
                 <span>单曲循环</span>
               </div>
             </div>
