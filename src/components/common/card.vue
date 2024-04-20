@@ -19,7 +19,7 @@ const style = computed(() => props.typ ?? 1)
 <template>
   <div
     class="w-full m-auto relative group transition-transform hover:-translate-y-2 duration-500 hover:text-sky-500 hover:cursor-pointer">
-    <div class="dark:bg-gray-800 dark:" @click="$router.push(`/${to}/${id}`)">
+    <div class="dark:bg-gray-800" @click="$router.push(`/${to}/${id}`)">
       <div
         class="relative flex justify-center w-full h-full items-center flex-1 shrink-0">
         <img
@@ -46,10 +46,10 @@ const style = computed(() => props.typ ?? 1)
 
       <div class="relative py-2 text-white">
         <div class="text-sm max-sm:text-xs overflow-hidden group-hover:text-sky-500">
-          <div class="text-black/80 truncate">
+          <div class="text-black/80 truncate dark:text-white">
             {{ name }}
           </div>
-          <div class="text-black/60 truncate">
+          <div class="text-black/60 truncate dark:text-gray-500 text-xs">
             {{ singer }}
           </div>
         </div>
