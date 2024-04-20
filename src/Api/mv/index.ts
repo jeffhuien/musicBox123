@@ -56,12 +56,12 @@ class MV extends Axios {
    * @returns
    */
   public async getAllMV(
-    data: {
+    data?: {
       area?: string
       order?: string
       type?: string
     },
-    page: { limit: number; offset: number },
+    page?: { limit: number; offset: number },
   ) {
     return this.request<any>({
       url: '/all',
@@ -72,16 +72,45 @@ class MV extends Axios {
     })
   }
 
-  public async NewMV(area?: string, limit?: number) {
+  public async NewMV(
+    data?: {
+      area?: string
+      order?: string
+      type?: string
+    },
+    page?: { limit: number; offset: number },
+  ) {
     return this.request<any>({
-      url: 'first',
+      url: '/first',
       params: {
-        area,
-        limit,
+        ...data,
+        ...page,
       },
     })
   }
 
+  /**
+   * 网易出品
+   * @param data
+   * @param page
+   * @returns
+   */
+  public async WangYiMV(
+    data?: {
+      area?: string
+      order?: string
+      type?: string
+    },
+    page?: { limit: number; offset: number },
+  ) {
+    return this.request<any>({
+      url: '/exclusive/rcmd',
+      params: {
+        ...data,
+        ...page,
+      },
+    })
+  }
   //   end
 }
 const MvApi = new MV({
