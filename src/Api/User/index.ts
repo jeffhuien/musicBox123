@@ -52,6 +52,9 @@ class Auth extends Axios {
       params: {
         id,
       },
+      data: {
+        cookie: store.get('cookie'),
+      },
     })
   }
 }
