@@ -132,7 +132,7 @@ function playAll() {
 }
 </script>
 <template>
-  <div class="flex flex-col w-full h-full p-4 border overflow-hidden">
+  <div class="flex flex-col w-full h-full p-4 pb-0 overflow-hidden">
     <div class="text-xl"> 我的收藏 </div>
     <el-tabs
       v-model="activeName"
@@ -217,7 +217,7 @@ function playAll() {
                 <Card
                   v-for="(i, d) in mv?.data"
                   :index="d"
-                  to="list"
+                  to="mv"
                   :id="1 * i.vid"
                   :typ="2"
                   :name="i.title"
