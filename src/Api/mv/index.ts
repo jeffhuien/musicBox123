@@ -14,15 +14,17 @@ class MV extends Axios {
    */
   public async collectMV(mvid: number, t: number) {
     return this.request<any>({
+      method: 'post',
       url: '/sub',
       params: {
         mvid,
         t,
+        timestamp: new Date().getTime(),
       },
     })
   }
 
-  public async DetailMV(mvid: number) {
+  public async DetailMV(mvid: string) {
     return this.request<any>({
       url: '/detail',
       params: {
@@ -36,12 +38,13 @@ class MV extends Axios {
    * @param r 分辨率
    * @returns
    */
-  public async PlayMV(id: number, r: number) {
+  public async PlayMV(id: string, r = 1080) {
     return this.request<any>({
       url: '/url',
       params: {
         id,
         r,
+        timestamp: new Date().getTime(),
       },
     })
   }

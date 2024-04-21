@@ -4,5 +4,5 @@ import { SearchApi } from './search'
 import { SongApi } from './song'
 import { ListApi } from './List'
 import { MvApi } from './mv'
-
-export { AuthApi, ListApi, loginApi, CommonApi, SearchApi, SongApi, MvApi }
+import { CommentApi } from './Comment'
+export { CommentApi, AuthApi, ListApi, loginApi, CommonApi, SearchApi, SongApi, MvApi }

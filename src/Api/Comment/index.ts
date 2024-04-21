@@ -60,7 +60,7 @@ class Comment extends Axios {
   public async getComment(
     id: number,
     type = 'mv',
-    page?: { limit?: string; offset?: string },
+    page?: { limit?: number; offset?: number },
   ) {
     return this.request<any>({
       url: type,
