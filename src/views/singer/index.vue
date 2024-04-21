@@ -21,6 +21,7 @@ let data = ref<singerData>({} as singerData)
 let activeName = ref('songs')
 let songPage = reactive({ limit: 50, offset: 1 })
 let mvPage = reactive({ limit: 20, offset: 1 })
+let alPage = reactive({ limit: 30, offset: 1 })
 
 let SongNoMore = computed(
   () =>
@@ -30,6 +31,9 @@ let SongNoMore = computed(
 
 let MvNoMore = computed(
   () => (data.value?.singerMV?.mvs.length >= data.value?.singerMV?.total * 1) as boolean,
+)
+let AlNoMore = computed(
+  () => (data.value?.singerAlbum?.hotAlbums.length >= data.value?.alCount!) as boolean,
 )
 const SongLoadMore = async (): Promise<void> => {
   if (!SongNoMore.value) {
@@ -47,6 +51,16 @@ const MvLoadMore = async () => {
       offset: mvPage.offset++ * mvPage.limit,
     })
     data.value.singerMV.mvs.push(...t?.mvs)
+  }
+}
+
+const AlLoadMore = async () => {
+  if (!AlNoMore.value) {
+    let t = await CommonApi.singerAL(parseInt(singerID.value), {
+      limit: alPage.limit,
+      offset: alPage.offset++ * alPage.limit,
+    })
+    data.value.singerAlbum.hotAlbums.push(...t?.hotAlbums)
   }
 }
 
@@ -78,10 +92,11 @@ const handleClick = async (tab: TabsPaneContext, event: Event) => {
   }
 }
 
-watchEffect(() => {
-  if (!singerID.value) return
-  data.value = {} as singerData
-  getData(parseInt(singerID.value))
+watchEffect(async () => {
+  if (singerID.value && router.currentRoute.value.name == 'singer') {
+    data.value = {} as singerData
+    await getData(parseInt(singerID.value))
+  }
 })
 
 const isFollow = ref<boolean>(data.value?.singerFens?.data?.isFollow ? true : false)
@@ -145,18 +160,24 @@ const followSinger = async (t: number) => {
           </ScrollLoad>
         </el-tab-pane>
         <el-tab-pane class="h-full w-full" name="al" :label="'专辑 ' + data?.alCount">
-          <ElScrollbar>
-            <div
-              class="grid items-center justify-center xl:grid-cols-5 md:grid-cols-5 max-md:grid-cols-4 gap-3 max-xl:grid-cols-5 max-sm:grid-cols-3">
-              <Card
-                v-for="(i, d) in data.singerAlbum?.hotAlbums"
-                :index="d"
-                to="al"
-                :id="i.id"
-                :name="i.name"
-                :img="i.blurPicUrl"></Card>
-            </div>
-          </ElScrollbar>
+          <ScrollLoad
+            :page="alPage"
+            :more="AlNoMore"
+            @loadMore="AlLoadMore"
+            class="h-full">
+            <ElScrollbar>
+              <div
+                class="grid items-center justify-center xl:grid-cols-5 md:grid-cols-5 max-md:grid-cols-4 gap-3 max-xl:grid-cols-5 max-sm:grid-cols-3">
+                <Card
+                  v-for="(i, d) in data.singerAlbum?.hotAlbums"
+                  :index="d"
+                  to="al"
+                  :id="i.id"
+                  :name="i.name"
+                  :img="i.blurPicUrl"></Card>
+              </div>
+            </ElScrollbar>
+          </ScrollLoad>
         </el-tab-pane>
         <el-tab-pane name="mv" :label="'MV ' + data?.mvCount" class="w-full h-full">
           <ScrollLoad @load-more="MvLoadMore" :more="MvNoMore" :page="mvPage">
