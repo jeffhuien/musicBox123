@@ -7,7 +7,7 @@ const menus = ref<menu[]>([
     name: '发现音乐',
     item: [
       { ico: 'fa-solid fa-meteor', name: '推荐', toName: RouteNames.recommend },
-      { ico: 'fa-brands fa-app-store-ios', name: '乐库', toName: RouteNames.musicStore },
+      // { ico: 'fa-brands fa-app-store-ios', name: '乐库', toName: RouteNames.musicStore },
       { ico: 'fa-brands fa-youtube', name: '视频', toName: RouteNames.video },
       { ico: 'fa-solid fa-search', name: '找人', toName: RouteNames.find },
     ],
