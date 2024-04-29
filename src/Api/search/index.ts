@@ -2,7 +2,6 @@ import { Hot } from '#/search/hot'
 import { SearchSongs } from '#/search/searchSongs'
 import { searchSuggest } from '#/search/searchSuggest'
 import Axios from '@/plugins/axios/axios'
-import { env } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class Search extends Axios {
@@ -25,11 +24,13 @@ class Search extends Axios {
     })
   }
 
-  public async SearchSongs(keywords: string) {
+  public async Search(keywords: string, type?: number) {
     return await this.request<SearchSongs>({
-      baseURL: env.VITE_API_URL + '/cloudsearch',
+      baseURL: 'api/cloudsearch',
       params: {
         keywords,
+        type,
+        timestamp: new Date().getTime(),
       },
     })
   }

@@ -16,7 +16,7 @@ export default class Axios {
         const response = await this.instance.request<T>(config)
         resolve(response.data)
       } catch (error: AxiosError | any) {
-        ElMessage.error(error.message)
+        // ElMessage.error(error.message)
         reject(error)
       }
     })
@@ -74,9 +74,13 @@ export default class Axios {
               auth().isLogin = false
             } else {
               ElMessage.warning('需要登录~~')
-
               router.push('/login')
             }
+          } else if (
+            Math.abs(error.response.data.code) >= 400 &&
+            error.response.data.code < 500
+          ) {
+            ElMessage.error(error.response.data.message)
           }
         } catch (error) {
           ElMessage.error('服务错误，请尝试刷新~~')
