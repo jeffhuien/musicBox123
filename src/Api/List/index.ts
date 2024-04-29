@@ -20,10 +20,7 @@ class List extends Axios {
       },
     })
   }
-  public async getList(
-    uid: string,
-    page: { limit: number; offset: number } = { limit: 3, offset: 0 },
-  ) {
+  public async getList(uid: string, page?: { limit: number; offset: number }) {
     return await this.request<UserListReqType>({
       baseURL: 'api/user/playlist',
       params: {
