@@ -1,30 +1,12 @@
-interface IData {
-  expire?: number
-  token?: string
-  data?:
-    | {
-        name?: string
-      }
-    | any
-}
+type keys = 'cookie'
 
 export default {
-  set(key: string, data: IData | any, expire?: number): any {
-    let cache: IData = data
-    if (expire) cache.expire = new Date().getTime() + expire * (86400 * 1000) //expire天token
-    localStorage.setItem(key, JSON.stringify(cache))
+  set(key: keys, data: any) {
+    localStorage.setItem(key, data)
   },
-  get(key: string): IData | null | string | any {
+  get(key: keys) {
     const cacheStore = localStorage.getItem(key)
-    if (cacheStore) {
-      const cache = JSON.parse(cacheStore) as IData
-      const expire = cache.expire
-      if (expire && expire < new Date().getTime()) {
-        localStorage.removeItem(key)
-        return null
-      }
-      return cache
-    }
+    return cacheStore
   },
   remove(key: string) {
     localStorage.removeItem(key)
