@@ -30,3 +30,7 @@
 // console.log(Api)
 
 // export { Api }
+
+// import './axios'
+// import '@/Api'
+export function setupAxios() {}

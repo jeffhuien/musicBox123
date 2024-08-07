@@ -1,6 +1,6 @@
 import { playControl, playList } from '@/stores'
 import { ElMessageBox } from 'element-plus'
-let times = 5
+let times = 3
 class Music {
   private audio: HTMLAudioElement
   constructor() {
@@ -23,13 +23,14 @@ class Music {
           console.log('play error~')
           if (playList().playMode != 'SingleLoop') {
             playControl().playNext()
+            ElMessage.warning('播放出现错误，已为您切换下一首')
           } else {
             // window.location.reload()
             ElMessageBox.alert('播放失败，刷新试试吧~', '提示', {
               confirmButtonText: '确定',
             })
           }
-          times = 5
+          times = 3
         }
       }
     }
