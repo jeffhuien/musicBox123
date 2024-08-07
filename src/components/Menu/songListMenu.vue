@@ -21,12 +21,18 @@ async function setUserListData(uid: string) {
   return t
 }
 
-onMounted(async () => {
-  if (auth().isLogin) {
-    uid.value = auth().user!.data.account.id.toString()
-    list.value = await setUserListData(uid.value)
-  }
-})
+watch(
+  () => auth().isLogin,
+  async () => {
+    if (auth().isLogin) {
+      uid.value = auth().user!.data.account.id.toString()
+      list.value = await setUserListData(uid.value)
+    }
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
 
 <template>
