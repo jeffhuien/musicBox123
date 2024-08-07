@@ -117,7 +117,7 @@ class MV extends Axios {
   //   end
 }
 const MvApi = new MV({
-  baseURL: 'api/mv',
+  baseURL: '/api/mv',
   method: 'get',
 })
 

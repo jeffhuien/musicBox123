@@ -1,7 +1,6 @@
 import { UserListReqType } from '#/List/userList'
 import { CloudSongType } from '#/song/cloudSong'
 import Axios from '@/plugins/axios/axios'
-import { env, store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class Auth extends Axios {
@@ -30,9 +29,6 @@ class Auth extends Axios {
       params: {
         ...page,
       },
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
@@ -47,13 +43,11 @@ class Auth extends Axios {
 
   async getPlayUrl(id: string) {
     return await this.request<any>({
-      baseURL: env.VITE_API_URL,
-      url: '/song/url',
+      baseURL: '/api',
+      url: '/song/url/v1',
       params: {
         id,
-      },
-      data: {
-        cookie: store.get('cookie'),
+        timestamp: new Date().getTime(),
       },
     })
   }
@@ -95,22 +89,16 @@ class Login extends Axios {
 
   public async logout() {
     return await this.request<any>({
-      baseURL: 'api/logout',
-      data: {
-        cookie: store.get('cookie'),
-      },
+      baseURL: '/api/logout',
     })
   }
 }
 
 export const loginApi = new Login({
-  baseURL: 'api/login',
+  baseURL: '/api/login',
   method: 'post',
 })
 export const AuthApi = new Auth({
   baseURL: '/api/user',
   method: 'post',
-  data: {
-    cookie: store.get('cookie'),
-  },
 })

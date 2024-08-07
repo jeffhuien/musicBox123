@@ -1,7 +1,9 @@
+import { store } from '@/utils'
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { env, store } from '@/utils'
-import router from '@/router'
+// import router from '@/router'
 import { auth } from '@/stores'
+
+let router = useRouter()
 
 export default class Axios {
   protected instance
@@ -32,6 +34,12 @@ export default class Axios {
     // 添加请求拦截器
     this.instance.interceptors.request.use(
       function (config) {
+        console.log(config)
+        if (!config.data) {
+          config.data = {}
+        }
+
+        config.data['cookie'] = store.get('cookie')
         // if (config.url?.includes('cloud')) {
         //   // 将 Cookie 添加到请求的 data 字段中
         //   config.data = config.data || {}
@@ -39,6 +47,7 @@ export default class Axios {
         //   console.log(config)
         // }
         // 在发送请求之前做些什么
+
         return config
       },
       function (error) {

@@ -50,6 +50,6 @@ class Album extends Axios {
   //   end
 }
 export const AlbumApi = new Album({
-  baseURL: 'api/album',
+  baseURL: '/api/album',
   method: 'get',
 })

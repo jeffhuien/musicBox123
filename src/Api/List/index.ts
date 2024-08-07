@@ -15,14 +15,11 @@ class List extends Axios {
       params: {
         id,
       },
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
   public async getList(uid: string, page?: { limit: number; offset: number }) {
     return await this.request<UserListReqType>({
-      baseURL: 'api/user/playlist',
+      baseURL: '/api/user/playlist',
       params: {
         uid,
         ...page,
@@ -44,9 +41,6 @@ class List extends Axios {
         t,
         id,
       },
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
@@ -63,7 +57,7 @@ class List extends Axios {
 }
 
 const ListApi = new List({
-  baseURL: 'api/playlist',
+  baseURL: '/api/playlist',
   method: 'get',
 })
 

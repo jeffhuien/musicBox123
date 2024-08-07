@@ -26,7 +26,7 @@ class Search extends Axios {
 
   public async Search(keywords: string, type?: number) {
     return await this.request<SearchSongs>({
-      baseURL: 'api/cloudsearch',
+      baseURL: '/api/cloudsearch',
       params: {
         keywords,
         type,
@@ -37,7 +37,7 @@ class Search extends Axios {
 }
 
 const SearchApi = new Search({
-  baseURL: 'api/search',
+  baseURL: '/api/search',
   method: 'get',
 })
 

@@ -1,6 +1,5 @@
 import { RecommendListType, bannerType, historyListType, lyricType } from '#/index'
 import Axios from '@/plugins/axios/axios'
-import { store } from '@/utils'
 import { AxiosRequestConfig } from 'axios'
 
 class Common extends Axios {
@@ -51,9 +50,6 @@ class Common extends Axios {
   public async getHistoryList() {
     return await this.request<historyListType>({
       url: '/record/recent/song',
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
@@ -82,9 +78,6 @@ class Common extends Axios {
         id,
         like,
       },
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
@@ -95,9 +88,6 @@ class Common extends Axios {
       params: {
         uid: id,
       },
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
@@ -106,9 +96,6 @@ class Common extends Axios {
       url: '/user/follows',
       params: {
         uid,
-      },
-      data: {
-        cookie: store.get('cookie'),
       },
     })
   }
@@ -119,9 +106,6 @@ class Common extends Axios {
       params: {
         ...page,
       },
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
@@ -129,9 +113,6 @@ class Common extends Axios {
     return this.request<any>({
       url: '/artist/sublist',
       params: {},
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
   public async singerSongs(id: number, page?: { limit: number; offset: number }) {
@@ -174,9 +155,6 @@ class Common extends Axios {
       url: '/artist/follow/count',
       params: {
         id,
-      },
-      data: {
-        cookie: store.get('cookie'),
       },
     })
   }
@@ -226,11 +204,8 @@ class Common extends Axios {
 }
 
 const CommonApi = new Common({
-  baseURL: 'api/',
+  baseURL: '/api',
   method: 'post',
-  data: {
-    cookie: store.get('cookie'),
-  },
 })
 
 export { CommonApi }

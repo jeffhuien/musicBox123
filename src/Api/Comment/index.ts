@@ -51,9 +51,6 @@ class Comment extends Axios {
       params: {
         ...data,
       },
-      data: {
-        cookie: store.get('cookie'),
-      },
     })
   }
 
@@ -72,7 +69,7 @@ class Comment extends Axios {
   }
 }
 const CommentApi = new Comment({
-  baseURL: 'api/comment',
+  baseURL: '/api/comment',
   method: 'get',
 })
 
