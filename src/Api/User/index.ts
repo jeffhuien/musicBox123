@@ -17,6 +17,12 @@ class Auth extends Axios {
     })
   }
 
+  public async getAccount() {
+    return this.request<any>({
+      url: `/account`,
+    })
+  }
+
   public async getLevel() {
     return this.request<any>({
       url: `/level`,

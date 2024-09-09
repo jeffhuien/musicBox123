@@ -14,7 +14,7 @@ async function setUserListData(uid: string) {
       id: I.id.toString(),
       img: I.coverImgUrl,
       count: I.trackCount,
-      own: I.creator.nickname == auth().user?.data.profile.nickname ? true : false,
+      own: I.creator.nickname == auth().user?.profile.nickname ? true : false,
     } as UserListType
   })
   // t.splice(0, 1)
@@ -25,7 +25,7 @@ watch(
   () => auth().isLogin,
   async () => {
     if (auth().isLogin) {
-      uid.value = auth().user!.data.account.id.toString()
+      uid.value = auth().user!.account.id.toString()
       list.value = await setUserListData(uid.value)
     }
   },

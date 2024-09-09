@@ -55,11 +55,9 @@ interface Profile {
 }
 
 interface AuthType {
-  data: {
-    code: number
-    account: Account
-    profile: Profile
-  }
+  code: number
+  account: Account
+  profile: Profile
 }
 
 export { AuthType, Account, Profile }
