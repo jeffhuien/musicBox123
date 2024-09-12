@@ -3,6 +3,7 @@ import { ColorModeConfig } from '#/config'
 import { loginApi } from '@/Api'
 import { UserList, auth, main } from '@/stores'
 import { store } from '@/utils'
+
 async function LogOut() {
   try {
     await ElMessageBox.confirm('确认要注销登录吗？', {
@@ -11,13 +12,10 @@ async function LogOut() {
       type: 'warning',
     })
     // 注销成功后的操作
-    auth().user = undefined
-    auth().isLogin = false
-    auth().level = 0
-    UserList().list = []
-    store.remove('cookie')
-    ElMessage.success('bye bye~')
     await loginApi.logout()
+    auth().$reset()
+    UserList().list = []
+    ElMessage.success('bye bye~')
   } catch (error) {
     // 处理取消注销或其他错误
     console.error('注销失败：', error)

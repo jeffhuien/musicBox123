@@ -45,8 +45,8 @@ async function login() {
         ElMessage.success('授权登录成功')
         log.value = true
         main().loginShow = false
-        let userInfo = await loginApi.getLoginStatus(statusRes.cookie)
         store.set('cookie', statusRes.cookie)
+        let userInfo = await AuthApi.getAccount()
         auth().setAuthInfo(userInfo)
         let level = await AuthApi.getInfo(auth().UID!)
         auth().level = level.level
