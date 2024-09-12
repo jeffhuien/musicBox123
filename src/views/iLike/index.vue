@@ -28,7 +28,7 @@ type lsType = {
   dt: number
   fee: number
 }
-let uidList = UserList().list[0].id
+let uidList = UserList().list?.[0]?.id
 let ls = ref()
 let UID = auth().UID!
 let songs = ref<lsType[]>([]) //歌曲
