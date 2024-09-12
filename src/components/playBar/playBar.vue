@@ -76,7 +76,7 @@
     <div
       ref="playListEl"
       :class="[main().listClose ? 'animate__slideOutRight' : 'animate__slideInRight']"
-      class="dark:bg-gray-800 animate__animated flex flex-col gap-1 h-[60vh] overflow-hidden w-2/5 max-sm:w-full absolute right-0 bottom-[4.8rem] max-sm:bottom-16 z-50 bg-white border rounded-md shadow-lg">
+      class="dark:bg-gray-800 animate__animated flex flex-col gap-1 h-[60vh] overflow-hidden w-2/5 max-w-[400px] max-sm:w-full absolute right-2 bottom-[4.8rem] max-sm:bottom-16 z-50 bg-white border dark:border-gray-700 rounded-md shadow-lg">
       <div class="flex gap-2 flex-col text-xs p-2">
         <div class="">正在播放的歌单: {{ name }}</div>
         <div class="flex gap-2">
