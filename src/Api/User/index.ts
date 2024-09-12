@@ -79,6 +79,15 @@ class Login extends Axios {
     })
   }
 
+  public async getAnonimousCookie() {
+    return await this.request<{
+      cookie: string
+    }>({
+      baseURL: `/api/register/anonimous`,
+      method: 'get',
+    })
+  }
+
   public async login() {
     const { data } = await this.request<any>({
       url: `/qr/key?timestamp=${Date.now()}`,
