@@ -34,7 +34,7 @@ export default class Axios {
     // 添加请求拦截器
     this.instance.interceptors.request.use(
       function (config) {
-        console.log(config)
+        // console.log(config)
         if (!config.data) {
           config.data = {}
         }
