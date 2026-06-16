@@ -48,6 +48,11 @@ export default class Axios {
         // }
         // 在发送请求之前做些什么
 
+        // 直接使用完整api地址
+        if (config.baseURL?.startsWith('/api')) {
+          config.baseURL = import.meta.env.VITE_API_URL + config.baseURL
+        }
+
         return config
       },
       function (error) {
